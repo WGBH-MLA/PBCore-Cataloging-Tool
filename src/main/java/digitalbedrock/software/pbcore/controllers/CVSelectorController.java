@@ -1,18 +1,18 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.MainApp;
-import digitalbedrock.software.pbcore.core.models.CVBase;
-import digitalbedrock.software.pbcore.core.models.CVTerm;
-import digitalbedrock.software.pbcore.listeners.CVSelectionListener;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
+import digitalbedrock.software.pbcore.MainApp;
+import digitalbedrock.software.pbcore.core.models.CVBase;
+import digitalbedrock.software.pbcore.core.models.CVTerm;
+import digitalbedrock.software.pbcore.listeners.CVSelectionListener;
 
 public class CVSelectorController extends AbsController {
 
@@ -27,9 +27,9 @@ public class CVSelectorController extends AbsController {
     private boolean attr;
     private String key;
 
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         treeCVs.setShowRoot(false);
         treeCVs.setCellFactory(lv -> new PBCoreTreeCell());
         ChangeListener<TreeItem<CVTerm>> listener = (observable, oldValue, newValue) -> {
@@ -39,6 +39,7 @@ public class CVSelectorController extends AbsController {
     }
 
     public void setCVSelectionListener(CVSelectionListener cvSelectionListener) {
+
         btnCancel.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             cvSelectionListener.onCVSelected(key, null, attr);
         });
@@ -46,23 +47,40 @@ public class CVSelectorController extends AbsController {
     }
 
     private void onAdd(CVSelectionListener cvSelectionListener) {
+
         TreeItem<CVTerm> selectedItem = treeCVs.getSelectionModel().getSelectedItem();
         cvSelectionListener.onCVSelected(key, selectedItem.getValue(), attr);
     }
 
     private TreeItem<CVTerm> getTreeItem(String key) {
+
         TreeItem<CVTerm> pbCoreElementTreeItem = new TreeItem<>();
-        MainApp.getInstance().getRegistry().getControlledVocabularies().get(key).getTerms().forEach(cvTerm -> pbCoreElementTreeItem.getChildren().add(new TreeItem<>(cvTerm)));
-        HashMap<String, CVBase> subs = MainApp.getInstance().getRegistry().getControlledVocabularies().get(key).getSubs();
+        MainApp
+                .getInstance()
+                .getRegistry()
+                .getControlledVocabularies()
+                .get(key)
+                .getTerms()
+                .forEach(cvTerm -> pbCoreElementTreeItem.getChildren().add(new TreeItem<>(cvTerm)));
+        HashMap<String, CVBase> subs = MainApp
+                .getInstance()
+                .getRegistry()
+                .getControlledVocabularies()
+                .get(key)
+                .getSubs();
         if (subs != null) {
             for (Map.Entry<String, CVBase> stringCVBaseEntry : subs.entrySet()) {
-                stringCVBaseEntry.getValue().getTerms().forEach(cvTerm -> pbCoreElementTreeItem.getChildren().add(new TreeItem<>(cvTerm)));
+                stringCVBaseEntry
+                        .getValue()
+                        .getTerms()
+                        .forEach(cvTerm -> pbCoreElementTreeItem.getChildren().add(new TreeItem<>(cvTerm)));
             }
         }
         return pbCoreElementTreeItem;
     }
 
     public void setKey(boolean attr, String key) {
+
         this.attr = attr;
         this.key = key;
         treeCVs.setRoot(getTreeItem(key));
@@ -71,6 +89,7 @@ public class CVSelectorController extends AbsController {
 
     @Override
     public MenuBar createMenu() {
+
         return null;
     }
 
@@ -78,11 +97,13 @@ public class CVSelectorController extends AbsController {
 
         @Override
         protected void updateItem(CVTerm item, boolean empty) {
+
             super.updateItem(item, empty);
             if (!empty) {
                 setText(item.getTerm());
                 setTooltip(new Tooltip(item.getTerm()));
-            } else {
+            }
+            else {
                 setText(null);
                 setTooltip(null);
             }

@@ -1,10 +1,14 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.MainApp;
-import digitalbedrock.software.pbcore.core.models.CV;
-import digitalbedrock.software.pbcore.core.models.CVBase;
-import digitalbedrock.software.pbcore.core.models.CVTerm;
-import digitalbedrock.software.pbcore.utils.Registry;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,21 +21,21 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign.MaterialDesign;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import digitalbedrock.software.pbcore.MainApp;
+import digitalbedrock.software.pbcore.core.models.CV;
+import digitalbedrock.software.pbcore.core.models.CVBase;
+import digitalbedrock.software.pbcore.core.models.CVTerm;
+import digitalbedrock.software.pbcore.utils.I18nKey;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
+import digitalbedrock.software.pbcore.utils.Registry;
 
 public class SettingsVocabulariesController extends AbsController {
 
+    public static final Logger LOGGER = Logger.getLogger(SettingsVocabulariesController.class.getName());
     private static final String EDIT = "SAVE";
     private static final String ADD = "ADD";
     private static final String VOCABULARY_TERM_IS_MANDATORY = "Vocabulary term is mandatory";
@@ -96,12 +100,14 @@ public class SettingsVocabulariesController extends AbsController {
 
     @FXML
     void onCancelButtonClick(ActionEvent event) {
+
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @FXML
     void onOkButtonClick(ActionEvent event) {
+
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
 
@@ -109,6 +115,7 @@ public class SettingsVocabulariesController extends AbsController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         reloadTree(false);
 
         treelist.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
@@ -125,11 +132,14 @@ public class SettingsVocabulariesController extends AbsController {
                 if (cv.isHasSubs()) {
                     for (Map.Entry<String, CVBase> stringCVBaseEntry : cv.getSubs().entrySet()) {
                         if (stringCVBaseEntry.getKey().equalsIgnoreCase(split[1])) {
-                            tvVocabularies.setItems(FXCollections.observableArrayList(stringCVBaseEntry.getValue().getTerms()));
+                            tvVocabularies
+                                    .setItems(FXCollections
+                                            .observableArrayList(stringCVBaseEntry.getValue().getTerms()));
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 tvVocabularies.setItems(FXCollections.observableArrayList(cv.getTerms()));
             }
             buttonRemoveItem.setDisable(!cv.isCustom());
@@ -149,6 +159,7 @@ public class SettingsVocabulariesController extends AbsController {
         refColumn.setCellValueFactory(param -> param.getValue().refProperty());
 
         editColumn.setCellFactory((final TableColumn<CVTerm, String> param) -> new TableCell<CVTerm, String>() {
+
             final Button btn = new Button("", new FontIcon(MaterialDesign.MDI_LEAD_PENCIL));
 
             {
@@ -157,11 +168,13 @@ public class SettingsVocabulariesController extends AbsController {
 
             @Override
             public void updateItem(String item, boolean empty) {
+
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                     setText(null);
-                } else {
+                }
+                else {
                     CVTerm term = getTableView().getItems().get(getIndex());
                     btn.setOnAction(event -> {
                         buttonCancelEdit.setVisible(true);
@@ -190,6 +203,7 @@ public class SettingsVocabulariesController extends AbsController {
             }
         });
         deleteColumn.setCellFactory((final TableColumn<CVTerm, String> param) -> new TableCell<CVTerm, String>() {
+
             final Button btn = new Button("", new FontIcon(MaterialDesign.MDI_CLOSE));
 
             {
@@ -198,16 +212,20 @@ public class SettingsVocabulariesController extends AbsController {
 
             @Override
             public void updateItem(String item, boolean empty) {
+
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
                     setText(null);
-                } else {
+                }
+                else {
                     CVTerm term = getTableView().getItems().get(getIndex());
                     btn.setOnAction(event -> {
                         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                        alert.setTitle("Delete Controlled vocabulary");
-                        alert.setContentText("By removing this controlled vocabulary it won't be available any more.\nThis operation is not reversible.\nDo you want to proceed?");
+                        alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.DELETE_CONTROLLED_VOCABULARY));
+                        alert
+                                .setContentText(LanguageManager.INSTANCE
+                                        .getString(I18nKey.DELETE_CONTROLLED_VOCABULARY_DESCRIPTION));
                         alert.setHeaderText(null);
 
                         Optional<ButtonType> result = alert.showAndWait();
@@ -226,6 +244,7 @@ public class SettingsVocabulariesController extends AbsController {
             }
 
             private void deleteTerm(CVTerm term) {
+
                 MainApp.getInstance().getRegistry().deleteVocabulary(selectedCV, term);
                 tvVocabularies.getItems().remove(term);
                 if (Objects.equals(selectedCVTerm, term)) {
@@ -244,7 +263,8 @@ public class SettingsVocabulariesController extends AbsController {
         typeRadio.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (typeRadio.getSelectedToggle().equals(rbAttributes)) {
                 treelist.setRoot(rootAttributes);
-            } else if (typeRadio.getSelectedToggle().equals(rbElements)) {
+            }
+            else if (typeRadio.getSelectedToggle().equals(rbElements)) {
                 treelist.setRoot(rootElements);
             }
             selectedCVTerm = null;
@@ -255,6 +275,7 @@ public class SettingsVocabulariesController extends AbsController {
     }
 
     private void updateTFs() {
+
         if (selectedCVTerm == null) {
             buttonAdd.setDisable(false);
             tfTerm.setDisable(false);
@@ -262,7 +283,8 @@ public class SettingsVocabulariesController extends AbsController {
             tfVersion.setDisable(false);
             tfRef.setDisable(false);
             buttonAdd.setText(ADD);
-        } else {
+        }
+        else {
             buttonAdd.setDisable(!selectedCVTerm.isCustom());
             tfTerm.setDisable(!selectedCVTerm.isCustom());
             tfSource.setDisable(!selectedCVTerm.isCustom());
@@ -274,28 +296,43 @@ public class SettingsVocabulariesController extends AbsController {
 
     @Override
     public MenuBar createMenu() {
+
         return new MenuBar();
     }
 
     public void saveTerm(ActionEvent actionEvent) {
+
         Registry registry = MainApp.getInstance().getRegistry();
         String term = tfTerm.getText();
         if (term == null || term.trim().isEmpty()) {
             lblInvalidTerm.setText(VOCABULARY_TERM_IS_MANDATORY);
             lblInvalidTerm.setVisible(true);
             return;
-        } else {
+        }
+        else {
             CV cv = registry.getControlledVocabularies().get(selectedCV);
             CVTerm cvTerm1 = null;
             if (cv != null) {
-                cvTerm1 = cv.getTerms().stream().filter(cvTerm -> Objects.equals(cvTerm.getTerm(), term)).findFirst().orElse(null);
-            } else {
+                cvTerm1 = cv
+                        .getTerms()
+                        .stream()
+                        .filter(cvTerm -> Objects.equals(cvTerm.getTerm(), term))
+                        .findFirst()
+                        .orElse(null);
+            }
+            else {
                 String[] split = selectedCV.split(" - ");
                 cv = MainApp.getInstance().getRegistry().getControlledVocabularies().get(split[0]);
                 if (cv.isHasSubs()) {
                     for (Map.Entry<String, CVBase> stringCVBaseEntry : cv.getSubs().entrySet()) {
                         if (stringCVBaseEntry.getKey().equalsIgnoreCase(split[1])) {
-                            cvTerm1 = stringCVBaseEntry.getValue().getTerms().stream().filter(cvTerm -> Objects.equals(cvTerm.getTerm(), term)).findFirst().orElse(null);
+                            cvTerm1 = stringCVBaseEntry
+                                    .getValue()
+                                    .getTerms()
+                                    .stream()
+                                    .filter(cvTerm -> Objects.equals(cvTerm.getTerm(), term))
+                                    .findFirst()
+                                    .orElse(null);
                         }
                     }
                 }
@@ -315,7 +352,8 @@ public class SettingsVocabulariesController extends AbsController {
             CVTerm cvTerm = registry.saveVocabulary(selectedCV, term, source, version, ref);
             tvVocabularies.getItems().add(cvTerm);
             tvVocabularies.scrollTo(tvVocabularies.getItems().size() - 1);
-        } else {
+        }
+        else {
             selectedCVTerm.update(term, source, version, ref);
             registry.updateVocabulary(selectedCV, selectedCVTerm);
             tvVocabularies.getItems().set(tvVocabularies.getItems().indexOf(selectedCVTerm), selectedCVTerm);
@@ -325,82 +363,94 @@ public class SettingsVocabulariesController extends AbsController {
     }
 
     public void cancelEditTerm(ActionEvent actionEvent) {
+
         buttonCancelEdit.setVisible(false);
         clearTFs();
         updateTFs();
     }
 
     private void clearTFs() {
+
         tfTerm.setText(null);
         tfSource.setText(null);
         tfVersion.setText(null);
         tfRef.setText(null);
     }
 
-
     @FXML
     void onSelectNewElementToAdd(ActionEvent event) {
+
         if (rbElements.isSelected()) {
             showSelectElementModal();
-        } else if (rbAttributes.isSelected()) {
+        }
+        else if (rbAttributes.isSelected()) {
             showSelectAttributesModal();
         }
 
     }
 
     private void showSelectAttributesModal() {
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cv_attribute_selector.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cv_attribute_selector.fxml"),
+                    LanguageManager.INSTANCE.getBundle());
             Parent parent = loader.load();
             CVAttributeSelectorController controller = loader.getController();
             Scene searchScene = new Scene(parent);
             Stage searchWindow = new Stage();
             searchWindow.initOwner(searchScene.getWindow());
             searchWindow.initModality(Modality.APPLICATION_MODAL);
-            searchWindow.setTitle("Add new attribute");
+            searchWindow.setTitle(LanguageManager.INSTANCE.getString(I18nKey.ADD_NEW_ATTRIBUTE));
             searchWindow.setScene(searchScene);
             searchWindow.show();
             controller.setAttributeSelectionListener((element, close) -> {
                 reloadTree(true);
                 searchWindow.close();
             });
-        } catch (IOException ex) {
-            Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "could not show select attribute window", ex);
         }
     }
 
     private void showSelectElementModal() {
+
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cv_element_selector.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/cv_element_selector.fxml"),
+                    LanguageManager.INSTANCE.getBundle());
             Parent parent = loader.load();
             CVElementSelectorController controller = loader.getController();
             Scene searchScene = new Scene(parent);
             Stage selectElementWindow = new Stage();
             selectElementWindow.initOwner(searchScene.getWindow());
             selectElementWindow.initModality(Modality.APPLICATION_MODAL);
-            selectElementWindow.setTitle("Add new element");
+            selectElementWindow.setTitle(LanguageManager.INSTANCE.getString(I18nKey.ADD_NEW_ELEMENT));
             selectElementWindow.setScene(searchScene);
             selectElementWindow.show();
             controller.setElementSelectionListener((treeViewId1, index1, element, close) -> {
                 reloadTree(false);
                 selectElementWindow.close();
             });
-        } catch (IOException ex) {
-            Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, "could not show select element window", ex);
         }
     }
 
     private void reloadTree(boolean showAttributes) {
+
         rootAttributes.getChildren().clear();
         rootElements.getChildren().clear();
         MainApp.getInstance().getRegistry().getControlledVocabularies().forEach((key, value) -> {
             TreeItem<String> t = new TreeItem<>(key);
             if (value.isAttribute()) {
                 rootAttributes.getChildren().add(t);
-            } else if (!value.isAttribute()) {
+            }
+            else if (!value.isAttribute()) {
                 if (!value.isHasSubs()) {
                     rootElements.getChildren().add(t);
-                } else {
+                }
+                else {
                     for (Map.Entry<String, CVBase> stringCVBaseEntry : value.getSubs().entrySet()) {
                         t = new TreeItem<>(key + " - " + stringCVBaseEntry.getKey());
                         rootElements.getChildren().add(t);
@@ -414,12 +464,13 @@ public class SettingsVocabulariesController extends AbsController {
 
     @FXML
     void onSelectRemoveAggregator(ActionEvent event) {
+
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Select Destination Folder");
+        alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.SELECT_DESTINATION_FOLDER));
         alert.setHeaderText(null);
-        alert.setContentText("By deleting this controlled vocabulary all the terms associated to him will no longer be available while filling the element or attribute associated to him. Proceed?");
+        alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.REMOVE_FOLDER_DESCRIPTION));
         Optional<ButtonType> buttonType = alert.showAndWait();
-        if (!buttonType.isPresent() || buttonType.get().getButtonData() == ButtonBar.ButtonData.CANCEL_CLOSE) {
+        if (buttonType.isEmpty() || buttonType.get().getButtonData() == ButtonBar.ButtonData.CANCEL_CLOSE) {
             return;
         }
         treelist.getSelectionModel().clearSelection();
@@ -429,10 +480,11 @@ public class SettingsVocabulariesController extends AbsController {
 
     @FXML
     void onImport(ActionEvent event) {
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Document");
-        //FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv), XML files (*.xml), JSON files (*.json)", "*.csv", ".xml", "*.json");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.setTitle(LanguageManager.INSTANCE.getString(I18nKey.OPEN_DOCUMENT));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                LanguageManager.INSTANCE.getString(I18nKey.JSON_FILES), "*.json");
         fileChooser.setSelectedExtensionFilter(extFilter);
         File selectedFile = fileChooser.showOpenDialog(treelist.getScene().getWindow());
         if (selectedFile == null) {
@@ -442,17 +494,19 @@ public class SettingsVocabulariesController extends AbsController {
             MainApp.getInstance().getRegistry().importControlledVocabularies(selectedFile);
             reloadTree(rbAttributes.isSelected());
             showImportSuccessMessage();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             showImportErrorMessage();
         }
     }
 
     @FXML
     void onExport(ActionEvent event) {
+
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Document");
-        //FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv), XML files (*.xml), JSON files (*.json)", "*.csv", ".xml", "*.json");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("JSON files (*.json)", "*.json");
+        fileChooser.setTitle(LanguageManager.INSTANCE.getString(I18nKey.OPEN_DOCUMENT));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                LanguageManager.INSTANCE.getString(I18nKey.JSON_FILES), "*.json");
         fileChooser.setSelectedExtensionFilter(extFilter);
         fileChooser.setInitialFileName("pbcore_cvs.json");
         File selectedFile = fileChooser.showSaveDialog(treelist.getScene().getWindow());
@@ -462,40 +516,45 @@ public class SettingsVocabulariesController extends AbsController {
         try {
             MainApp.getInstance().getRegistry().exportControlledVocabularies(selectedFile);
             showExportSuccessMessage();
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             showExportErrorMessage();
         }
     }
 
     private void showImportSuccessMessage() {
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Importation successful");
+        alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.SUCCESSFUL_IMPORT));
         alert.setHeaderText(null);
-        alert.setContentText("The controlled vocabularies were imported into the system successfully");
+        alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.SUCCESSFUL_IMPORT_DESCRIPTION));
         alert.showAndWait();
     }
 
     private void showExportSuccessMessage() {
+
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Exportation successful");
+        alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.SUCCESSFUL_EXPORT));
         alert.setHeaderText(null);
-        alert.setContentText("Export completed successfully");
+        alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.SUCCESSFUL_EXPORT_DESCRIPTION));
         alert.showAndWait();
     }
 
     private void showExportErrorMessage() {
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Exportation failed");
+        alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.FAILED_EXPORT));
         alert.setHeaderText(null);
-        alert.setContentText("It was not possible to export the controlled vocabularies file");
+        alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.FAILED_EXPORT_DESCRIPTION));
         alert.showAndWait();
     }
 
     private void showImportErrorMessage() {
+
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Importation failed");
+        alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.FAILED_IMPORT));
         alert.setHeaderText(null);
-        alert.setContentText("The provided file isn't a valid controlled vocabularies file. Please review it or provide a different one.");
+        alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.FAILED_IMPORT_DESCRIPTION));
         alert.showAndWait();
     }
 }

@@ -1,15 +1,13 @@
 package digitalbedrock.software.pbcore.core;
 
-import digitalbedrock.software.pbcore.core.models.FolderModel;
-
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Observer;
-import java.util.Set;
+import java.util.*;
+
+import digitalbedrock.software.pbcore.core.models.FolderModel;
+import digitalbedrock.software.pbcore.utils.Language;
+import lombok.Getter;
+import lombok.Setter;
 
 public final class Settings implements Serializable {
 
@@ -22,11 +20,21 @@ public final class Settings implements Serializable {
 
     private final List<String> savedSearches = new ArrayList<>();
     private boolean firstTimeInstructionsShown = false;
+    @Setter
+    @Getter
+    private Language language;
 
     public Settings() {
+
+        this.language = Arrays
+                .stream(Language.values())
+                .filter(lng -> lng.getLocale() == Locale.getDefault())
+                .findFirst()
+                .orElse(Language.EN);
     }
 
     public void addObserver(Observer oberserver) {
+
         if (observers == null) {
             observers = new HashSet<>();
         }
@@ -34,29 +42,39 @@ public final class Settings implements Serializable {
     }
 
     public void deleteObserver(Observer o) {
+
         observers.remove(o);
     }
 
     private void notifyObservers() {
+
         observers.forEach((obs) -> obs.update(null, this));
     }
 
     public List<FolderModel> getFolders() {
+
         return folders;
     }
 
     public void addFolder(File p) {
+
         folders.add(new FolderModel(p.getAbsolutePath()));
         notifyObservers();
     }
 
     public void removePath(String p) {
-        FolderModel folderModel1 = folders.stream().filter(folderModel -> Objects.equals(folderModel.getFolderPath(), p)).findFirst().orElse(null);
+
+        FolderModel folderModel1 = folders
+                .stream()
+                .filter(folderModel -> Objects.equals(folderModel.getFolderPath(), p))
+                .findFirst()
+                .orElse(null);
         folders.remove(folderModel1);
         notifyObservers();
     }
 
     public void addSearch(String s) {
+
         savedSearches.remove(s);
         savedSearches.add(0, s);
         while (savedSearches.size() > MAX_SAVED_SEARCHES) {
@@ -65,7 +83,12 @@ public final class Settings implements Serializable {
     }
 
     public void updateFolder(FolderModel model) {
-        FolderModel folderModel1 = folders.stream().filter(folderModel -> Objects.equals(folderModel.getFolderPath(), model.getFolderPath())).findFirst().orElse(null);
+
+        FolderModel folderModel1 = folders
+                .stream()
+                .filter(folderModel -> Objects.equals(folderModel.getFolderPath(), model.getFolderPath()))
+                .findFirst()
+                .orElse(null);
         if (folderModel1 != null) {
             folderModel1.setIndexing(model.isIndexing());
             folderModel1.setDateLastIndexing(model.getDateLastIndexing());
@@ -76,14 +99,21 @@ public final class Settings implements Serializable {
     }
 
     public boolean isFileInFolder(String file) {
-        return folders.stream().filter(folderModel -> file.contains(folderModel.getFolderPath())).findFirst().orElse(null) != null;
+
+        return folders
+                .stream()
+                .filter(folderModel -> file.contains(folderModel.getFolderPath()))
+                .findFirst()
+                .orElse(null) != null;
     }
 
     public boolean isFirstTimeInstructionsShown() {
+
         return firstTimeInstructionsShown;
     }
 
     public void markFirstTimeInstructionsShown() {
+
         firstTimeInstructionsShown = true;
     }
 }

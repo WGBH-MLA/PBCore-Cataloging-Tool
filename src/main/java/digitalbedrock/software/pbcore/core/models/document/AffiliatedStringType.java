@@ -7,15 +7,13 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * Definition: The affiliatedStringType adds attributes of affiliation and time
- * relevance.
+ * Definition: The affiliatedStringType adds attributes of affiliation and time relevance.
  *
  * <p>
  * Java class for affiliatedStringType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="affiliatedStringType">
@@ -38,8 +36,7 @@ import javax.xml.bind.annotation.XmlValue;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "affiliatedStringType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "value"
-})
+        "value" })
 public class AffiliatedStringType {
 
     @XmlValue
@@ -76,16 +73,19 @@ public class AffiliatedStringType {
      *
      */
     public String getValue() {
+
         return value;
     }
 
     /**
      * Sets the value of the value property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setValue(String value) {
+
         this.value = value;
     }
 
@@ -96,16 +96,19 @@ public class AffiliatedStringType {
      *
      */
     public String getAffiliation() {
+
         return affiliation;
     }
 
     /**
      * Sets the value of the affiliation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAffiliation(String value) {
+
         this.affiliation = value;
     }
 
@@ -116,16 +119,19 @@ public class AffiliatedStringType {
      *
      */
     public String getAffiliationSource() {
+
         return affiliationSource;
     }
 
     /**
      * Sets the value of the affiliationSource property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAffiliationSource(String value) {
+
         this.affiliationSource = value;
     }
 
@@ -136,16 +142,19 @@ public class AffiliatedStringType {
      *
      */
     public String getAffiliationRef() {
+
         return affiliationRef;
     }
 
     /**
      * Sets the value of the affiliationRef property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAffiliationRef(String value) {
+
         this.affiliationRef = value;
     }
 
@@ -156,16 +165,19 @@ public class AffiliatedStringType {
      *
      */
     public String getAffiliationVersion() {
+
         return affiliationVersion;
     }
 
     /**
      * Sets the value of the affiliationVersion property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAffiliationVersion(String value) {
+
         this.affiliationVersion = value;
     }
 
@@ -176,16 +188,19 @@ public class AffiliatedStringType {
      *
      */
     public String getAffiliationAnnotation() {
+
         return affiliationAnnotation;
     }
 
     /**
      * Sets the value of the affiliationAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAffiliationAnnotation(String value) {
+
         this.affiliationAnnotation = value;
     }
 
@@ -196,16 +211,19 @@ public class AffiliatedStringType {
      *
      */
     public String getStartTime() {
+
         return startTime;
     }
 
     /**
      * Sets the value of the startTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setStartTime(String value) {
+
         this.startTime = value;
     }
 
@@ -216,16 +234,19 @@ public class AffiliatedStringType {
      *
      */
     public String getEndTime() {
+
         return endTime;
     }
 
     /**
      * Sets the value of the endTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setEndTime(String value) {
+
         this.endTime = value;
     }
 
@@ -236,16 +257,19 @@ public class AffiliatedStringType {
      *
      */
     public String getTimeAnnotation() {
+
         return timeAnnotation;
     }
 
     /**
      * Sets the value of the timeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setTimeAnnotation(String value) {
+
         this.timeAnnotation = value;
     }
 
@@ -256,16 +280,19 @@ public class AffiliatedStringType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -276,16 +303,19 @@ public class AffiliatedStringType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -296,16 +326,19 @@ public class AffiliatedStringType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -316,16 +349,19 @@ public class AffiliatedStringType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 

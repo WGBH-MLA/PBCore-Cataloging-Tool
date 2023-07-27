@@ -10,6 +10,7 @@ public class HitDocument {
     private PBCoreElement pbCoreElement;
 
     public HitDocument(String filename, String filepath, PBCoreElement pbCoreElement) {
+
         this.filename = filename;
         this.filepath = filepath;
         this.pbCoreElement = pbCoreElement;
@@ -17,34 +18,42 @@ public class HitDocument {
     }
 
     public String getFilepath() {
+
         return filepath;
     }
 
     public void setFilepath(String filepath) {
+
         this.filepath = filepath;
     }
 
     public String getFilename() {
+
         return filename;
     }
 
     public void setFilename(String filename) {
+
         this.filename = filename;
     }
 
     public PBCoreElement getPbCoreElement() {
+
         return pbCoreElement;
     }
 
     public void setPbCoreElement(PBCoreElement pbCoreElement) {
+
         this.pbCoreElement = pbCoreElement;
     }
 
     public int getHitsCount() {
+
         return hitsCount;
     }
 
     public void setHitsCount(int hitsCount) {
+
         this.hitsCount = hitsCount;
     }
 }

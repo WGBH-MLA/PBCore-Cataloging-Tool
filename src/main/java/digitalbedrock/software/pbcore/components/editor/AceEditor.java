@@ -1,10 +1,15 @@
 package digitalbedrock.software.pbcore.components.editor;
 
-import digitalbedrock.software.pbcore.core.PBcoreValidator;
-import digitalbedrock.software.pbcore.core.models.entity.IPBCore;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementAnyValue;
-import digitalbedrock.software.pbcore.utils.Registry;
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,13 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
-import org.apache.commons.lang.StringEscapeUtils;
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.materialdesign.MaterialDesign;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -36,17 +34,27 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
+
+import org.apache.commons.text.StringEscapeUtils;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.materialdesign.MaterialDesign;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+
+import digitalbedrock.software.pbcore.core.PBcoreValidator;
+import digitalbedrock.software.pbcore.core.models.entity.IPBCore;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementAnyValue;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
+import digitalbedrock.software.pbcore.utils.Registry;
 
 public class AceEditor extends AnchorPane {
 
-    private final static String FILE_PROTOCOL = "file://";
+    public static final Logger LOGGER = Logger.getLogger(AceEditor.class.getName());
+    public static final String FILE_PROTOCOL = "file://";
+    public static final String ACE_EDITOR_COMMAND = "test('%s')";
 
     private PBcoreValidator validator;
 
@@ -76,17 +84,21 @@ public class AceEditor extends AnchorPane {
     private PBCoreElement pbCoreElement;
 
     public AceEditor() {
+
         try {
             validator = new PBcoreValidator();
-        } catch (SAXException e) {
-            e.printStackTrace();
         }
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/editor.fxml"));
+        catch (SAXException e) {
+            LOGGER.log(Level.SEVERE, "error instantiating PBCoreValidator", e);
+        }
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/editor.fxml"),
+                LanguageManager.INSTANCE.getBundle());
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         try {
             fxmlLoader.load();
-        } catch (IOException exception) {
+        }
+        catch (IOException exception) {
             throw new RuntimeException(exception);
         }
 
@@ -100,11 +112,12 @@ public class AceEditor extends AnchorPane {
         final WebEngine webEngine = webView.getEngine();
         webEngine.setJavaScriptEnabled(true);
         text = new SimpleStringProperty("");
-        text.addListener((arg0, arg1, arg2) -> {
-            if (arg2 != null) {
-                if (webEngine.getLoadWorker().stateProperty().getValue() == Worker.State.SUCCEEDED) {
-                    webEngine.executeScript("test('" + StringEscapeUtils.escapeJavaScript(arg2) + "')");
-                }
+        text.addListener((observableValue, oldValue, newValue) -> {
+            if (newValue != null && Arrays
+                    .asList(Worker.State.SUCCEEDED, Worker.State.RUNNING)
+                    .contains(webEngine.getLoadWorker().stateProperty().getValue())) {
+                webEngine
+                        .executeScript(String.format(ACE_EDITOR_COMMAND, StringEscapeUtils.escapeEcmaScript(newValue)));
             }
         });
         initialize(webView);
@@ -120,7 +133,8 @@ public class AceEditor extends AnchorPane {
                     editorOpenedStateListener.onEditorClosed();
                     opened.set(false);
                 }
-            } else {
+            }
+            else {
                 getStyleClass().remove("closed");
                 toggleIcon.setIconCode(MaterialDesign.MDI_CHEVRON_DOWN);
                 setTranslateY(0);
@@ -131,66 +145,86 @@ public class AceEditor extends AnchorPane {
             }
             updateContent(typeRadio.getSelectedToggle());
         });
-        showCloseButton.addListener((observable, oldValue, newValue) -> closeButton.setVisible(newValue != null && newValue));
+        showCloseButton
+                .addListener((observable, oldValue, newValue) -> closeButton.setVisible(newValue != null && newValue));
         treeViewPreview.setCellFactory(lv -> new IPBCorePreviewItemListCell(null));
     }
 
     private void updateContent(Toggle newValue) {
+
         if (newValue != null && opened.get()) {
             if (newValue.equals(toggleXml)) {
                 updateXmlPreview();
                 webView.setVisible(true);
                 treeViewPreview.setVisible(false);
-            } else if (newValue.equals(toggleVisual)) {
+            }
+            else if (newValue.equals(toggleVisual)) {
                 webView.setVisible(false);
                 treeViewPreview.setVisible(true);
                 updateVisualLayoutPreview();
             }
-        } else {
+        }
+        else {
             webView.setVisible(false);
             treeViewPreview.setVisible(false);
         }
     }
 
     private void initialize(WebView webView) {
+
         loadContent(webView);
     }
 
     private void loadContent(WebView webView) {
+
         WebEngine engine = webView.getEngine();
         engine.load(FILE_PROTOCOL + Registry.verifyAndRetrieveAceEditorHtmlResourceFile());
         engine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-            if (newState == Worker.State.SUCCEEDED) {
+            if (newState == Worker.State.FAILED) {
+                LOGGER.log(Level.WARNING, "preview failed to load", engine.getLoadWorker().getException());
+            }
+            else if (newState == Worker.State.SUCCEEDED) {
                 try {
-                    engine.executeScript("test('" + StringEscapeUtils.escapeJavaScript(text.getValue() == null ? "" : text.getValue()) + "')");
-                } catch (Exception e) {
+                    String textValue = text.getValue() == null ? "" : text.getValue();
+                    engine
+                            .executeScript(String
+                                    .format(ACE_EDITOR_COMMAND, StringEscapeUtils.escapeEcmaScript(textValue)));
+                }
+                catch (Exception e) {
+                    LOGGER.log(Level.FINE, "error loading preview", e);
                 }
             }
         });
     }
 
     public Node getNode() {
+
         return webView;
     }
 
     public StringProperty textProperty() {
+
         return text;
     }
 
     public String getText() {
+
         return text.get();
     }
 
     public void setEditorOpenedStateListener(EditorOpenedStateListener editorOpenedStateListener) {
+
         this.editorOpenedStateListener = editorOpenedStateListener;
     }
 
     public void updatePreview(PBCoreElement value) {
+
         this.pbCoreElement = value;
         updateContent(typeRadio.getSelectedToggle());
     }
 
     private void updateVisualLayoutPreview() {
+
         treeViewPreview.setItems(FXCollections.emptyObservableList());
         List<IPBCore> flatList = new ArrayList<>();
         AtomicInteger index = new AtomicInteger(0);
@@ -199,6 +233,7 @@ public class AceEditor extends AnchorPane {
     }
 
     private void updateXmlPreview() {
+
         try {
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -221,17 +256,22 @@ public class AceEditor extends AnchorPane {
             StreamResult result = new StreamResult(stringWriter);
             transformer.transform(source, result);
 
-            textProperty().setValue(stringWriter.toString());
+            String textValue = stringWriter.toString();
+            textProperty().setValue(textValue);
             try {
-                validator.validate(stringWriter.toString());
-            } catch (SAXException | IOException e) {
+                validator.validate(textValue);
             }
-        } catch (ParserConfigurationException | TransformerException e) {
-            e.printStackTrace();
+            catch (SAXException | IOException e) {
+                LOGGER.log(Level.SEVERE, "could not validate xml", e);
+            }
+        }
+        catch (ParserConfigurationException | TransformerException e) {
+            LOGGER.log(Level.SEVERE, "could not parse xml", e);
         }
     }
 
     private void getFlatTree(AtomicInteger index, List<IPBCore> listToAdd, PBCoreElement rootElement) {
+
         int idx = index.get() + 1;
         if (rootElement == null) {
             return;
@@ -243,19 +283,24 @@ public class AceEditor extends AnchorPane {
             listToAdd.addAll(rootElement.getAttributes());
         }
         index.incrementAndGet();
-        rootElement.getOrderedSubElements().forEach((coreElement) -> getFlatTree(new AtomicInteger(idx), listToAdd, coreElement));
+        rootElement
+                .getOrderedSubElements()
+                .forEach((coreElement) -> getFlatTree(new AtomicInteger(idx), listToAdd, coreElement));
     }
 
     private Element processElement(Document doc, PBCoreElement value) {
+
         if (value == null) {
             return null;
         }
         Element element = doc.createElement(value.getName());
         if (!value.isAnyElement()) {
             element.appendChild(doc.createTextNode(value.getValue() == null ? "" : value.getValue()));
-        } else {
+        }
+        else {
             for (PBCoreElementAnyValue s : value.getAnyValues()) {
-                String valueStr = s == null || s.getValue() == null || s.getValue().trim().isEmpty() ? "" : s.getValue();
+                String valueStr = s == null || s.getValue() == null || s.getValue().trim().isEmpty() ? ""
+                        : s.getValue();
                 DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder builder;
                 try {
@@ -264,17 +309,22 @@ public class AceEditor extends AnchorPane {
                     inputSource.setEncoding("UTF-8");
                     Document document = builder.parse(inputSource);
                     element.appendChild(doc.importNode(document.getDocumentElement(), true));
-                } catch (Exception e) {
-                    e.printStackTrace();
+                }
+                catch (Exception e) {
+                    LOGGER.log(Level.WARNING, "could not process element", e);
                 }
             }
         }
-        value.getAttributes().forEach((pbCoreAttribute) -> element.setAttribute(pbCoreAttribute.getName(), pbCoreAttribute.getValue()));
+        value
+                .getAttributes()
+                .forEach((pbCoreAttribute) -> element
+                        .setAttribute(pbCoreAttribute.getName(), pbCoreAttribute.getValue()));
         value.getOrderedSubElements().forEach((pbElement) -> element.appendChild(processElement(doc, pbElement)));
         return element;
     }
 
     public void reload() {
+
         if (webView.getEngine().getLoadWorker().stateProperty().getValue() != Worker.State.SUCCEEDED) {
             loadContent(webView);
         }
@@ -288,24 +338,29 @@ public class AceEditor extends AnchorPane {
     }
 
     public void open() {
+
         opened.set(false);
         closeButton.fire();
     }
 
     public void close() {
+
         opened.set(true);
         closeButton.fire();
     }
 
     public boolean isShowCloseButton() {
+
         return showCloseButton.get();
     }
 
     public BooleanProperty showCloseButtonProperty() {
+
         return showCloseButton;
     }
 
     public void setShowCloseButton(boolean showCloseButton) {
+
         this.showCloseButton.set(showCloseButton);
     }
 }

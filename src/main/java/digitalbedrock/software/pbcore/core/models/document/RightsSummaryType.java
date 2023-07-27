@@ -7,17 +7,14 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Definition: The rightsSumaryType schema type allows the use of rights at the
- * asset level and the instantiation level. The rights can be expressed as a
- * summary or a link or an embedded XML record. These can also contain time
- * relations.
+ * Definition: The rightsSumaryType schema type allows the use of rights at the asset level and the instantiation level.
+ * The rights can be expressed as a summary or a link or an embedded XML record. These can also contain time relations.
  *
  * <p>
  * Java class for rightsSummaryType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="rightsSummaryType">
@@ -39,10 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "rightsSummaryType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "rightsSummary",
-    "rightsLink",
-    "rightsEmbedded"
-})
+        "rightsSummary", "rightsLink", "rightsEmbedded" })
 public class RightsSummaryType {
 
     @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html")
@@ -65,16 +59,19 @@ public class RightsSummaryType {
      *
      */
     public SourceVersionStringType getRightsSummary() {
+
         return rightsSummary;
     }
 
     /**
      * Sets the value of the rightsSummary property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setRightsSummary(SourceVersionStringType value) {
+
         this.rightsSummary = value;
     }
 
@@ -85,16 +82,19 @@ public class RightsSummaryType {
      *
      */
     public RightsLinkType getRightsLink() {
+
         return rightsLink;
     }
 
     /**
      * Sets the value of the rightsLink property.
      *
-     * @param value allowed object is {@link RightsLinkType }
+     * @param value
+     *            allowed object is {@link RightsLinkType }
      *
      */
     public void setRightsLink(RightsLinkType value) {
+
         this.rightsLink = value;
     }
 
@@ -105,16 +105,19 @@ public class RightsSummaryType {
      *
      */
     public EmbeddedType getRightsEmbedded() {
+
         return rightsEmbedded;
     }
 
     /**
      * Sets the value of the rightsEmbedded property.
      *
-     * @param value allowed object is {@link EmbeddedType }
+     * @param value
+     *            allowed object is {@link EmbeddedType }
      *
      */
     public void setRightsEmbedded(EmbeddedType value) {
+
         this.rightsEmbedded = value;
     }
 
@@ -125,16 +128,19 @@ public class RightsSummaryType {
      *
      */
     public String getStartTime() {
+
         return startTime;
     }
 
     /**
      * Sets the value of the startTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setStartTime(String value) {
+
         this.startTime = value;
     }
 
@@ -145,16 +151,19 @@ public class RightsSummaryType {
      *
      */
     public String getEndTime() {
+
         return endTime;
     }
 
     /**
      * Sets the value of the endTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setEndTime(String value) {
+
         this.endTime = value;
     }
 
@@ -165,16 +174,19 @@ public class RightsSummaryType {
      *
      */
     public String getTimeAnnotation() {
+
         return timeAnnotation;
     }
 
     /**
      * Sets the value of the timeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setTimeAnnotation(String value) {
+
         this.timeAnnotation = value;
     }
 

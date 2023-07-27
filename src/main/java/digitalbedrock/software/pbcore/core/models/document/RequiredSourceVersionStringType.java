@@ -7,16 +7,14 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * Definition: The requiredSourceVersionStringType schema type type is the same
- * as sourceVersionStringType with the addition that the source attribute is
- * required instead of optional.
+ * Definition: The requiredSourceVersionStringType schema type type is the same as sourceVersionStringType with the
+ * addition that the source attribute is required instead of optional.
  *
  * <p>
  * Java class for requiredSourceVersionStringType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="requiredSourceVersionStringType">
@@ -36,8 +34,7 @@ import javax.xml.bind.annotation.XmlValue;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "requiredSourceVersionStringType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "value"
-})
+        "value" })
 public class RequiredSourceVersionStringType {
 
     @XmlValue
@@ -58,16 +55,19 @@ public class RequiredSourceVersionStringType {
      *
      */
     public String getValue() {
+
         return value;
     }
 
     /**
      * Sets the value of the value property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setValue(String value) {
+
         this.value = value;
     }
 
@@ -78,16 +78,19 @@ public class RequiredSourceVersionStringType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -98,16 +101,19 @@ public class RequiredSourceVersionStringType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -118,16 +124,19 @@ public class RequiredSourceVersionStringType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -138,16 +147,19 @@ public class RequiredSourceVersionStringType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 

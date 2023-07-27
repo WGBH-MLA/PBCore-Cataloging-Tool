@@ -7,16 +7,14 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * Definition: The descriptionType schema type is a complex group of attributes
- * that help define the description type, as well as allowing for descriptions
- * of segments and relevant times.
+ * Definition: The descriptionType schema type is a complex group of attributes that help define the description type,
+ * as well as allowing for descriptions of segments and relevant times.
  *
  * <p>
  * Java class for descriptionStringType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="descriptionStringType">
@@ -44,8 +42,7 @@ import javax.xml.bind.annotation.XmlValue;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "descriptionStringType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "value"
-})
+        "value" })
 public class DescriptionStringType {
 
     @XmlValue
@@ -92,16 +89,19 @@ public class DescriptionStringType {
      *
      */
     public String getValue() {
+
         return value;
     }
 
     /**
      * Sets the value of the value property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setValue(String value) {
+
         this.value = value;
     }
 
@@ -112,16 +112,19 @@ public class DescriptionStringType {
      *
      */
     public String getDescriptionType() {
+
         return descriptionType;
     }
 
     /**
      * Sets the value of the descriptionType property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setDescriptionType(String value) {
+
         this.descriptionType = value;
     }
 
@@ -132,16 +135,19 @@ public class DescriptionStringType {
      *
      */
     public String getDescriptionTypeSource() {
+
         return descriptionTypeSource;
     }
 
     /**
      * Sets the value of the descriptionTypeSource property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setDescriptionTypeSource(String value) {
+
         this.descriptionTypeSource = value;
     }
 
@@ -152,16 +158,19 @@ public class DescriptionStringType {
      *
      */
     public String getDescriptionTypeRef() {
+
         return descriptionTypeRef;
     }
 
     /**
      * Sets the value of the descriptionTypeRef property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setDescriptionTypeRef(String value) {
+
         this.descriptionTypeRef = value;
     }
 
@@ -172,16 +181,19 @@ public class DescriptionStringType {
      *
      */
     public String getDescriptionTypeVersion() {
+
         return descriptionTypeVersion;
     }
 
     /**
      * Sets the value of the descriptionTypeVersion property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setDescriptionTypeVersion(String value) {
+
         this.descriptionTypeVersion = value;
     }
 
@@ -192,16 +204,19 @@ public class DescriptionStringType {
      *
      */
     public String getDescriptionTypeAnnotation() {
+
         return descriptionTypeAnnotation;
     }
 
     /**
      * Sets the value of the descriptionTypeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setDescriptionTypeAnnotation(String value) {
+
         this.descriptionTypeAnnotation = value;
     }
 
@@ -212,16 +227,19 @@ public class DescriptionStringType {
      *
      */
     public String getSegmentType() {
+
         return segmentType;
     }
 
     /**
      * Sets the value of the segmentType property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSegmentType(String value) {
+
         this.segmentType = value;
     }
 
@@ -232,16 +250,19 @@ public class DescriptionStringType {
      *
      */
     public String getSegmentTypeSource() {
+
         return segmentTypeSource;
     }
 
     /**
      * Sets the value of the segmentTypeSource property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSegmentTypeSource(String value) {
+
         this.segmentTypeSource = value;
     }
 
@@ -252,16 +273,19 @@ public class DescriptionStringType {
      *
      */
     public String getSegmentTypeRef() {
+
         return segmentTypeRef;
     }
 
     /**
      * Sets the value of the segmentTypeRef property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSegmentTypeRef(String value) {
+
         this.segmentTypeRef = value;
     }
 
@@ -272,16 +296,19 @@ public class DescriptionStringType {
      *
      */
     public String getSegmentTypeVersion() {
+
         return segmentTypeVersion;
     }
 
     /**
      * Sets the value of the segmentTypeVersion property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSegmentTypeVersion(String value) {
+
         this.segmentTypeVersion = value;
     }
 
@@ -292,16 +319,19 @@ public class DescriptionStringType {
      *
      */
     public String getSegmentTypeAnnotation() {
+
         return segmentTypeAnnotation;
     }
 
     /**
      * Sets the value of the segmentTypeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSegmentTypeAnnotation(String value) {
+
         this.segmentTypeAnnotation = value;
     }
 
@@ -312,16 +342,19 @@ public class DescriptionStringType {
      *
      */
     public String getStartTime() {
+
         return startTime;
     }
 
     /**
      * Sets the value of the startTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setStartTime(String value) {
+
         this.startTime = value;
     }
 
@@ -332,16 +365,19 @@ public class DescriptionStringType {
      *
      */
     public String getEndTime() {
+
         return endTime;
     }
 
     /**
      * Sets the value of the endTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setEndTime(String value) {
+
         this.endTime = value;
     }
 
@@ -352,16 +388,19 @@ public class DescriptionStringType {
      *
      */
     public String getTimeAnnotation() {
+
         return timeAnnotation;
     }
 
     /**
      * Sets the value of the timeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setTimeAnnotation(String value) {
+
         this.timeAnnotation = value;
     }
 
@@ -372,16 +411,19 @@ public class DescriptionStringType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -392,16 +434,19 @@ public class DescriptionStringType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -412,16 +457,19 @@ public class DescriptionStringType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -432,16 +480,19 @@ public class DescriptionStringType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 

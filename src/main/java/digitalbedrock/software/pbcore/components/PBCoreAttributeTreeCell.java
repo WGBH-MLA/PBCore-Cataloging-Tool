@@ -1,19 +1,22 @@
 package digitalbedrock.software.pbcore.components;
 
-import digitalbedrock.software.pbcore.controllers.DocumentAttributeItemController;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreAttribute;
+import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TreeCell;
 
-import java.io.IOException;
+import digitalbedrock.software.pbcore.controllers.DocumentAttributeItemController;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreAttribute;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
 
 public class PBCoreAttributeTreeCell extends TreeCell<PBCoreAttribute> {
 
     private final AttributeTreeCellListener attributeTreeCellListener;
     private final DocumentAttributeItemController.DocumentAttributeSelectCVListener listener;
 
-    public PBCoreAttributeTreeCell(AttributeTreeCellListener attributeTreeCellListener, DocumentAttributeItemController.DocumentAttributeSelectCVListener listener) {
+    public PBCoreAttributeTreeCell(AttributeTreeCellListener attributeTreeCellListener,
+                                   DocumentAttributeItemController.DocumentAttributeSelectCVListener listener) {
+
         this.attributeTreeCellListener = attributeTreeCellListener;
         this.listener = listener;
 
@@ -21,17 +24,21 @@ public class PBCoreAttributeTreeCell extends TreeCell<PBCoreAttribute> {
 
     @Override
     protected void updateItem(PBCoreAttribute attribute, boolean empty) {
+
         super.updateItem(attribute, empty);
         if (empty) {
             setGraphic(null);
-        } else {
+        }
+        else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/document_attribute_list_item.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/document_attribute_list_item.fxml"),
+                        LanguageManager.INSTANCE.getBundle());
                 Node graphic = loader.load();
                 DocumentAttributeItemController controller = loader.getController();
                 controller.bind(attribute, attributeTreeCellListener, listener);
                 setGraphic(graphic);
-            } catch (IOException exc) {
+            }
+            catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
         }

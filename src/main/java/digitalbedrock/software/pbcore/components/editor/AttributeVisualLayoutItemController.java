@@ -1,8 +1,9 @@
 package digitalbedrock.software.pbcore.components.editor;
 
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreAttribute;
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
+
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreAttribute;
 
 public class AttributeVisualLayoutItemController {
 
@@ -12,6 +13,7 @@ public class AttributeVisualLayoutItemController {
     private Text previewAttributeValue;
 
     public void bind(PBCoreAttribute attribute) {
+
         if (attribute == null) {
             return;
         }

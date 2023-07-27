@@ -1,41 +1,51 @@
 package digitalbedrock.software.pbcore.components.editor;
 
-import digitalbedrock.software.pbcore.core.models.entity.IPBCore;
-import digitalbedrock.software.pbcore.core.models.entity.IPBCoreLayoutType;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreAttribute;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
+import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.ListCell;
 
-import java.io.IOException;
+import digitalbedrock.software.pbcore.core.models.entity.IPBCore;
+import digitalbedrock.software.pbcore.core.models.entity.IPBCoreLayoutType;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreAttribute;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
 
 public class IPBCorePreviewItemListCell extends ListCell<IPBCore> {
 
     private final ItemSelectedListener itemSelectedListener;
 
     public IPBCorePreviewItemListCell(ItemSelectedListener itemSelectedListener) {
+
         this.itemSelectedListener = itemSelectedListener;
     }
 
     @Override
     protected void updateItem(IPBCore item, boolean empty) {
+
         super.updateItem(item, empty);
         if (empty) {
             setGraphic(null);
             setText(null);
             return;
-        } else if (item.getTypeForLayout() == IPBCoreLayoutType.DUMMY) {
+        }
+        else if (item.getTypeForLayout() == IPBCoreLayoutType.DUMMY) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/preview_dummy_items_element_item.fxml"));
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/fxml/preview_dummy_items_element_item.fxml"),
+                        LanguageManager.INSTANCE.getBundle());
                 Node graphic = loader.load();
                 setGraphic(graphic);
-            } catch (IOException exc) {
+            }
+            catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
-        } else if (item.getTypeForLayout() == IPBCoreLayoutType.INSTANTIATION) {
+        }
+        else if (item.getTypeForLayout() == IPBCoreLayoutType.INSTANTIATION) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/preview_instantiation_element_item.fxml"));
+                FXMLLoader loader = new FXMLLoader(
+                        getClass().getResource("/fxml/preview_instantiation_element_item.fxml"),
+                        LanguageManager.INSTANCE.getBundle());
                 Node graphic = loader.load();
                 ElementInstantiationVisualLayoutItemController controller = loader.getController();
                 controller.bind((PBCoreElement) item);
@@ -46,27 +56,36 @@ public class IPBCorePreviewItemListCell extends ListCell<IPBCore> {
                         itemSelectedListener.onItemSelected(item);
                     }
                 });
-            } catch (IOException exc) {
+            }
+            catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
-        } else if (!item.isAttribute()) {
+        }
+        else if (!item.isAttribute()) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(item.isAnyElement() ? "/fxml/preview_element_any_values_item.fxml" : "/fxml/preview_element_item.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass()
+                        .getResource(item.isAnyElement() ? "/fxml/preview_element_any_values_item.fxml"
+                                : "/fxml/preview_element_item.fxml"),
+                        LanguageManager.INSTANCE.getBundle());
                 Node graphic = loader.load();
                 ElementVisualLayoutItemController controller = loader.getController();
                 controller.bind((PBCoreElement) item);
                 setGraphic(graphic);
-            } catch (IOException exc) {
+            }
+            catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
-        } else {
+        }
+        else {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/preview_attribute_item.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/preview_attribute_item.fxml"),
+                        LanguageManager.INSTANCE.getBundle());
                 Node graphic = loader.load();
                 AttributeVisualLayoutItemController controller = loader.getController();
                 controller.bind((PBCoreAttribute) item);
                 setGraphic(graphic);
-            } catch (IOException exc) {
+            }
+            catch (IOException exc) {
                 throw new RuntimeException(exc);
             }
         }

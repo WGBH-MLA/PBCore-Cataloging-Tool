@@ -1,20 +1,19 @@
 package digitalbedrock.software.pbcore.core.models.document;
 
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 /**
- * Definition: The pbcoreinstantiationType schema type uses a common structure
- * to allow for a single instantiation or multiple instantiations within a
- * pbcoreDocumentDescription.
+ * Definition: The pbcoreinstantiationType schema type uses a common structure to allow for a single instantiation or
+ * multiple instantiations within a pbcoreDocumentDescription.
  *
  * <p>
  * Java class for instantiationType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="instantiationType">
@@ -69,31 +68,12 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "instantiationType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "instantiationIdentifier",
-    "instantiationDate",
-    "instantiationDimensions",
-    "instantiationPhysical",
-    "instantiationDigital",
-    "instantiationStandard",
-    "instantiationLocation",
-    "instantiationMediaType",
-    "instantiationGenerations",
-    "instantiationFileSize",
-    "instantiationTimeStart",
-    "instantiationDuration",
-    "instantiationDataRate",
-    "instantiationColors",
-    "instantiationTracks",
-    "instantiationChannelConfiguration",
-    "instantiationLanguage",
-    "instantiationAlternativeModes",
-    "instantiationEssenceTrack",
-    "instantiationRelation",
-    "instantiationRights",
-    "instantiationAnnotation",
-    "instantiationPart",
-    "instantiationExtension"
-})
+        "instantiationIdentifier", "instantiationDate", "instantiationDimensions", "instantiationPhysical",
+        "instantiationDigital", "instantiationStandard", "instantiationLocation", "instantiationMediaType",
+        "instantiationGenerations", "instantiationFileSize", "instantiationTimeStart", "instantiationDuration",
+        "instantiationDataRate", "instantiationColors", "instantiationTracks", "instantiationChannelConfiguration",
+        "instantiationLanguage", "instantiationAlternativeModes", "instantiationEssenceTrack", "instantiationRelation",
+        "instantiationRights", "instantiationAnnotation", "instantiationPart", "instantiationExtension" })
 public class InstantiationType {
 
     @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -163,25 +143,25 @@ public class InstantiationType {
      * Gets the value of the instantiationIdentifier property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationIdentifier property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationIdentifier property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationIdentifier().add(newItem);
+     * getInstantiationIdentifier().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link RequiredSourceVersionStringType }
+     * Objects of the following type(s) are allowed in the list {@link RequiredSourceVersionStringType }
      *
      *
      */
     public List<RequiredSourceVersionStringType> getInstantiationIdentifier() {
+
         if (instantiationIdentifier == null) {
             instantiationIdentifier = new ArrayList<>();
         }
@@ -192,25 +172,25 @@ public class InstantiationType {
      * Gets the value of the instantiationDate property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationDate property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationDate property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationDate().add(newItem);
+     * getInstantiationDate().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link DateStringType }
+     * Objects of the following type(s) are allowed in the list {@link DateStringType }
      *
      *
      */
     public List<DateStringType> getInstantiationDate() {
+
         if (instantiationDate == null) {
             instantiationDate = new ArrayList<>();
         }
@@ -221,25 +201,25 @@ public class InstantiationType {
      * Gets the value of the instantiationDimensions property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationDimensions property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationDimensions property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationDimensions().add(newItem);
+     * getInstantiationDimensions().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link TechnicalStringType }
+     * Objects of the following type(s) are allowed in the list {@link TechnicalStringType }
      *
      *
      */
     public List<TechnicalStringType> getInstantiationDimensions() {
+
         if (instantiationDimensions == null) {
             instantiationDimensions = new ArrayList<>();
         }
@@ -253,16 +233,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationPhysical() {
+
         return instantiationPhysical;
     }
 
     /**
      * Sets the value of the instantiationPhysical property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationPhysical(SourceVersionStringType value) {
+
         this.instantiationPhysical = value;
     }
 
@@ -273,16 +256,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationDigital() {
+
         return instantiationDigital;
     }
 
     /**
      * Sets the value of the instantiationDigital property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationDigital(SourceVersionStringType value) {
+
         this.instantiationDigital = value;
     }
 
@@ -293,16 +279,19 @@ public class InstantiationType {
      *
      */
     public InstantiationStandardStringType getInstantiationStandard() {
+
         return instantiationStandard;
     }
 
     /**
      * Sets the value of the instantiationStandard property.
      *
-     * @param value allowed object is {@link InstantiationStandardStringType }
+     * @param value
+     *            allowed object is {@link InstantiationStandardStringType }
      *
      */
     public void setInstantiationStandard(InstantiationStandardStringType value) {
+
         this.instantiationStandard = value;
     }
 
@@ -313,16 +302,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationLocation() {
+
         return instantiationLocation;
     }
 
     /**
      * Sets the value of the instantiationLocation property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationLocation(SourceVersionStringType value) {
+
         this.instantiationLocation = value;
     }
 
@@ -333,16 +325,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationMediaType() {
+
         return instantiationMediaType;
     }
 
     /**
      * Sets the value of the instantiationMediaType property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationMediaType(SourceVersionStringType value) {
+
         this.instantiationMediaType = value;
     }
 
@@ -350,25 +345,25 @@ public class InstantiationType {
      * Gets the value of the instantiationGenerations property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationGenerations property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationGenerations property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationGenerations().add(newItem);
+     * getInstantiationGenerations().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link SourceVersionStringType }
+     * Objects of the following type(s) are allowed in the list {@link SourceVersionStringType }
      *
      *
      */
     public List<SourceVersionStringType> getInstantiationGenerations() {
+
         if (instantiationGenerations == null) {
             instantiationGenerations = new ArrayList<>();
         }
@@ -382,16 +377,19 @@ public class InstantiationType {
      *
      */
     public TechnicalStringType getInstantiationFileSize() {
+
         return instantiationFileSize;
     }
 
     /**
      * Sets the value of the instantiationFileSize property.
      *
-     * @param value allowed object is {@link TechnicalStringType }
+     * @param value
+     *            allowed object is {@link TechnicalStringType }
      *
      */
     public void setInstantiationFileSize(TechnicalStringType value) {
+
         this.instantiationFileSize = value;
     }
 
@@ -402,16 +400,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationTimeStart() {
+
         return instantiationTimeStart;
     }
 
     /**
      * Sets the value of the instantiationTimeStart property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationTimeStart(SourceVersionStringType value) {
+
         this.instantiationTimeStart = value;
     }
 
@@ -422,16 +423,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationDuration() {
+
         return instantiationDuration;
     }
 
     /**
      * Sets the value of the instantiationDuration property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationDuration(SourceVersionStringType value) {
+
         this.instantiationDuration = value;
     }
 
@@ -442,16 +446,19 @@ public class InstantiationType {
      *
      */
     public TechnicalStringType getInstantiationDataRate() {
+
         return instantiationDataRate;
     }
 
     /**
      * Sets the value of the instantiationDataRate property.
      *
-     * @param value allowed object is {@link TechnicalStringType }
+     * @param value
+     *            allowed object is {@link TechnicalStringType }
      *
      */
     public void setInstantiationDataRate(TechnicalStringType value) {
+
         this.instantiationDataRate = value;
     }
 
@@ -462,16 +469,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationColors() {
+
         return instantiationColors;
     }
 
     /**
      * Sets the value of the instantiationColors property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationColors(SourceVersionStringType value) {
+
         this.instantiationColors = value;
     }
 
@@ -482,16 +492,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationTracks() {
+
         return instantiationTracks;
     }
 
     /**
      * Sets the value of the instantiationTracks property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationTracks(SourceVersionStringType value) {
+
         this.instantiationTracks = value;
     }
 
@@ -502,16 +515,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationChannelConfiguration() {
+
         return instantiationChannelConfiguration;
     }
 
     /**
      * Sets the value of the instantiationChannelConfiguration property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationChannelConfiguration(SourceVersionStringType value) {
+
         this.instantiationChannelConfiguration = value;
     }
 
@@ -519,25 +535,25 @@ public class InstantiationType {
      * Gets the value of the instantiationLanguage property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationLanguage property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationLanguage property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationLanguage().add(newItem);
+     * getInstantiationLanguage().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ThreeLetterStringType }
+     * Objects of the following type(s) are allowed in the list {@link ThreeLetterStringType }
      *
      *
      */
     public List<ThreeLetterStringType> getInstantiationLanguage() {
+
         if (instantiationLanguage == null) {
             instantiationLanguage = new ArrayList<>();
         }
@@ -551,16 +567,19 @@ public class InstantiationType {
      *
      */
     public SourceVersionStringType getInstantiationAlternativeModes() {
+
         return instantiationAlternativeModes;
     }
 
     /**
      * Sets the value of the instantiationAlternativeModes property.
      *
-     * @param value allowed object is {@link SourceVersionStringType }
+     * @param value
+     *            allowed object is {@link SourceVersionStringType }
      *
      */
     public void setInstantiationAlternativeModes(SourceVersionStringType value) {
+
         this.instantiationAlternativeModes = value;
     }
 
@@ -568,25 +587,25 @@ public class InstantiationType {
      * Gets the value of the instantiationEssenceTrack property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationEssenceTrack property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationEssenceTrack property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationEssenceTrack().add(newItem);
+     * getInstantiationEssenceTrack().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link EssenceTrackType }
+     * Objects of the following type(s) are allowed in the list {@link EssenceTrackType }
      *
      *
      */
     public List<EssenceTrackType> getInstantiationEssenceTrack() {
+
         if (instantiationEssenceTrack == null) {
             instantiationEssenceTrack = new ArrayList<>();
         }
@@ -597,25 +616,25 @@ public class InstantiationType {
      * Gets the value of the instantiationRelation property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationRelation property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationRelation property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationRelation().add(newItem);
+     * getInstantiationRelation().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link InstantiationType.InstantiationRelation }
+     * Objects of the following type(s) are allowed in the list {@link InstantiationType.InstantiationRelation }
      *
      *
      */
     public List<InstantiationType.InstantiationRelation> getInstantiationRelation() {
+
         if (instantiationRelation == null) {
             instantiationRelation = new ArrayList<>();
         }
@@ -626,25 +645,25 @@ public class InstantiationType {
      * Gets the value of the instantiationRights property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationRights property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationRights property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationRights().add(newItem);
+     * getInstantiationRights().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link RightsSummaryType }
+     * Objects of the following type(s) are allowed in the list {@link RightsSummaryType }
      *
      *
      */
     public List<RightsSummaryType> getInstantiationRights() {
+
         if (instantiationRights == null) {
             instantiationRights = new ArrayList<>();
         }
@@ -655,25 +674,25 @@ public class InstantiationType {
      * Gets the value of the instantiationAnnotation property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationAnnotation property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationAnnotation property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationAnnotation().add(newItem);
+     * getInstantiationAnnotation().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link AnnotationStringType }
+     * Objects of the following type(s) are allowed in the list {@link AnnotationStringType }
      *
      *
      */
     public List<AnnotationStringType> getInstantiationAnnotation() {
+
         if (instantiationAnnotation == null) {
             instantiationAnnotation = new ArrayList<>();
         }
@@ -684,25 +703,25 @@ public class InstantiationType {
      * Gets the value of the instantiationPart property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationPart property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationPart property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationPart().add(newItem);
+     * getInstantiationPart().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link InstantiationType }
+     * Objects of the following type(s) are allowed in the list {@link InstantiationType }
      *
      *
      */
     public List<InstantiationType> getInstantiationPart() {
+
         if (instantiationPart == null) {
             instantiationPart = new ArrayList<>();
         }
@@ -713,25 +732,25 @@ public class InstantiationType {
      * Gets the value of the instantiationExtension property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the instantiationExtension property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the instantiationExtension property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getInstantiationExtension().add(newItem);
+     * getInstantiationExtension().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ExtensionType }
+     * Objects of the following type(s) are allowed in the list {@link ExtensionType }
      *
      *
      */
     public List<ExtensionType> getInstantiationExtension() {
+
         if (instantiationExtension == null) {
             instantiationExtension = new ArrayList<>();
         }
@@ -745,16 +764,19 @@ public class InstantiationType {
      *
      */
     public String getStartTime() {
+
         return startTime;
     }
 
     /**
      * Sets the value of the startTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setStartTime(String value) {
+
         this.startTime = value;
     }
 
@@ -765,16 +787,19 @@ public class InstantiationType {
      *
      */
     public String getEndTime() {
+
         return endTime;
     }
 
     /**
      * Sets the value of the endTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setEndTime(String value) {
+
         this.endTime = value;
     }
 
@@ -785,16 +810,19 @@ public class InstantiationType {
      *
      */
     public String getTimeAnnotation() {
+
         return timeAnnotation;
     }
 
     /**
      * Sets the value of the timeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setTimeAnnotation(String value) {
+
         this.timeAnnotation = value;
     }
 
@@ -805,16 +833,19 @@ public class InstantiationType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -825,16 +856,19 @@ public class InstantiationType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -845,16 +879,19 @@ public class InstantiationType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -865,16 +902,19 @@ public class InstantiationType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 
@@ -883,8 +923,7 @@ public class InstantiationType {
      * Java class for anonymous complex type.
      *
      * <p>
-     * The following schema fragment specifies the expected content contained
-     * within this class.
+     * The following schema fragment specifies the expected content contained within this class.
      *
      * <pre>
      * &lt;complexType>
@@ -902,10 +941,7 @@ public class InstantiationType {
      *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "instantiationRelationType",
-        "instantiationRelationIdentifier"
-    })
+    @XmlType(name = "", propOrder = { "instantiationRelationType", "instantiationRelationIdentifier" })
     public static class InstantiationRelation {
 
         @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -920,16 +956,19 @@ public class InstantiationType {
          *
          */
         public SourceVersionStringType getInstantiationRelationType() {
+
             return instantiationRelationType;
         }
 
         /**
          * Sets the value of the instantiationRelationType property.
          *
-         * @param value allowed object is {@link SourceVersionStringType }
+         * @param value
+         *            allowed object is {@link SourceVersionStringType }
          *
          */
         public void setInstantiationRelationType(SourceVersionStringType value) {
+
             this.instantiationRelationType = value;
         }
 
@@ -940,16 +979,19 @@ public class InstantiationType {
          *
          */
         public SourceVersionStringType getInstantiationRelationIdentifier() {
+
             return instantiationRelationIdentifier;
         }
 
         /**
          * Sets the value of the instantiationRelationIdentifier property.
          *
-         * @param value allowed object is {@link SourceVersionStringType }
+         * @param value
+         *            allowed object is {@link SourceVersionStringType }
          *
          */
         public void setInstantiationRelationIdentifier(SourceVersionStringType value) {
+
             this.instantiationRelationIdentifier = value;
         }
 

@@ -6,17 +6,15 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * Definition: The pbcorePartType schema type uses a common structure to allow
- * for the repeating of descriptive sub-documents to define different segments,
- * episodes etc., just as super-element 'pbcoreDescriptionDocument' can be
+ * Definition: The pbcorePartType schema type uses a common structure to allow for the repeating of descriptive
+ * sub-documents to define different segments, episodes etc., just as super-element 'pbcoreDescriptionDocument' can be
  * collected and used to describe higher-level media programs.
  *
  * <p>
  * Java class for pbcorePartType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="pbcorePartType">
@@ -38,8 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "pbcorePartType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html")
-public class PbcorePartType
-        extends PbcoreDescriptionDocumentType {
+public class PbcorePartType extends PbcoreDescriptionDocumentType {
 
     @XmlAttribute(name = "partType")
     protected String partType;
@@ -65,16 +62,19 @@ public class PbcorePartType
      *
      */
     public String getPartType() {
+
         return partType;
     }
 
     /**
      * Sets the value of the partType property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setPartType(String value) {
+
         this.partType = value;
     }
 
@@ -85,16 +85,19 @@ public class PbcorePartType
      *
      */
     public String getPartTypeSource() {
+
         return partTypeSource;
     }
 
     /**
      * Sets the value of the partTypeSource property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setPartTypeSource(String value) {
+
         this.partTypeSource = value;
     }
 
@@ -105,16 +108,19 @@ public class PbcorePartType
      *
      */
     public String getPartTypeRef() {
+
         return partTypeRef;
     }
 
     /**
      * Sets the value of the partTypeRef property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setPartTypeRef(String value) {
+
         this.partTypeRef = value;
     }
 
@@ -125,16 +131,19 @@ public class PbcorePartType
      *
      */
     public String getTitleTypeVersion() {
+
         return titleTypeVersion;
     }
 
     /**
      * Sets the value of the titleTypeVersion property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setTitleTypeVersion(String value) {
+
         this.titleTypeVersion = value;
     }
 
@@ -145,16 +154,19 @@ public class PbcorePartType
      *
      */
     public String getTitleTypeAnnotation() {
+
         return titleTypeAnnotation;
     }
 
     /**
      * Sets the value of the titleTypeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setTitleTypeAnnotation(String value) {
+
         this.titleTypeAnnotation = value;
     }
 
@@ -165,16 +177,19 @@ public class PbcorePartType
      *
      */
     public String getStartTime() {
+
         return startTime;
     }
 
     /**
      * Sets the value of the startTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setStartTime(String value) {
+
         this.startTime = value;
     }
 
@@ -185,16 +200,19 @@ public class PbcorePartType
      *
      */
     public String getEndTime() {
+
         return endTime;
     }
 
     /**
      * Sets the value of the endTime property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setEndTime(String value) {
+
         this.endTime = value;
     }
 
@@ -205,16 +223,19 @@ public class PbcorePartType
      *
      */
     public String getTimeAnnotation() {
+
         return timeAnnotation;
     }
 
     /**
      * Sets the value of the timeAnnotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setTimeAnnotation(String value) {
+
         this.timeAnnotation = value;
     }
 

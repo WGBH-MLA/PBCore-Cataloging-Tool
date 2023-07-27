@@ -1,15 +1,11 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.MainApp;
-import digitalbedrock.software.pbcore.components.AutoFillTextAreaBox;
-import digitalbedrock.software.pbcore.components.PBCoreAnyValueListCell;
-import digitalbedrock.software.pbcore.components.PBCoreAttributeTreeCell;
-import digitalbedrock.software.pbcore.components.PBCoreTreeCell;
-import digitalbedrock.software.pbcore.core.models.*;
-import digitalbedrock.software.pbcore.core.models.entity.*;
-import digitalbedrock.software.pbcore.listeners.*;
-import digitalbedrock.software.pbcore.utils.Registry;
-import digitalbedrock.software.pbcore.utils.StringUtils;
+import static digitalbedrock.software.pbcore.listeners.MenuListener.MenuOption;
+
+import java.net.URL;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -18,15 +14,28 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Point2D;
 import javafx.scene.control.*;
+
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign.MaterialDesign;
 
-import java.net.URL;
-import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import digitalbedrock.software.pbcore.MainApp;
+import digitalbedrock.software.pbcore.components.AutoFillTextAreaBox;
+import digitalbedrock.software.pbcore.components.PBCoreAnyValueListCell;
+import digitalbedrock.software.pbcore.components.PBCoreAttributeTreeCell;
+import digitalbedrock.software.pbcore.components.PBCoreTreeCell;
+import digitalbedrock.software.pbcore.core.models.CV;
+import digitalbedrock.software.pbcore.core.models.CVTerm;
+import digitalbedrock.software.pbcore.core.models.ElementType;
+import digitalbedrock.software.pbcore.core.models.NewDocumentType;
+import digitalbedrock.software.pbcore.core.models.entity.*;
+import digitalbedrock.software.pbcore.listeners.*;
+import digitalbedrock.software.pbcore.utils.I18nKey;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
+import digitalbedrock.software.pbcore.utils.Registry;
+import digitalbedrock.software.pbcore.utils.StringUtils;
 
-public class DocumentBatchAddController extends AbsController implements ElementSelectionListener, AttributeSelectionListener, PBCoreAttributeTreeCell.AttributeTreeCellListener, CVSelectionListener {
+public class DocumentBatchAddController extends AbsController implements ElementSelectionListener,
+        AttributeSelectionListener, PBCoreAttributeTreeCell.AttributeTreeCellListener, CVSelectionListener {
 
     @FXML
     private ListView<PBCoreElementAnyValue> lvAnyValues;
@@ -67,12 +76,14 @@ public class DocumentBatchAddController extends AbsController implements Element
     private BatchFinishedListener batchFinishedListener;
 
     private void onRemove(int index, PBCoreElement pbCoreElement, TreeView<PBCoreElement> treeView) {
+
         TreeItem<PBCoreElement> selectedItem;
         selectedItem = treeView.getTreeItem(index);
         selectedItem.getParent().getValue().removeSubElement(pbCoreElement);
         TreeItem<PBCoreElement> pbCoreElementToRemove = null;
         for (TreeItem<PBCoreElement> pbCoreElementTreeItem : selectedItem.getParent().getChildren()) {
-            if (pbCoreElementTreeItem.getValue().getId() == pbCoreElement.getId() && StringUtils.compare(pbCoreElementTreeItem.getValue().getValue(), pbCoreElement.getValue())) {
+            if (pbCoreElementTreeItem.getValue().getId() == pbCoreElement.getId()
+                    && StringUtils.compare(pbCoreElementTreeItem.getValue().getValue(), pbCoreElement.getValue())) {
                 pbCoreElementToRemove = pbCoreElementTreeItem;
                 break;
             }
@@ -84,14 +95,18 @@ public class DocumentBatchAddController extends AbsController implements Element
         updateXmlPreview();
         lvAnyValues.setVisible(false);
         taElementValue.setDisable(true);
-        taElementValue.getTextbox().setPromptText("no input required");
+        taElementValue.getTextbox().setPromptText(LanguageManager.INSTANCE.getString(I18nKey.NO_INPUT_REQUIRED));
     }
 
     private void onAdd(String treeViewId, int index, PBCoreElement pbCoreElement) {
-        menuOptionSelected(MenuOption.SELECT_ELEMENT, treeViewId, index, pbCoreElement, DocumentBatchAddController.this);
+
+        menuListener
+                .menuOptionSelected(MenuOption.SELECT_ELEMENT, treeViewId, index, pbCoreElement,
+                                    DocumentBatchAddController.this);
     }
 
     private void onDuplicate(int index, PBCoreElement pbCoreElement, TreeView<PBCoreElement> treeView) {
+
         TreeItem<PBCoreElement> selectedItem = treeView.getTreeItem(index);
         PBCoreElement copy = pbCoreElement.copy(true, false);
         copy.valueProperty.addListener((observable, oldValue, newValue) -> updateXmlPreview());
@@ -99,7 +114,8 @@ public class DocumentBatchAddController extends AbsController implements Element
         TreeItem<PBCoreElement> itemToAdd;
         if (treeView.equals(requiredElementsListView)) {
             itemToAdd = getRequiredTreeItem(copy, pbCoreElement.getElementType() == PBCoreElementType.ROOT_ELEMENT);
-        } else {
+        }
+        else {
             itemToAdd = getOptionalTreeItem(copy, true);
         }
         int i = selectedItem.getParent().getChildren().indexOf(selectedItem);
@@ -110,16 +126,19 @@ public class DocumentBatchAddController extends AbsController implements Element
     }
 
     private void loadRequiredTreeData(PBCoreElement rootElement) {
+
         TreeItem<PBCoreElement> requiredTreeItem = getRequiredTreeItem(rootElement, true);
         requiredElementsListView.setRoot(requiredTreeItem);
     }
 
     private void loadOptionalTreeData(PBCoreElement rootElement) {
+
         TreeItem<PBCoreElement> optionalTreeItem = getOptionalTreeItem(rootElement, false);
         optionalElementsTreeView.setRoot(optionalTreeItem);
     }
 
     private TreeItem<PBCoreAttribute> getAttributesTreeItem(PBCoreElement rootElement) {
+
         TreeItem<PBCoreAttribute> pbCoreAttributeTreeItem = new TreeItem<>();
         if (rootElement == null) {
             return pbCoreAttributeTreeItem;
@@ -136,6 +155,7 @@ public class DocumentBatchAddController extends AbsController implements Element
     }
 
     private TreeItem<PBCoreElement> getRequiredTreeItem(PBCoreElement rootElement, boolean root) {
+
         TreeItem<PBCoreElement> pbCoreElementTreeItem = new TreeItem<>(rootElement);
         pbCoreElementTreeItem.setExpanded(true);
         rootElement.updateStatus();
@@ -143,23 +163,26 @@ public class DocumentBatchAddController extends AbsController implements Element
         rootElement.validAttributesProperty.addListener((observable, oldValue, newValue) -> {
             if (!newValue) {
                 updateStatusBarLabel(false, false);
-            } else {
+            }
+            else {
                 updateStatusBarLabel();
             }
         });
         rootElement.validProperty.addListener((observable, oldValue, newValue) -> updateStatusBarLabel());
         rootElement.fatalErrorProperty.addListener((observable, oldValue, newValue) -> updateStatusBarLabel());
         List<PBCoreElement> subElements = rootElement.getOrderedSubElements();
-        subElements.stream()
+        subElements
+                .stream()
                 .filter(pbCoreElement -> pbCoreElement.isRequired() || !root)
-                .forEach(pbCoreElement
-                        -> pbCoreElementTreeItem.getChildren()
+                .forEach(pbCoreElement -> pbCoreElementTreeItem
+                        .getChildren()
                         .add(Math.min(pbCoreElement.getSequence(), pbCoreElementTreeItem.getChildren().size()),
-                                getRequiredTreeItem(pbCoreElement, false)));
+                             getRequiredTreeItem(pbCoreElement, false)));
         return pbCoreElementTreeItem;
     }
 
     private TreeItem<PBCoreElement> getOptionalTreeItem(PBCoreElement rootElement, boolean hasNonRootParent) {
+
         TreeItem<PBCoreElement> pbCoreElementTreeItem = new TreeItem<>(rootElement);
         pbCoreElementTreeItem.setExpanded(true);
         rootElement.updateStatus();
@@ -167,25 +190,33 @@ public class DocumentBatchAddController extends AbsController implements Element
         rootElement.validProperty.addListener((observable, oldValue, newValue) -> updateStatusBarLabel());
         rootElement.fatalErrorProperty.addListener((observable, oldValue, newValue) -> updateStatusBarLabel());
         List<PBCoreElement> subElements = rootElement.getOrderedSubElements();
-        subElements.stream()
+        subElements
+                .stream()
                 .filter(pbCoreElement -> hasNonRootParent || !pbCoreElement.isRequired())
-                .forEach(pbCoreElement
-                        -> pbCoreElementTreeItem.getChildren()
+                .forEach(pbCoreElement -> pbCoreElementTreeItem
+                        .getChildren()
                         .add(Math.min(pbCoreElement.getSequence(), pbCoreElementTreeItem.getChildren().size()),
-                                getOptionalTreeItem(pbCoreElement, true)));
+                             getOptionalTreeItem(pbCoreElement, true)));
         return pbCoreElementTreeItem;
     }
 
     private void initListSelectionListeners() {
+
         rootListener = (observable, oldValue, newValue) -> {
             optionalElementsTreeView.getSelectionModel().selectedItemProperty().removeListener(optionalListener);
             requiredElementsListView.getSelectionModel().selectedItemProperty().removeListener(requiredListener);
             selectedPBCoreElementProperty.setValue(newValue == null ? null : newValue.getValue());
-            taElementValue.setDisable(selectedPBCoreElementProperty.getValue() == null || selectedPBCoreElementProperty.getValue().isSupportsChildElements());
-            if (selectedPBCoreElementProperty.getValue() == null || selectedPBCoreElementProperty.getValue().isSupportsChildElements()) {
-                taElementValue.getTextbox().setPromptText("no input required");
-            } else {
-                taElementValue.getTextbox().setPromptText("enter here...");
+            taElementValue
+                    .setDisable(selectedPBCoreElementProperty.getValue() == null
+                            || selectedPBCoreElementProperty.getValue().isSupportsChildElements());
+            if (selectedPBCoreElementProperty.getValue() == null
+                    || selectedPBCoreElementProperty.getValue().isSupportsChildElements()) {
+                taElementValue
+                        .getTextbox()
+                        .setPromptText(LanguageManager.INSTANCE.getString(I18nKey.NO_INPUT_REQUIRED));
+            }
+            else {
+                taElementValue.getTextbox().setPromptText(LanguageManager.INSTANCE.getString(I18nKey.ENTER_HERE));
             }
             setElementValueText(selectedPBCoreElementProperty.getValue());
             optionalElementsTreeView.getSelectionModel().clearSelection();
@@ -197,11 +228,17 @@ public class DocumentBatchAddController extends AbsController implements Element
             optionalElementsTreeView.getSelectionModel().selectedItemProperty().removeListener(optionalListener);
             rootDocumentTreeView.getSelectionModel().selectedItemProperty().removeListener(rootListener);
             selectedPBCoreElementProperty.setValue(newValue == null ? null : newValue.getValue());
-            taElementValue.setDisable(selectedPBCoreElementProperty.getValue() == null || selectedPBCoreElementProperty.getValue().isSupportsChildElements());
-            if (selectedPBCoreElementProperty.getValue() == null || selectedPBCoreElementProperty.getValue().isSupportsChildElements()) {
-                taElementValue.getTextbox().setPromptText("no input required");
-            } else {
-                taElementValue.getTextbox().setPromptText("enter here...");
+            taElementValue
+                    .setDisable(selectedPBCoreElementProperty.getValue() == null
+                            || selectedPBCoreElementProperty.getValue().isSupportsChildElements());
+            if (selectedPBCoreElementProperty.getValue() == null
+                    || selectedPBCoreElementProperty.getValue().isSupportsChildElements()) {
+                taElementValue
+                        .getTextbox()
+                        .setPromptText(LanguageManager.INSTANCE.getString(I18nKey.NO_INPUT_REQUIRED));
+            }
+            else {
+                taElementValue.getTextbox().setPromptText(LanguageManager.INSTANCE.getString(I18nKey.ENTER_HERE));
             }
             setElementValueText(selectedPBCoreElementProperty.getValue());
             optionalElementsTreeView.getSelectionModel().clearSelection();
@@ -213,11 +250,17 @@ public class DocumentBatchAddController extends AbsController implements Element
             requiredElementsListView.getSelectionModel().selectedItemProperty().removeListener(requiredListener);
             rootDocumentTreeView.getSelectionModel().selectedItemProperty().removeListener(rootListener);
             selectedPBCoreElementProperty.setValue(newValue == null ? null : newValue.getValue());
-            taElementValue.setDisable(selectedPBCoreElementProperty.getValue() == null || selectedPBCoreElementProperty.getValue().isSupportsChildElements());
-            if (selectedPBCoreElementProperty.getValue() == null || selectedPBCoreElementProperty.getValue().isSupportsChildElements()) {
-                taElementValue.getTextbox().setPromptText("no input required");
-            } else {
-                taElementValue.getTextbox().setPromptText("enter here...");
+            taElementValue
+                    .setDisable(selectedPBCoreElementProperty.getValue() == null
+                            || selectedPBCoreElementProperty.getValue().isSupportsChildElements());
+            if (selectedPBCoreElementProperty.getValue() == null
+                    || selectedPBCoreElementProperty.getValue().isSupportsChildElements()) {
+                taElementValue
+                        .getTextbox()
+                        .setPromptText(LanguageManager.INSTANCE.getString(I18nKey.NO_INPUT_REQUIRED));
+            }
+            else {
+                taElementValue.getTextbox().setPromptText(LanguageManager.INSTANCE.getString(I18nKey.ENTER_HERE));
             }
             setElementValueText(selectedPBCoreElementProperty.getValue());
             requiredElementsListView.getSelectionModel().clearSelection();
@@ -228,13 +271,18 @@ public class DocumentBatchAddController extends AbsController implements Element
     }
 
     private void setElementValueText(PBCoreElement pbCoreElement) {
+
         if (pbCoreElement != null && pbCoreElement.isAnyElement()) {
             lvAnyValues.setItems(FXCollections.observableArrayList(pbCoreElement.getAnyValues()));
             updateInvalidIcon(false, false);
             addAnyValueButton.setVisible(true);
-        } else {
+        }
+        else {
             taElementValue.getData().clear();
-            taElementValue.getTextbox().setText(pbCoreElement == null || pbCoreElement.getValue() == null ? null : pbCoreElement.getValue());
+            taElementValue
+                    .getTextbox()
+                    .setText(pbCoreElement == null || pbCoreElement.getValue() == null ? null
+                            : pbCoreElement.getValue());
             if (pbCoreElement == null) {
                 taElementValue.setFilterMode(false);
                 invalidValueIcon.setVisible(false);
@@ -250,17 +298,20 @@ public class DocumentBatchAddController extends AbsController implements Element
                     cv.getSubs().entrySet().forEach((stringCVBaseEntry) -> {
                         suggestions.addAll(stringCVBaseEntry.getValue().getTerms());
                     });
-                } else {
+                }
+                else {
                     suggestions.addAll(cv.getTerms());
                 }
                 taElementValue.getData().addAll(suggestions);
             }
-            updateInvalidIcon(!pbCoreElement.isValid() && pbCoreElement.getElementType() != PBCoreElementType.ROOT_ELEMENT, pbCoreElement.isFatalError());
+            updateInvalidIcon(!pbCoreElement.isValid()
+                    && pbCoreElement.getElementType() != PBCoreElementType.ROOT_ELEMENT, pbCoreElement.isFatalError());
             addAnyValueButton.setVisible(false);
         }
     }
 
     private void updateInvalidIcon(boolean isInvalid, boolean fatalError) {
+
         invalidValueIcon.setVisible(isInvalid);
         if (invalidValueIcon.isVisible()) {
             invalidValueIcon.getStyleClass().remove("panicIcon");
@@ -268,17 +319,21 @@ public class DocumentBatchAddController extends AbsController implements Element
             if (fatalError) {
                 invalidValueIcon.getStyleClass().add("panicIcon");
                 invalidValueIcon.setIconCode(MaterialDesign.MDI_ALERT_CIRCLE);
-            } else {
+            }
+            else {
                 invalidValueIcon.getStyleClass().add("warningIcon");
                 invalidValueIcon.setIconCode(MaterialDesign.MDI_ALERT);
             }
             Tooltip tooltip = new Tooltip(getErrorMessage());
             invalidValueIcon.setOnMouseEntered(event -> {
-                Point2D p = invalidValueIcon.localToScreen(invalidValueIcon.getLayoutBounds().getMaxX(), invalidValueIcon.getLayoutBounds().getMaxY());
+                Point2D p = invalidValueIcon
+                        .localToScreen(invalidValueIcon.getLayoutBounds().getMaxX(),
+                                       invalidValueIcon.getLayoutBounds().getMaxY());
                 tooltip.show(invalidValueIcon, p.getX(), p.getY() + 2);
             });
             invalidValueIcon.setOnMouseExited(event -> tooltip.hide());
-        } else {
+        }
+        else {
             invalidValueIcon.getStyleClass().add("warningIcon");
             invalidValueIcon.setIconCode(MaterialDesign.MDI_ALERT);
             invalidValueIcon.setOnMouseEntered(null);
@@ -287,21 +342,26 @@ public class DocumentBatchAddController extends AbsController implements Element
     }
 
     private String getErrorMessage() {
-        if (selectedPBCoreElementProperty.getValue().isHasChildElements() && !selectedPBCoreElementProperty.getValue().isValid()) {
+
+        if (selectedPBCoreElementProperty.getValue().isHasChildElements()
+                && !selectedPBCoreElementProperty.getValue().isValid()) {
             if (selectedPBCoreElementProperty.getValue().isFatalError()) {
                 invalidDocumentIcon.getStyleClass().add("panicIcon");
                 invalidDocumentIcon.setIconCode(MaterialDesign.MDI_ALERT_CIRCLE);
                 if (selectedPBCoreElementProperty.getValue().getSubElements().size() > 1) {
                     return "At least one child node has an invalid value";
-                } else {
+                }
+                else {
                     return "Child node has an invalid value";
                 }
-            } else {
+            }
+            else {
                 invalidDocumentIcon.getStyleClass().add("warningIcon");
                 invalidDocumentIcon.setIconCode(MaterialDesign.MDI_ALERT);
                 if (selectedPBCoreElementProperty.getValue().getSubElements().size() > 1) {
                     return "At least one child node is missing is respective value";
-                } else {
+                }
+                else {
                     return "Child node is missing is respective value";
                 }
             }
@@ -315,7 +375,8 @@ public class DocumentBatchAddController extends AbsController implements Element
                 }
                 invalidDocumentIcon.getStyleClass().add("panicIcon");
                 invalidDocumentIcon.setIconCode(MaterialDesign.MDI_ALERT_CIRCLE);
-                return "Invalid value. Only one of " + selectedPBCoreElementProperty.getValue().getEnumerationValues() + " is allowed";
+                return "Invalid value. Only one of " + selectedPBCoreElementProperty.getValue().getEnumerationValues()
+                        + " is allowed";
             case PATTERN:
                 Pattern pattern = Pattern.compile(selectedPBCoreElementProperty.getValue().getPatternToFollow());
                 String value = selectedPBCoreElementProperty.getValue().getValue();
@@ -327,11 +388,15 @@ public class DocumentBatchAddController extends AbsController implements Element
                 invalidDocumentIcon.setIconCode(MaterialDesign.MDI_ALERT_CIRCLE);
                 return "Value doesn't match required pattern";
             case SIMPLE:
-                if (selectedPBCoreElementProperty.getValue().isAnyElement() && selectedPBCoreElementProperty.getValue().getAnyValues().isEmpty()) {
+                if (selectedPBCoreElementProperty.getValue().isAnyElement()
+                        && selectedPBCoreElementProperty.getValue().getAnyValues().isEmpty()) {
                     return "This element should have at least one value associated";
-                } else if (selectedPBCoreElementProperty.getValue().getValue() == null || selectedPBCoreElementProperty.getValue().getValue().trim().isEmpty()) {
+                }
+                else if (selectedPBCoreElementProperty.getValue().getValue() == null
+                        || selectedPBCoreElementProperty.getValue().getValue().trim().isEmpty()) {
                     return "Value missing";
-                } else {
+                }
+                else {
                     invalidDocumentIcon.getStyleClass().add("warningIcon");
                     invalidDocumentIcon.setIconCode(MaterialDesign.MDI_ALERT);
                     return "Value not matching any of the controlled vocabularies defined for this element";
@@ -342,38 +407,50 @@ public class DocumentBatchAddController extends AbsController implements Element
 
     @FXML
     public void onAddAttribute(ActionEvent event) {
-        MainApp.getInstance().showSelectAttribute(selectedPBCoreElementProperty.getValue(), DocumentBatchAddController.this);
+
+        MainApp
+                .getInstance()
+                .showSelectAttribute(selectedPBCoreElementProperty.getValue(), DocumentBatchAddController.this);
     }
 
     @Override
     public void onElementSelected(String treeViewId, int index, PBCoreElement element, boolean close) {
+
         if (element == null) {
             return;
         }
         ElementType elementType;
         TreeItem<PBCoreElement> selectedItem;
         TreeItem<PBCoreElement> pbCoreElementTreeItem;
-        if (selectedPBCoreElementProperty.getValue() == null || selectedPBCoreElementProperty.getValue().getId() == rootElement.getId()) {
+        if (selectedPBCoreElementProperty.getValue() == null
+                || selectedPBCoreElementProperty.getValue().getId() == rootElement.getId()) {
             if (element.isRequired()) {
                 selectedItem = requiredElementsListView.getRoot();
-                pbCoreElementTreeItem = getRequiredTreeItem(element, element.getElementType() == PBCoreElementType.ROOT_ELEMENT);
+                pbCoreElementTreeItem = getRequiredTreeItem(element,
+                                                            element.getElementType() == PBCoreElementType.ROOT_ELEMENT);
                 elementType = ElementType.REQUIRED;
-            } else {
+            }
+            else {
                 selectedItem = optionalElementsTreeView.getRoot();
                 pbCoreElementTreeItem = getOptionalTreeItem(element, true);
                 elementType = ElementType.OPTIONAL;
             }
-        } else if (treeViewId.equals(requiredElementsListView.getId())) {
+        }
+        else if (treeViewId.equals(requiredElementsListView.getId())) {
             selectedItem = requiredElementsListView.getTreeItem(index);
-            pbCoreElementTreeItem = getRequiredTreeItem(element, element.getElementType() == PBCoreElementType.ROOT_ELEMENT);
+            pbCoreElementTreeItem = getRequiredTreeItem(element,
+                                                        element.getElementType() == PBCoreElementType.ROOT_ELEMENT);
             elementType = ElementType.REQUIRED;
-        } else {
+        }
+        else {
             selectedItem = optionalElementsTreeView.getTreeItem(index);
             if (selectedItem == null) {
                 selectedItem = requiredElementsListView.getTreeItem(index);
-                pbCoreElementTreeItem = getRequiredTreeItem(element, element.getElementType() == PBCoreElementType.ROOT_ELEMENT);
+                pbCoreElementTreeItem = getRequiredTreeItem(element,
+                                                            element.getElementType() == PBCoreElementType.ROOT_ELEMENT);
                 elementType = ElementType.REQUIRED;
-            } else {
+            }
+            else {
                 pbCoreElementTreeItem = getOptionalTreeItem(element, true);
                 elementType = ElementType.OPTIONAL;
             }
@@ -382,7 +459,12 @@ public class DocumentBatchAddController extends AbsController implements Element
 
         pbCoreElementTreeItem.setExpanded(true);
         selectedItem.setExpanded(true);
-        selectedItem.getChildren().add(Math.min(element.getSequence(), selectedItem.getChildren().isEmpty() ? 0 : selectedItem.getChildren().size() - 1), pbCoreElementTreeItem);
+        selectedItem
+                .getChildren()
+                .add(Math
+                        .min(element.getSequence(),
+                             selectedItem.getChildren().isEmpty() ? 0 : selectedItem.getChildren().size() - 1),
+                     pbCoreElementTreeItem);
         if (close) {
             selectedPBCoreElementProperty.setValue(element);
             setElementValueText(element);
@@ -405,6 +487,7 @@ public class DocumentBatchAddController extends AbsController implements Element
 
     @Override
     public void onAttributeSelected(PBCoreAttribute pbCoreAttribute, boolean close) {
+
         if (pbCoreAttribute == null) {
             return;
         }
@@ -415,53 +498,66 @@ public class DocumentBatchAddController extends AbsController implements Element
 
     @Override
     public void onRemoveAttribute(PBCoreAttribute pbCoreAttribute) {
+
         selectedPBCoreElementProperty.getValue().removeAttribute(pbCoreAttribute);
         attributesTreeView.setRoot(getAttributesTreeItem(selectedPBCoreElementProperty.getValue()));
         updateXmlPreview();
     }
 
     private void updateXmlPreview() {
+
         PBCoreElement value = requiredElementsListView.getRoot().getValue();
         MainApp.getInstance().getRegistry().saveBatchEditPBCoreElement(value);
     }
 
     private void updateStatusBarLabel() {
-        boolean valid
-                = rootDocumentTreeView.getRoot().getValue().isValid()
+
+        boolean valid = rootDocumentTreeView.getRoot().getValue().isValid()
                 && rootDocumentTreeView.getRoot().getValue().isValidAttributes()
                 && requiredElementsListView.getRoot().getValue().isValid()
                 && requiredElementsListView.getRoot().getValue().isValidAttributes()
                 && optionalElementsTreeView.getRoot().getValue().isValid()
                 && optionalElementsTreeView.getRoot().getValue().isValidAttributes();
-        boolean fatalError = rootDocumentTreeView.getRoot().getValue().isFatalError() && requiredElementsListView.getRoot().getValue().isFatalError() && optionalElementsTreeView.getRoot().getValue().isFatalError();
+        boolean fatalError = rootDocumentTreeView.getRoot().getValue().isFatalError()
+                && requiredElementsListView.getRoot().getValue().isFatalError()
+                && optionalElementsTreeView.getRoot().getValue().isFatalError();
         updateStatusBarLabel(valid, fatalError);
     }
 
     private void updateStatusBarLabel(boolean valid, boolean fatalError) {
+
         DocumentController.updateStatusBarLabel(valid, fatalError, invalidDocumentIcon, documentValidationLbl);
     }
 
     public void initializeDocument(BatchFinishedListener batchFinishedListener) {
+
         this.batchFinishedListener = batchFinishedListener;
         if (MainApp.getInstance().getRegistry().getBatchEditPBCoreElement() == null) {
             rootElement = PBCoreStructure.getInstance().getRootElement(NewDocumentType.DESCRIPTION_DOCUMENT).copy(true);
             rootElement.clearOptionalSubElements();
             rootElement.getSubElements().clear();
             MainApp.getInstance().getRegistry().saveBatchEditPBCoreElement(rootElement);
-        } else {
+        }
+        else {
             this.rootElement = MainApp.getInstance().getRegistry().getBatchEditPBCoreElement().copy(true);
         }
         initListSelectionListeners();
 
         selectedPBCoreElementProperty.addListener((observable, oldValue, newValue) -> {
-            btnSelectCV.setVisible(MainApp.getInstance().getRegistry().getControlledVocabularies().containsKey(selectedPBCoreElementProperty.getValue().getName()));
+            btnSelectCV
+                    .setVisible(MainApp
+                            .getInstance()
+                            .getRegistry()
+                            .getControlledVocabularies()
+                            .containsKey(selectedPBCoreElementProperty.getValue().getName()));
             attributesTreeView.setRoot(getAttributesTreeItem(newValue));
             addAttributeButton.setDisable(newValue == null || !newValue.isSupportsAttributes());
             if (newValue == null) {
                 taElementValue.setVisible(true);
                 cbElementValue.setVisible(false);
                 invalidValueIcon.setVisible(false);
-            } else {
+            }
+            else {
                 switch (newValue.getElementValueRestrictionType()) {
                     case ENUMERATION:
                         taElementValue.setVisible(false);
@@ -476,7 +572,8 @@ public class DocumentBatchAddController extends AbsController implements Element
                             lvAnyValues.setVisible(true);
                             taElementValue.setVisible(false);
                             cbElementValue.setVisible(false);
-                        } else {
+                        }
+                        else {
                             lvAnyValues.setVisible(false);
                             taElementValue.setVisible(true);
                             cbElementValue.setVisible(false);
@@ -489,69 +586,96 @@ public class DocumentBatchAddController extends AbsController implements Element
 
         TreeItem<PBCoreElement> elementTreeItem = new TreeItem<>(rootElement);
         rootDocumentTreeView.setRoot(elementTreeItem);
-        rootDocumentTreeView.setCellFactory(lv -> new PBCoreTreeCell(false, false, new DocumentElementItemController.DocumentElementInteractionListener() {
-            @Override
-            public void onRemove(int index, PBCoreElement pbCoreElement) {
-            }
+        rootDocumentTreeView
+                .setCellFactory(lv -> new PBCoreTreeCell(false, false,
+                        new DocumentElementItemController.DocumentElementInteractionListener() {
 
-            @Override
-            public void onAdd(int index, PBCoreElement pbCoreElement) {
-                rootDocumentTreeView.getSelectionModel().selectFirst();
-                DocumentBatchAddController.this.onAdd(rootDocumentTreeView.getId(), index, pbCoreElement);
-            }
+                            @Override
+                            public void onRemove(int index, PBCoreElement pbCoreElement) {
 
-            @Override
-            public void onDuplicate(int index, PBCoreElement pbCoreElement) {
+                            }
 
-            }
-        }));
+                            @Override
+                            public void onAdd(int index, PBCoreElement pbCoreElement) {
+
+                                rootDocumentTreeView.getSelectionModel().selectFirst();
+                                DocumentBatchAddController.this
+                                        .onAdd(rootDocumentTreeView.getId(), index, pbCoreElement);
+                            }
+
+                            @Override
+                            public void onDuplicate(int index, PBCoreElement pbCoreElement) {
+
+                            }
+                        }));
 
         requiredElementsListView.setShowRoot(false);
-        requiredElementsListView.setCellFactory(lv -> new PBCoreTreeCell(true, true, new DocumentElementItemController.DocumentElementInteractionListener() {
-            @Override
-            public void onRemove(int index, PBCoreElement pbCoreElement) {
-                DocumentBatchAddController.this.onRemove(index, pbCoreElement, requiredElementsListView);
-                requiredElementsListView.getSelectionModel().clearSelection();
-            }
+        requiredElementsListView
+                .setCellFactory(lv -> new PBCoreTreeCell(true, true,
+                        new DocumentElementItemController.DocumentElementInteractionListener() {
 
-            @Override
-            public void onAdd(int index, PBCoreElement pbCoreElement) {
-                requiredElementsListView.getSelectionModel().select(index);
-                DocumentBatchAddController.this.onAdd(requiredElementsListView.getId(), index, pbCoreElement);
-            }
+                            @Override
+                            public void onRemove(int index, PBCoreElement pbCoreElement) {
 
-            @Override
-            public void onDuplicate(int index, PBCoreElement pbCoreElement) {
-                DocumentBatchAddController.this.onDuplicate(index, pbCoreElement, requiredElementsListView);
-                requiredElementsListView.getSelectionModel().select(index + 1);
-            }
-        }));
+                                DocumentBatchAddController.this
+                                        .onRemove(index, pbCoreElement, requiredElementsListView);
+                                requiredElementsListView.getSelectionModel().clearSelection();
+                            }
+
+                            @Override
+                            public void onAdd(int index, PBCoreElement pbCoreElement) {
+
+                                requiredElementsListView.getSelectionModel().select(index);
+                                DocumentBatchAddController.this
+                                        .onAdd(requiredElementsListView.getId(), index, pbCoreElement);
+                            }
+
+                            @Override
+                            public void onDuplicate(int index, PBCoreElement pbCoreElement) {
+
+                                DocumentBatchAddController.this
+                                        .onDuplicate(index, pbCoreElement, requiredElementsListView);
+                                requiredElementsListView.getSelectionModel().select(index + 1);
+                            }
+                        }));
         loadRequiredTreeData(rootElement);
 
         optionalElementsTreeView.setShowRoot(false);
-        optionalElementsTreeView.setCellFactory(lv -> new PBCoreTreeCell(true, true, new DocumentElementItemController.DocumentElementInteractionListener() {
-            @Override
-            public void onRemove(int index, PBCoreElement pbCoreElement) {
-                DocumentBatchAddController.this.onRemove(index, pbCoreElement, optionalElementsTreeView);
-                optionalElementsTreeView.getSelectionModel().clearSelection();
-            }
+        optionalElementsTreeView
+                .setCellFactory(lv -> new PBCoreTreeCell(true, true,
+                        new DocumentElementItemController.DocumentElementInteractionListener() {
 
-            @Override
-            public void onAdd(int index, PBCoreElement pbCoreElement) {
-                optionalElementsTreeView.getSelectionModel().select(index);
-                DocumentBatchAddController.this.onAdd(optionalElementsTreeView.getId(), index, pbCoreElement);
-            }
+                            @Override
+                            public void onRemove(int index, PBCoreElement pbCoreElement) {
 
-            @Override
-            public void onDuplicate(int index, PBCoreElement pbCoreElement) {
-                DocumentBatchAddController.this.onDuplicate(index, pbCoreElement, optionalElementsTreeView);
-                optionalElementsTreeView.getSelectionModel().select(index + 1);
-            }
-        }));
+                                DocumentBatchAddController.this
+                                        .onRemove(index, pbCoreElement, optionalElementsTreeView);
+                                optionalElementsTreeView.getSelectionModel().clearSelection();
+                            }
+
+                            @Override
+                            public void onAdd(int index, PBCoreElement pbCoreElement) {
+
+                                optionalElementsTreeView.getSelectionModel().select(index);
+                                DocumentBatchAddController.this
+                                        .onAdd(optionalElementsTreeView.getId(), index, pbCoreElement);
+                            }
+
+                            @Override
+                            public void onDuplicate(int index, PBCoreElement pbCoreElement) {
+
+                                DocumentBatchAddController.this
+                                        .onDuplicate(index, pbCoreElement, optionalElementsTreeView);
+                                optionalElementsTreeView.getSelectionModel().select(index + 1);
+                            }
+                        }));
         loadOptionalTreeData(rootElement);
 
         attributesTreeView.setShowRoot(false);
-        attributesTreeView.setCellFactory(lv -> new PBCoreAttributeTreeCell(DocumentBatchAddController.this, (pbCoreAttribute, listener )-> menuOptionSelected(MenuOption.SELECT_CV_ATTRIBUTE, pbCoreAttribute, listener)));
+        attributesTreeView
+                .setCellFactory(lv -> new PBCoreAttributeTreeCell(DocumentBatchAddController.this,
+                        (pbCoreAttribute, listener) -> menuListener
+                                .menuOptionSelected(MenuOption.SELECT_CV_ATTRIBUTE, pbCoreAttribute, listener)));
 
         requiredElementsListView.getSelectionModel().selectedItemProperty().addListener(requiredListener);
         optionalElementsTreeView.getSelectionModel().selectedItemProperty().addListener(optionalListener);
@@ -568,16 +692,19 @@ public class DocumentBatchAddController extends AbsController implements Element
                 List<CVTerm> suggestions = new ArrayList<>();
                 CV cv = registry.getControlledVocabularies().get(value.getName());
                 if (cv.isHasSubs()) {
-                    cv.getSubs().entrySet().forEach((stringCVBaseEntry) -> {
-                        suggestions.addAll(stringCVBaseEntry.getValue().getTerms());
-                    });
-                } else {
+                    cv.getSubs().forEach((key, value1) -> suggestions.addAll(value1.getTerms()));
+                }
+                else {
                     suggestions.addAll(cv.getTerms());
                 }
-                value.setValid(suggestions.stream().anyMatch(cvTerm -> cvTerm.getTerm().equalsIgnoreCase(taElementValue.getText())));
+                value
+                        .setValid(suggestions
+                                .stream()
+                                .anyMatch(cvTerm -> cvTerm.getTerm().equalsIgnoreCase(taElementValue.getText())));
                 PBCoreStructure.getInstance().updateSourceAttributeOnElement(value, taElementValue.getItem());
                 attributesTreeView.setRoot(getAttributesTreeItem(value));
-            } else {
+            }
+            else {
                 DocumentController.validateChildElements(value, taElementValue);
             }
             updateInvalidIcon(!value.isValid(), value.isFatalError());
@@ -590,7 +717,7 @@ public class DocumentBatchAddController extends AbsController implements Element
             selectedPBCoreElementProperty.getValue().setValid(true);
         });
         taElementValue.setDisable(true);
-        taElementValue.getTextbox().setPromptText("no input required");
+        taElementValue.getTextbox().setPromptText(LanguageManager.INSTANCE.getString(I18nKey.NO_INPUT_REQUIRED));
         cbElementValue.setVisible(false);
         setElementValueText(selectedPBCoreElementProperty.getValue());
         updateXmlPreview();
@@ -611,27 +738,32 @@ public class DocumentBatchAddController extends AbsController implements Element
             updateInvalidIcon(false, false);
         }));
         addAnyValueButton.setOnAction(event -> {
-            menuOptionSelected(MenuOption.ADD_ELEMENT_ANY_VALUE, selectedPBCoreElementProperty.getValue(), (AddElementAnyValueListener) pbCoreElementAnyValue -> {
-                if (pbCoreElementAnyValue == null) {
-                    return;
-                }
-                selectedPBCoreElementProperty.getValue().addAnyElement(pbCoreElementAnyValue);
-                lvAnyValues.getItems().add(pbCoreElementAnyValue);
-                updateXmlPreview();
-                updateInvalidIcon(false, false);
-            });
+            menuListener
+                    .menuOptionSelected(MenuOption.ADD_ELEMENT_ANY_VALUE, selectedPBCoreElementProperty.getValue(),
+                                        (AddElementAnyValueListener) pbCoreElementAnyValue -> {
+                                            if (pbCoreElementAnyValue == null) {
+                                                return;
+                                            }
+                                            selectedPBCoreElementProperty
+                                                    .getValue()
+                                                    .addAnyElement(pbCoreElementAnyValue);
+                                            lvAnyValues.getItems().add(pbCoreElementAnyValue);
+                                            updateXmlPreview();
+                                            updateInvalidIcon(false, false);
+                                        });
         });
     }
 
     @FXML
     public void saveFile(ActionEvent event) {
+
         if (event == null && !buttonSave.isVisible()) {
             batchFinishedListener.onSaveBatch(requiredElementsListView.getRoot().getValue());
             return;
         }
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Add elements to open files");
-        alert.setContentText("By proceeding, all the elements will be added to the currently opened documents where possible.\nNo elements will be replaced and only repeatable or non existing elements on the files will be added.\nDo you want to proceed?");
+        alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.ADD_ELEMENTS_TO_OPEN_FILES));
+        alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.ADD_ELEMENTS_TO_OPEN_FILES_DESCRIPTION));
         alert.setHeaderText(null);
 
         Optional<ButtonType> result = alert.showAndWait();
@@ -643,11 +775,13 @@ public class DocumentBatchAddController extends AbsController implements Element
     }
 
     public void saveDocument() {
+
         MainApp.getInstance().getRegistry().saveBatchEditPBCoreElement(rootElement);
     }
 
     @Override
     public MenuBar createMenu() {
+
         return new MenuBar();
     }
 
@@ -658,13 +792,21 @@ public class DocumentBatchAddController extends AbsController implements Element
 
     @FXML
     public void selectCV(ActionEvent actionEvent) {
-        if (MainApp.getInstance().getRegistry().getControlledVocabularies().containsKey(selectedPBCoreElementProperty.getValue().getName())) {
-            menuOptionSelected(MenuOption.SELECT_CV_ELEMENT, selectedPBCoreElementProperty.getValue(), DocumentBatchAddController.this);
+
+        if (MainApp
+                .getInstance()
+                .getRegistry()
+                .getControlledVocabularies()
+                .containsKey(selectedPBCoreElementProperty.getValue().getName())) {
+            menuListener
+                    .menuOptionSelected(MenuOption.SELECT_CV_ELEMENT, selectedPBCoreElementProperty.getValue(),
+                                        DocumentBatchAddController.this);
         }
     }
 
     @Override
     public void onCVSelected(String key, CVTerm cvTerm, boolean attr) {
+
         PBCoreElement value = selectedPBCoreElementProperty.getValue();
         if (cvTerm != null && !attr && value != null && value.getName().equals(key)) {
             value.setValue(cvTerm.getTerm());

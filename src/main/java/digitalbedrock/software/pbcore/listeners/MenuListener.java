@@ -22,6 +22,7 @@ public interface MenuListener {
         SAVED_SEARCH,
         CONTROLLED_VOCABULARIES,
         DIRECTORY_CRAWLING,
+        GENERAL_SETTINGS,
         HELP,
         SELECT_CV_ELEMENT,
         SELECT_CV_ATTRIBUTE,

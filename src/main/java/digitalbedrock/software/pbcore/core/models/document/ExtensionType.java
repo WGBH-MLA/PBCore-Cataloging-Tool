@@ -1,20 +1,19 @@
 package digitalbedrock.software.pbcore.core.models.document;
 
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 /**
- * Definition: The extensionType schema type uses a common structure to allow
- * for the use of multiple, qualified extensions at the asset, instantiation and
- * essence levels.
+ * Definition: The extensionType schema type uses a common structure to allow for the use of multiple, qualified
+ * extensions at the asset, instantiation and essence levels.
  *
  * <p>
  * Java class for extensionType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="extensionType">
@@ -47,9 +46,7 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "extensionType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "extensionWrap",
-    "extensionEmbedded"
-})
+        "extensionWrap", "extensionEmbedded" })
 public class ExtensionType {
 
     @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html")
@@ -61,25 +58,25 @@ public class ExtensionType {
      * Gets the value of the extensionWrap property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the extensionWrap property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the extensionWrap property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getExtensionWrap().onAdd(newItem);
+     * getExtensionWrap().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ExtensionType.ExtensionWrap }
+     * Objects of the following type(s) are allowed in the list {@link ExtensionType.ExtensionWrap }
      *
      *
      */
     public List<ExtensionType.ExtensionWrap> getExtensionWrap() {
+
         if (extensionWrap == null) {
             extensionWrap = new ArrayList<>();
         }
@@ -90,25 +87,25 @@ public class ExtensionType {
      * Gets the value of the extensionEmbedded property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the extensionEmbedded property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the extensionEmbedded property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getExtensionEmbedded().onAdd(newItem);
+     * getExtensionEmbedded().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link EmbeddedType }
+     * Objects of the following type(s) are allowed in the list {@link EmbeddedType }
      *
      *
      */
     public List<EmbeddedType> getExtensionEmbedded() {
+
         if (extensionEmbedded == null) {
             extensionEmbedded = new ArrayList<>();
         }
@@ -120,8 +117,7 @@ public class ExtensionType {
      * Java class for anonymous complex type.
      *
      * <p>
-     * The following schema fragment specifies the expected content contained
-     * within this class.
+     * The following schema fragment specifies the expected content contained within this class.
      *
      * <pre>
      * &lt;complexType>
@@ -141,11 +137,7 @@ public class ExtensionType {
      *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "extensionElement",
-        "extensionValue",
-        "extensionAuthorityUsed"
-    })
+    @XmlType(name = "", propOrder = { "extensionElement", "extensionValue", "extensionAuthorityUsed" })
     public static class ExtensionWrap {
 
         @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -171,16 +163,19 @@ public class ExtensionType {
          *
          */
         public String getExtensionElement() {
+
             return extensionElement;
         }
 
         /**
          * Sets the value of the extensionElement property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setExtensionElement(String value) {
+
             this.extensionElement = value;
         }
 
@@ -191,16 +186,19 @@ public class ExtensionType {
          *
          */
         public String getExtensionValue() {
+
             return extensionValue;
         }
 
         /**
          * Sets the value of the extensionValue property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setExtensionValue(String value) {
+
             this.extensionValue = value;
         }
 
@@ -211,16 +209,19 @@ public class ExtensionType {
          *
          */
         public String getExtensionAuthorityUsed() {
+
             return extensionAuthorityUsed;
         }
 
         /**
          * Sets the value of the extensionAuthorityUsed property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setExtensionAuthorityUsed(String value) {
+
             this.extensionAuthorityUsed = value;
         }
 
@@ -231,16 +232,19 @@ public class ExtensionType {
          *
          */
         public String getSource() {
+
             return source;
         }
 
         /**
          * Sets the value of the source property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setSource(String value) {
+
             this.source = value;
         }
 
@@ -251,16 +255,19 @@ public class ExtensionType {
          *
          */
         public String getRef() {
+
             return ref;
         }
 
         /**
          * Sets the value of the ref property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setRef(String value) {
+
             this.ref = value;
         }
 
@@ -271,16 +278,19 @@ public class ExtensionType {
          *
          */
         public String getVersion() {
+
             return version;
         }
 
         /**
          * Sets the value of the version property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setVersion(String value) {
+
             this.version = value;
         }
 
@@ -291,16 +301,19 @@ public class ExtensionType {
          *
          */
         public String getAnnotation() {
+
             return annotation;
         }
 
         /**
          * Sets the value of the annotation property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setAnnotation(String value) {
+
             this.annotation = value;
         }
 

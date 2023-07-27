@@ -11,38 +11,54 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<AnchorPane id="MainUI" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="665.0" prefWidth="1280.0" styleClass="sceneRoot" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="digitalbedrock.software.pbcore.controllers.MainController">
-    <stylesheets>
-        <URL value="@../styles/style.css" />
-    </stylesheets>
-    <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-        <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
-        </TabPane>
-        <AnchorPane id="SplashUI" fx:id="splash" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-            <children>
-                <VBox alignment="CENTER" layoutY="643.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-                    <children>
-                        <Label contentDisplay="CENTER" styleClass="copyright" text="WGBH Educational Foundation">
-                     <VBox.margin>
-                        <Insets bottom="5.0" />
-                     </VBox.margin>
-                        </Label>
-                        <ImageView fitHeight="30.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../imgs/neh_logo.png" />
-                            </image>
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                        </ImageView>
-                    </children>
-                </VBox>
-            </children>
-        </AnchorPane>
-        <AnchorPane fx:id="spinnerLayer" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
-            <VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                <ProgressIndicator />
-            </VBox>
-        </AnchorPane>
-    </StackPane>
+<AnchorPane id="MainUI" maxHeight="1.7976931348623157E308"
+	maxWidth="1.7976931348623157E308" prefHeight="665.0" prefWidth="1280.0"
+	styleClass="sceneRoot" xmlns="http://javafx.com/javafx/8.0.121"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="digitalbedrock.software.pbcore.controllers.MainController">
+	<stylesheets>
+		<URL value="@../styles/style.css" />
+	</stylesheets>
+	<StackPane maxHeight="1.7976931348623157E308"
+		maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0"
+		AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+		AnchorPane.topAnchor="0.0">
+		<TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0"
+			tabClosingPolicy="UNAVAILABLE">
+		</TabPane>
+		<AnchorPane id="SplashUI" fx:id="splash"
+			maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+			<children>
+				<VBox alignment="CENTER" layoutY="643.0"
+					AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0"
+					AnchorPane.rightAnchor="20.0">
+					<children>
+						<Label contentDisplay="CENTER" styleClass="copyright"
+							text="%vendorPBCore">
+							<VBox.margin>
+								<Insets bottom="5.0" />
+							</VBox.margin>
+						</Label>
+						<ImageView fitHeight="30.0" fitWidth="121.0"
+							pickOnBounds="true" preserveRatio="true">
+							<image>
+								<Image url="@../imgs/neh_logo.png" />
+							</image>
+							<VBox.margin>
+								<Insets />
+							</VBox.margin>
+						</ImageView>
+					</children>
+				</VBox>
+			</children>
+		</AnchorPane>
+		<AnchorPane fx:id="spinnerLayer"
+			maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
+			<VBox alignment="CENTER" AnchorPane.bottomAnchor="0.0"
+				AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+				AnchorPane.topAnchor="0.0">
+				<ProgressIndicator />
+			</VBox>
+		</AnchorPane>
+	</StackPane>
 </AnchorPane>

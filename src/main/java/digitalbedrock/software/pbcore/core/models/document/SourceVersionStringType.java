@@ -7,16 +7,14 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.XmlValue;
 
 /**
- * Definition: The sourceVersionStringType schema type is used with a number of
- * elements to allow the attachment of the attributes: source, ref, version and
- * annotation.
+ * Definition: The sourceVersionStringType schema type is used with a number of elements to allow the attachment of the
+ * attributes: source, ref, version and annotation.
  *
  * <p>
  * Java class for sourceVersionStringType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="sourceVersionStringType">
@@ -33,8 +31,7 @@ import javax.xml.bind.annotation.XmlValue;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "sourceVersionStringType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "value"
-})
+        "value" })
 public class SourceVersionStringType {
 
     @XmlValue
@@ -55,16 +52,19 @@ public class SourceVersionStringType {
      *
      */
     public String getValue() {
+
         return value;
     }
 
     /**
      * Sets the value of the value property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setValue(String value) {
+
         this.value = value;
     }
 
@@ -75,16 +75,19 @@ public class SourceVersionStringType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -95,16 +98,19 @@ public class SourceVersionStringType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -115,16 +121,19 @@ public class SourceVersionStringType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -135,16 +144,19 @@ public class SourceVersionStringType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 

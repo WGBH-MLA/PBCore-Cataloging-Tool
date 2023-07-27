@@ -38,28 +38,28 @@ import javafx.scene.control.TextArea;
  * You can easily utilize the AutoFillTextAreaBox in your application<br>
  *
  * e.g <br>
+ * 
  * <pre>
- *      //..codes
- *      AutoFillTextAreaBox autobox = new AutoFillTextAreaBox("helo","prefix","dog","city");
- *      autobox.setLimit(7);
- *      //..add autobox to your scene then the output must be like this:
- * </pre> Output:
- * <br>
- * <img src="http://blog.ngopal.com.np/wp-content/uploads/2011/07/screen.png" align="center"/>
- * <br>
+ * // ..codes
+ * AutoFillTextAreaBox autobox = new AutoFillTextAreaBox("helo", "prefix", "dog", "city");
+ * autobox.setLimit(7);
+ * // ..add autobox to your scene then the output must be like this:
+ * </pre>
+ * 
+ * Output: <br>
+ * <img src="http://blog.ngopal.com.np/wp-content/uploads/2011/07/screen.png" align="center"/> <br>
  * <p>
  *
  *
  * @author Narayan G. Maharjan
  * @see <a href="http://www.blog.ngopal.com.np"> Blog </a>
- * <p>
+ *      <p>
  */
-public class AutoFillTextAreaBox<T> extends Control implements
-        AutoFillTextAreaBoxFactory<T> {
+public class AutoFillTextAreaBox<T> extends Control implements AutoFillTextAreaBoxFactory<T> {
 
-    //==========
-    //ATTRIBUTES
-    //==========
+    // ==========
+    // ATTRIBUTES
+    // ==========
     private TextArea textbox;
 
     private ListView<T> listview;
@@ -74,17 +74,14 @@ public class AutoFillTextAreaBox<T> extends Control implements
     /**
      * Constructor
      */
-    /* public AutoFillTextAreaBox() {
-     * init();
-     * }
-     */
     public AutoFillTextAreaBox(ObservableList<T> data) {
-        //this();
+
         init();
         this.data = data;
     }
 
     public AutoFillTextAreaBox() {
+
         init();
     }
 
@@ -92,6 +89,7 @@ public class AutoFillTextAreaBox<T> extends Control implements
      * Initialize the AutoFillTextAreaBox *
      * ================================ */
     private void init() {
+
         getStyleClass().setAll("autofill-text-area");
         textbox = new TextArea();
         listview = new ListView();
@@ -103,19 +101,23 @@ public class AutoFillTextAreaBox<T> extends Control implements
     }
 
     public void requestFocus() {
+
         super.requestFocus();
         textbox.requestFocus();
     }
 
     public T getItem() {
+
         return listview.getSelectionModel().getSelectedItem();
     }
 
     public String getText() {
+
         return textbox.getText();
     }
 
     public void addData(T data) {
+
         this.data.add(data);
 
     }
@@ -125,21 +127,25 @@ public class AutoFillTextAreaBox<T> extends Control implements
      * -------------------- */
     @Override
     public void setData(ObservableList<T> data) {
+
         this.data = data;
     }
 
     @Override
     public ObservableList<T> getData() {
+
         return data;
     }
 
     @Override
     public ListView<T> getListview() {
+
         return listview;
     }
 
     @Override
     public TextArea getTextbox() {
+
         return textbox;
     }
 
@@ -152,83 +158,103 @@ public class AutoFillTextAreaBox<T> extends Control implements
 
     @Override
     public int getListLimit() {
+
         return limit;
     }
 
     @Override
     public void setFilterMode(boolean filter) {
+
         filterMode = filter;
     }
 
     @Override
     public boolean getFilterMode() {
+
         return filterMode;
     }
 
     @Override
     public void setMinSize(double d, double d1) {
+
         super.setMinSize(d, d1);
         textbox.setMinSize(d, d1);
     }
 
     @Override
     public void setPrefSize(double d, double d1) {
+
         super.setPrefSize(d, d1);
         textbox.setPrefSize(d, d1);
     }
 
     @Override
     public void resize(double d, double d1) {
+
         super.resize(d, d1);
         textbox.resize(d, d1);
     }
 
     @Override
     public void setMaxSize(double d, double d1) {
+
         super.setMaxSize(d, d1);
         textbox.setMaxSize(d, d1);
 
     }
 
     private void listen() {
+
         this.prefHeightProperty().addListener(new ChangeListener<Number>() {
+
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+
                 textbox.setPrefHeight(t1.doubleValue());
             }
 
         });
         this.prefWidthProperty().addListener(new ChangeListener<Number>() {
+
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+
                 textbox.setPrefWidth(t1.doubleValue());
             }
 
         });
         this.minHeightProperty().addListener(new ChangeListener<Number>() {
+
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+
                 textbox.setMinHeight(t1.doubleValue());
             }
 
         });
         this.maxHeightProperty().addListener(new ChangeListener<Number>() {
+
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+
                 textbox.setMaxHeight(t1.doubleValue());
             }
 
         });
         this.minWidthProperty().addListener(new ChangeListener<Number>() {
+
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+
                 textbox.setMinWidth(t1.doubleValue());
             }
 
         });
         this.maxWidthProperty().addListener(new ChangeListener<Number>() {
+
             @Override
             public void changed(ObservableValue<? extends Number> ov, Number t, Number t1) {
+
                 textbox.setMaxWidth(t1.doubleValue());
             }
 
@@ -237,35 +263,37 @@ public class AutoFillTextAreaBox<T> extends Control implements
 
     @Override
     protected double computeMaxHeight(double width) {
+
         return Math.max(22.0d, textbox.getHeight());
     }
 
-//    @Override
-//    public void setPrefSize(double d, double d1) {
-//        super.setPrefSize(d, d1);
-//    }
     @Override
     protected double computePrefHeight(double width) {
+
         return Math.max(22.0d, textbox.getPrefHeight());
     }
 
     @Override
     protected double computeMinHeight(double width) {
+
         return Math.max(22.0d, textbox.getPrefHeight());
     }
 
     @Override
     protected double computePrefWidth(double height) {
+
         return Math.max(100.0d, textbox.getPrefWidth());
     }
 
     @Override
     protected double computeMaxWidth(double height) {
+
         return Math.max(100.0d, textbox.getPrefWidth());
     }
 
     @Override
     protected double computeMinWidth(double height) {
+
         return Math.max(100.0d, textbox.getPrefWidth());
     }
 

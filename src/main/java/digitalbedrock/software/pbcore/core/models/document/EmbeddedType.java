@@ -1,21 +1,20 @@
 package digitalbedrock.software.pbcore.core.models.document;
 
-import org.w3c.dom.Element;
-
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
+import org.w3c.dom.Element;
+
 /**
- * Definition: The embeddedType schema type allows for the addition of an
- * annotation attribute to the embeddedType.
+ * Definition: The embeddedType schema type allows for the addition of an annotation attribute to the embeddedType.
  *
  * <p>
  * Java class for embeddedType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="embeddedType">
@@ -34,9 +33,7 @@ import java.util.List;
  */
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "embeddedType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "any"
-})
+@XmlType(name = "embeddedType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = { "any" })
 public class EmbeddedType {
 
     @XmlAnyElement(lax = true)
@@ -54,25 +51,25 @@ public class EmbeddedType {
      * Gets the value of the any property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the any property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the any property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getAny().onAdd(newItem);
+     * getAny().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list null null     {@link Object }
-     * {@link Element }
+     * Objects of the following type(s) are allowed in the list null null {@link Object } {@link Element }
      *
      *
      */
     public List<Object> getAny() {
+
         if (any == null) {
             any = new ArrayList<>();
         }
@@ -86,16 +83,19 @@ public class EmbeddedType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -106,16 +106,19 @@ public class EmbeddedType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -126,16 +129,19 @@ public class EmbeddedType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -146,16 +152,19 @@ public class EmbeddedType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 

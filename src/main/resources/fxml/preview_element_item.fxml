@@ -5,17 +5,19 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<AnchorPane id="PreviewElementItemUI" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="digitalbedrock.software.pbcore.components.editor.ElementVisualLayoutItemController">
-    <stylesheets>
-        <URL value="@../styles/style.css"/>
-    </stylesheets>
-    <TextFlow layoutX="10.0" layoutY="10.0" minHeight="25.0" AnchorPane.bottomAnchor="0.0"
-              AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
-              styleClass="elementText">
-        <Text fx:id="previewElementLabel" strokeType="OUTSIDE" strokeWidth="0.0"
-              styleClass="previewElementLabel" text="Text"/>
-        <Text fx:id="previewElementValue" strokeType="OUTSIDE" strokeWidth="0.0"
-              styleClass="previewElementValue" text="Text"/>
-    </TextFlow>
+<AnchorPane id="PreviewElementItemUI"
+	xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="digitalbedrock.software.pbcore.components.editor.ElementVisualLayoutItemController">
+	<stylesheets>
+		<URL value="@../styles/style.css" />
+	</stylesheets>
+	<TextFlow layoutX="10.0" layoutY="10.0" minHeight="25.0"
+		AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+		AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
+		styleClass="elementText">
+		<Text fx:id="previewElementLabel" strokeType="OUTSIDE"
+			strokeWidth="0.0" styleClass="previewElementLabel" />
+		<Text fx:id="previewElementValue" strokeType="OUTSIDE"
+			strokeWidth="0.0" styleClass="previewElementValue" />
+	</TextFlow>
 </AnchorPane>

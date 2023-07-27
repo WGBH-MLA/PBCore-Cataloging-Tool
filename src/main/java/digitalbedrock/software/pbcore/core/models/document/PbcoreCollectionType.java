@@ -1,21 +1,20 @@
 package digitalbedrock.software.pbcore.core.models.document;
 
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 /**
- * Definition: The pbcoreCollectionType schema type allows the addition of
- * attributes that describe the PBCoreCollection. The attributes define the
- * title, the description, the source, the reference and the date of the
+ * Definition: The pbcoreCollectionType schema type allows the addition of attributes that describe the
+ * PBCoreCollection. The attributes define the title, the description, the source, the reference and the date of the
  * collection.
  *
  * <p>
  * Java class for pbcoreCollectionType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="pbcoreCollectionType">
@@ -40,8 +39,7 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "pbcoreCollectionType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "pbcoreDescriptionDocument"
-})
+        "pbcoreDescriptionDocument" })
 public class PbcoreCollectionType {
 
     @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -66,33 +64,31 @@ public class PbcoreCollectionType {
     protected String annotation;
 
     /**
-     * Definition: The pbcoreDescriptionDocument element assembles together all
-     * of PBCore knowledge items into a single data record organized in a
-     * hierarchical structure. For PBCore these knowledge items are metadata
-     * descriptions of media, including all the knowledge items and metadata
-     * terms and values associated with its content and containers.Gets the
-     * value of the pbcoreDescriptionDocument property.
+     * Definition: The pbcoreDescriptionDocument element assembles together all of PBCore knowledge items into a single
+     * data record organized in a hierarchical structure. For PBCore these knowledge items are metadata descriptions of
+     * media, including all the knowledge items and metadata terms and values associated with its content and
+     * containers.Gets the value of the pbcoreDescriptionDocument property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreDescriptionDocument property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreDescriptionDocument property.
      *
      * <p>
      * For example, to add a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreDescriptionDocument().add(newItem);
+     * getPbcoreDescriptionDocument().add(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PbcoreDescriptionDocumentType }
+     * Objects of the following type(s) are allowed in the list {@link PbcoreDescriptionDocumentType }
      *
      *
      */
     public List<PbcoreDescriptionDocumentType> getPbcoreDescriptionDocument() {
+
         if (pbcoreDescriptionDocument == null) {
             pbcoreDescriptionDocument = new ArrayList<>();
         }
@@ -106,16 +102,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getCollectionTitle() {
+
         return collectionTitle;
     }
 
     /**
      * Sets the value of the collectionTitle property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setCollectionTitle(String value) {
+
         this.collectionTitle = value;
     }
 
@@ -126,16 +125,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getCollectionDescription() {
+
         return collectionDescription;
     }
 
     /**
      * Sets the value of the collectionDescription property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setCollectionDescription(String value) {
+
         this.collectionDescription = value;
     }
 
@@ -146,16 +148,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getCollectionSource() {
+
         return collectionSource;
     }
 
     /**
      * Sets the value of the collectionSource property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setCollectionSource(String value) {
+
         this.collectionSource = value;
     }
 
@@ -166,16 +171,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getCollectionRef() {
+
         return collectionRef;
     }
 
     /**
      * Sets the value of the collectionRef property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setCollectionRef(String value) {
+
         this.collectionRef = value;
     }
 
@@ -186,16 +194,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getCollectionDate() {
+
         return collectionDate;
     }
 
     /**
      * Sets the value of the collectionDate property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setCollectionDate(String value) {
+
         this.collectionDate = value;
     }
 
@@ -206,16 +217,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -226,16 +240,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -246,16 +263,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -266,16 +286,19 @@ public class PbcoreCollectionType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 

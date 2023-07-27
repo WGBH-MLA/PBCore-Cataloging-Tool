@@ -1,234 +1,126 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>digitalbedrock.software</groupId>
     <artifactId>PBCore-Cataloging-Tool</artifactId>
-    <version>2.1</version>
-    <packaging>jar</packaging>
+    <version>3.0</version>
 
     <name>PBCore</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <mainClass>digitalbedrock.software.pbcore.MainApp</mainClass>
-        <skipWindowsBundle>true</skipWindowsBundle>
-        <skipOSxBundle>true</skipOSxBundle>
+        <junit.version>5.9.0</junit.version>
+        <org.openjfx.version>19</org.openjfx.version>
+        <org.controlsfx.version>11.1.2</org.controlsfx.version>
+        <opencsv.version>5.7.1</opencsv.version>
+        <maven.surefire-plugin.version>3.0.0-M7</maven.surefire-plugin.version>
+        <javafx-maven-plugin.version>0.0.8</javafx-maven-plugin.version>
+        <maven-compiler-plugin>3.10.1</maven-compiler-plugin>
+        <mockito.version>4.11.0</mockito.version>
+        <testfx.version>4.0.16-alpha</testfx.version>
+        <ikonli.version>12.3.1</ikonli.version>
+        <assertj.version>3.22.0</assertj.version>
+        <jackson.version>2.14.2</jackson.version>
+        <commons.text.version>1.10.0</commons.text.version>
+        <commons.lang3.version>3.12.0</commons.lang3.version>
+        <moditect.maven.plugin.version>1.0.0.Alpha2</moditect.maven.plugin.version>
+        <spotless.version>2.28.0</spotless.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+        <lucene-analyzers-common.version>7.2.1</lucene-analyzers-common.version>
+        <lucene-core.version>7.2.1</lucene-core.version>
+        <commons-io.version>2.11.0</commons-io.version>
+        <lombok.version>1.18.24</lombok.version>
+        <jaxb.version>2.3.1</jaxb.version>
+        <spotless.version>2.28.0</spotless.version>
     </properties>
 
     <organization>
         <name>DigitalBedrock</name>
     </organization>
 
-    <profiles>
-        <profile>
-            <id>win</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <properties>
-                <skipWindowsBundle>false</skipWindowsBundle>
-            </properties>
-        </profile>
-        <profile>
-            <id>osx</id>
-            <activation>
-                <os>
-                    <family>mac</family>
-                </os>
-            </activation>
-            <properties>
-                <skipOSxBundle>false</skipOSxBundle>
-            </properties>
-        </profile>
-    </profiles>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>2.6</version>
-                <executions>
-                    <execution>
-                        <id>unpack-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>unpack-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <excludeScope>system</excludeScope>
-                            <excludeGroupIds>junit,org.mockito,org.hamcrest</excludeGroupIds>
-                            <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <executions>
-                    <execution>
-                        <id>unpack-dependencies</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${java.home}/../bin/javapackager</executable>
-                            <arguments>
-                                <argument>-createjar</argument>
-                                <argument>-nocss2bin</argument>
-                                <argument>-appclass</argument>
-                                <argument>${mainClass}</argument>
-                                <argument>-srcdir</argument>
-                                <argument>${project.build.directory}/classes</argument>
-                                <argument>-outdir</argument>
-                                <argument>${project.build.directory}</argument>
-                                <argument>-outfile</argument>
-                                <argument>${project.build.finalName}.jar</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution >
-                        <id>assemble osx</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipOSxBundle}</skip>
-                            <executable>${java.home}/../bin/javapackager</executable>
-                            <arguments>
-                                <argument>-deploy</argument>
-                                <argument>-name</argument>
-                                <argument>PBCore</argument>
-                                <argument>-native</argument>
-                                <argument>pkg</argument>
-                                <argument>-nosign</argument>
-                                <argument>-appclass</argument>
-                                <argument>${mainClass}</argument>
-                                <argument>-srcfiles</argument>
-                                <argument>${project.build.directory}/${project.build.finalName}.jar</argument>
-                                <argument>-outdir</argument>
-                                <argument>${project.build.directory}</argument>
-                                <argument>-outfile</argument>
-                                <argument>${project.build.finalName}</argument>
-                                <argument>-title</argument>
-                                <argument>PBCore Cataloging Tool</argument>
-                                <argument>-vendor</argument>
-                                <argument>WGBH</argument>
-                                <argument>-BappVersion=${project.version}</argument>
-                                <argument>-Bidentifier=software.digitalbedrock.PBCore-Cataloging-Tool</argument>
-                                <argument>-Bmac.category=Utilities</argument>
-                                <argument>-v</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution >
-                        <id>assemble win</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <skip>${skipWindowsBundle}</skip>
-                            <executable>${java.home}/../bin/javapackager</executable>
-                            <arguments>
-                                <argument>-deploy</argument>
-                                <argument>-name</argument>
-                                <argument>PBCore</argument>
-                                <argument>-native</argument>
-                                <argument>exe</argument>
-                                <argument>-nosign</argument>
-                                <argument>-appclass</argument>
-                                <argument>${mainClass}</argument>
-                                <argument>-srcfiles</argument>
-                                <argument>${project.build.directory}/${project.build.finalName}.jar</argument>
-                                <argument>-outdir</argument>
-                                <argument>${project.build.directory}</argument>
-                                <argument>-outfile</argument>
-                                <argument>${project.build.finalName}</argument>
-                                <argument>-title</argument>
-                                <argument>PBCore Cataloging Tool</argument>
-                                <argument>-vendor</argument>
-                                <argument>WGBH</argument>
-                                <argument>-BappVersion=${project.version}</argument>
-                                <argument>-Bidentifier=software.digitalbedrock.PBCore-Cataloging-Tool</argument>
-                                <argument>-v</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>default-cli</id>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${java.home}/bin/java</executable>
-                            <commandlineArgs>${runfx.args}</commandlineArgs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                    <compilerArguments>
-                        <bootclasspath>${sun.boot.class.path}${path.separator}${java.home}/lib/jfxrt.jar</bootclasspath>
-                    </compilerArguments>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
     <dependencies>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-core</artifactId>
+            <version>${testfx.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testfx</groupId>
+            <artifactId>testfx-junit5</artifactId>
+            <version>${testfx.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-analyzers-common</artifactId>
-            <version>7.2.1</version>
+            <artifactId>lucene-core</artifactId>
+            <version>${lucene-core.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.8.6</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-javafx</artifactId>
-            <version>2.1.1</version>
+            <version>${ikonli.version}</version>
         </dependency>
         <dependency>
             <groupId>org.kordamp.ikonli</groupId>
             <artifactId>ikonli-materialdesign-pack</artifactId>
-            <version>2.1.1</version>
+            <version>${ikonli.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.8.6</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.8.6</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
-            <version>8.40.14</version>
+            <version>${org.controlsfx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>${org.openjfx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>${org.openjfx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${org.openjfx.version}</version>
         </dependency>
         <dependency>
             <groupId>np.com.ngopal</groupId>
@@ -236,19 +128,274 @@
             <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-text</artifactId>
+            <version>${commons.text.version}</version>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.6</version>
+            <version>${commons-io.version}</version>
         </dependency>
         <dependency>
             <groupId>com.opencsv</groupId>
             <artifactId>opencsv</artifactId>
-            <version>4.0</version>
+            <version>${opencsv.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jaxb.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire-plugin.version}</version>
+                <configuration>
+                    <!--  allow to use unnamed modules -->
+                    <useModulePath>false</useModulePath>
+                    <argLine>
+                        --add-exports javafx.graphics/com.sun.javafx.application=ALL-UNNAMED
+                    </argLine>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.panteleyev</groupId>
+                <artifactId>jpackage-maven-plugin</artifactId>
+                <version>1.4.0</version>
+                <configuration>
+                    <name>PBCore Cataloging Tool</name>
+                    <appVersion>${project.version}</appVersion>
+                    <vendor>WGBH</vendor>
+                    <destination>target/PBCore</destination>
+                    <module>digitalbedrock.software.pbcore/digitalbedrock.software.pbcore.MainApp</module>
+                    <runtimeImage>target/PBCore</runtimeImage>
+                    <linuxShortcut>true</linuxShortcut>
+                    <linuxPackageName>pbcore</linuxPackageName>
+                    <linuxAppCategory>Utilities</linuxAppCategory>
+                    <linuxMenuGroup>Utilities</linuxMenuGroup>
+                    <javaOptions>
+                        <option>-Dfile.encoding=UTF-8</option>
+                    </javaOptions>
+                    <macSign>true</macSign>
+                    <macSigningKeyUserName>Digital Bedrock (786H7LSHXZ)</macSigningKeyUserName>
+                    <winMenu>true</winMenu>
+                    <winMenuGroup>PBCore</winMenuGroup>
+                    <winDirChooser>true</winDirChooser>
+                    <winShortcut>true</winShortcut>
+                    <icon>src/main/resources/imgs/pbcore-icon.icns</icon>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>${moditect.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>add-module-info</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>add-module-info</goal>
+                        </goals>
+                        <configuration>
+                            <overwriteExistingFiles>true</overwriteExistingFiles>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <modules>
+                                <module>
+                                    <artifact>
+                                        <groupId>javax.activation</groupId>
+                                        <artifactId>activation</artifactId>
+                                        <version>1.1.1</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module java.activation {
+                                            requires java.datatransfer;
+                                            exports javax.activation;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>np.com.ngopal</groupId>
+                                        <artifactId>javafx-autocomplete-field</artifactId>
+                                        <version>1.0.0</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module javafx.autocomplete.field {
+                                            requires javafx.controls;
+                                            exports np.com.ngopal.control;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.apache.lucene</groupId>
+                                        <artifactId>lucene-core</artifactId>
+                                        <version>${lucene-core.version}</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module lucene.core {
+                                            exports org.apache.lucene.index;
+                                            exports org.apache.lucene.analysis.standard;
+                                            exports org.apache.lucene.store;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>commons-io</groupId>
+                                        <artifactId>commons-io</artifactId>
+                                        <version>${commons-io.version}</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module org.apache.commons.io {
+                                        exports org.apache.commons.io;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.apache.commons</groupId>
+                                        <artifactId>commons-text</artifactId>
+                                        <version>${commons.text.version}</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module org.apache.commons.text {
+                                        exports org.apache.commons.text;
+                                        requires org.apache.commons.lang3;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>org.apache.commons</groupId>
+                                        <artifactId>commons-lang3</artifactId>
+                                        <version>${commons.lang3.version}</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module org.apache.commons.lang3 {
+                                        exports org.apache.commons.lang3;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                                <module>
+                                    <artifact>
+                                        <groupId>com.opencsv</groupId>
+                                        <artifactId>opencsv</artifactId>
+                                        <version>${opencsv.version}</version>
+                                    </artifact>
+                                    <moduleInfoSource>
+                                        module com.opencsv {
+                                        exports com.opencsv.exceptions;
+                                        exports com.opencsv;
+                                        requires org.apache.commons.lang3;
+                                        }
+                                    </moduleInfoSource>
+                                </module>
+                            </modules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>${javafx-maven-plugin.version}</version>
+                <configuration>
+                    <mainClass>digitalbedrock.software.pbcore.MainApp</mainClass>
+                    <options>
+                        <option>--add-reads</option>
+                        <option>digitalbedrock.software.pbcore=ALL-UNNAMED</option>
+                    </options>
+                    <jmodsPath>${project.build.directory}/modules</jmodsPath>
+                </configuration>
+                <executions>
+                    <execution>
+                        <!-- Default configuration for running with: mvn clean javafx:run -->
+                        <id>default-cli</id>
+                        <configuration>
+                            <mainClass>digitalbedrock.software.pbcore/digitalbedrock.software.pbcore.MainApp</mainClass>
+                            <launcher>PBCore</launcher>
+                            <jlinkZipName>PBCore</jlinkZipName>
+                            <jlinkImageName>PBCore</jlinkImageName>
+                            <noManPages>true</noManPages>
+                            <stripDebug>true</stripDebug>
+                            <noHeaderFiles>true</noHeaderFiles>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>11</source>
+                    <target>11</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.diffplug.spotless</groupId>
+                <artifactId>spotless-maven-plugin</artifactId>
+                <version>${spotless.version}</version>
+                <configuration>
+                    <java>
+                        <includes>
+                            <include>src/**/*.java</include>
+                        </includes>
+                        <importOrder>
+                            <order>java,javax,org,io,com,com.diffplug</order>
+                        </importOrder>
+                        <removeUnusedImports />
+                        <endWithNewline />
+                        <eclipse>
+                            <file>spotlessStyle.xml</file>
+                        </eclipse>
+                    </java>
+                    <formats>
+                        <format>
+                            <includes>
+                                <include>src/**/*.fxml</include>
+                            </includes>
+                            <eclipseWtp>
+                                <type>XML</type>
+                                <files>
+                                    <file>spotlessStyle.xml</file>
+                                </files>
+                            </eclipseWtp>
+                        </format>
+                    </formats>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <phase>compile</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

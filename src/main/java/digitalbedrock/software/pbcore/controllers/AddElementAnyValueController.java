@@ -1,7 +1,8 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementAnyValue;
-import digitalbedrock.software.pbcore.listeners.AddElementAnyValueListener;
+import java.io.StringReader;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -9,14 +10,14 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.MouseEvent;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ResourceBundle;
+
+import org.xml.sax.InputSource;
+
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementAnyValue;
+import digitalbedrock.software.pbcore.listeners.AddElementAnyValueListener;
 
 public class AddElementAnyValueController extends AbsController {
 
@@ -33,11 +34,13 @@ public class AddElementAnyValueController extends AbsController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         pbCoreElementAnyValue = new PBCoreElementAnyValue();
         lblAttributeAlreadyAdded.setVisible(false);
     }
 
     public void setAttributeSelectionListener(AddElementAnyValueListener addAnyValueListener) {
+
         btnCancel.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> addAnyValueListener.onValueAdded(null));
         btnAdd.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             String text = taValue.getText();
@@ -51,7 +54,8 @@ public class AddElementAnyValueController extends AbsController {
                 pbCoreElementAnyValue.setValue(text);
                 lblAttributeAlreadyAdded.setVisible(false);
                 addAnyValueListener.onValueAdded(pbCoreElementAnyValue);
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 lblAttributeAlreadyAdded.setVisible(true);
             }
         });
@@ -60,6 +64,7 @@ public class AddElementAnyValueController extends AbsController {
 
     @Override
     public MenuBar createMenu() {
+
         return new MenuBar();
     }
 

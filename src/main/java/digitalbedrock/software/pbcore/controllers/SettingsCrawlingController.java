@@ -1,9 +1,9 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.MainApp;
-import digitalbedrock.software.pbcore.controllers.settings.*;
-import digitalbedrock.software.pbcore.core.models.FolderModel;
-import digitalbedrock.software.pbcore.lucene.LuceneIndexer;
+import java.io.File;
+import java.net.URL;
+import java.time.format.DateTimeFormatter;
+import java.util.ResourceBundle;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -16,10 +16,12 @@ import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.io.File;
-import java.net.URL;
-import java.time.format.DateTimeFormatter;
-import java.util.ResourceBundle;
+import digitalbedrock.software.pbcore.MainApp;
+import digitalbedrock.software.pbcore.controllers.settings.*;
+import digitalbedrock.software.pbcore.core.models.FolderModel;
+import digitalbedrock.software.pbcore.lucene.LuceneIndexer;
+import digitalbedrock.software.pbcore.utils.I18nKey;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
 
 public class SettingsCrawlingController extends AbsController {
 
@@ -62,18 +64,23 @@ public class SettingsCrawlingController extends AbsController {
 
     @FXML
     void onAddButtonClick(ActionEvent event) {
+
         DirectoryChooser directoryChooser = new DirectoryChooser();
         File folder = directoryChooser.showDialog(addButton.getScene().getWindow());
         if (folder == null) {
             return;
         }
-        if (MainApp.getInstance().getRegistry().getSettings().getFolders().stream().anyMatch(fm -> fm.getFolderPath().contains(folder.getAbsolutePath()))) {
+        if (MainApp
+                .getInstance()
+                .getRegistry()
+                .getSettings()
+                .getFolders()
+                .stream()
+                .anyMatch(fm -> fm.getFolderPath().contains(folder.getAbsolutePath()))) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Invalid Folder");
+            alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.INVALID_FOLDER));
             alert.setHeaderText(null);
-            alert.setContentText("The selected folder isn't valid either by:\n " +
-                    "\t- It is already included in one of your indexed folders;\n" +
-                    "\t- It is a parent folder of at least one of would indexed folders.");
+            alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.INVALID_FOLDER_DESCRIPTION));
             alert.showAndWait();
             return;
         }
@@ -90,32 +97,46 @@ public class SettingsCrawlingController extends AbsController {
 
     @FXML
     void onCancelButtonClick(ActionEvent event) {
+
         Stage stage = (Stage) cancelButton.getScene().getWindow();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @FXML
     void onOkButtonClick(ActionEvent event) {
+
         Stage stage = (Stage) okButton.getScene().getWindow();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         pathColumn.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getFolderPath()));
         stateColumn.setCellValueFactory(celldata -> {
             if (celldata.getValue().isIndexing()) {
                 return new SimpleStringProperty(PROCESSING);
-            } else if (celldata.getValue().isScheduled()) {
+            }
+            else if (celldata.getValue().isScheduled()) {
                 return new SimpleStringProperty(SCHEDULED);
-            } else {
+            }
+            else {
                 return new SimpleStringProperty(FINISHED);
             }
         });
-        lastIndexedColumn.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getDateLastIndexing() == null ? "" : celldata.getValue().getDateLastIndexing().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))));
-        filesProcessedColumn.setCellValueFactory(celldata -> new SimpleLongProperty(celldata.getValue().getTotalValidFiles()).asObject());
+        lastIndexedColumn
+                .setCellValueFactory(celldata -> new SimpleStringProperty(
+                        celldata.getValue().getDateLastIndexing() == null ? ""
+                                : celldata
+                                        .getValue()
+                                        .getDateLastIndexing()
+                                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"))));
+        filesProcessedColumn
+                .setCellValueFactory(celldata -> new SimpleLongProperty(celldata.getValue().getTotalValidFiles())
+                        .asObject());
 
-        ObservableList<FolderModel> obsList = FXCollections.observableArrayList(MainApp.getInstance().getRegistry().getSettings().getFolders());
+        ObservableList<FolderModel> obsList = FXCollections
+                .observableArrayList(MainApp.getInstance().getRegistry().getSettings().getFolders());
         foldersTableView.setItems(obsList);
 
         lastIndexedColumn.setCellFactory(new FolderLastIndexedDateCellFactory());
@@ -133,10 +154,12 @@ public class SettingsCrawlingController extends AbsController {
 
     @Override
     public MenuBar createMenu() {
+
         return new MenuBar();
     }
 
     public void onDismissFirstTimeInstructions(ActionEvent actionEvent) {
+
         apFirstTime.setVisible(false);
     }
 }

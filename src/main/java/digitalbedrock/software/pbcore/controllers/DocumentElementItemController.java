@@ -1,14 +1,19 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementType;
+import static digitalbedrock.software.pbcore.controllers.DocumentController.PANIC_ICON;
+import static digitalbedrock.software.pbcore.controllers.DocumentController.WARNING_ICON;
+
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign.MaterialDesign;
+
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementType;
 
 public class DocumentElementItemController {
 
@@ -30,7 +35,10 @@ public class DocumentElementItemController {
     private ChangeListener<Boolean> tChangeListenerV;
     private ChangeListener<Boolean> tChangeListenerHasMultiple;
 
-    public void setDocumentElementInteractionListener(boolean showErrors, boolean allowRemovalOfAllElements, int i, PBCoreElement pbCoreElement, DocumentElementInteractionListener documentElementInteractionListener) {
+    public void setDocumentElementInteractionListener(boolean showErrors, boolean allowRemovalOfAllElements, int i,
+                                                      PBCoreElement pbCoreElement,
+                                                      DocumentElementInteractionListener documentElementInteractionListener) {
+
         this.index = i;
         if (tChangeListener != null) {
             pbCoreElement.valueProperty.removeListener(tChangeListener);
@@ -47,11 +55,17 @@ public class DocumentElementItemController {
         removeButton.setOnAction(event -> documentElementInteractionListener.onRemove(index, pbCoreElement));
         addButton.setOnAction(event -> documentElementInteractionListener.onAdd(index, pbCoreElement));
         copyButton.setOnAction(event -> documentElementInteractionListener.onDuplicate(index, pbCoreElement));
-        removeButton.setVisible(allowRemovalOfAllElements || !pbCoreElement.isRequired() || pbCoreElement.getHasMultiple());
-        addButton.setVisible(pbCoreElement.getElementType() == PBCoreElementType.ROOT_ELEMENT || pbCoreElement.isSupportsChildElements());
-        copyButton.setVisible(pbCoreElement.getElementType() != PBCoreElementType.ROOT_ELEMENT && pbCoreElement.isRepeatable());
+        removeButton
+                .setVisible(allowRemovalOfAllElements || !pbCoreElement.isRequired() || pbCoreElement.getHasMultiple());
+        addButton
+                .setVisible(pbCoreElement.getElementType() == PBCoreElementType.ROOT_ELEMENT
+                        || pbCoreElement.isSupportsChildElements());
+        copyButton
+                .setVisible(pbCoreElement.getElementType() != PBCoreElementType.ROOT_ELEMENT
+                        && pbCoreElement.isRepeatable());
 
-        tChangeListenerHasMultiple = (observable, oldValue, newValue) -> removeButton.setVisible(allowRemovalOfAllElements || !pbCoreElement.isRequired() || pbCoreElement.getHasMultiple());
+        tChangeListenerHasMultiple = (observable, oldValue, newValue) -> removeButton
+                .setVisible(allowRemovalOfAllElements || !pbCoreElement.isRequired() || pbCoreElement.getHasMultiple());
         tChangeListener = (observable, oldValue, newValue) -> {
             valueMissingIcon.setVisible(showErrors && (!pbCoreElement.isValid() || !pbCoreElement.isValidAttributes()));
             updateIconColor(pbCoreElement);
@@ -69,9 +83,11 @@ public class DocumentElementItemController {
         pbCoreElement.validAttributesProperty.addListener(tChangeListenerB);
         pbCoreElement.valueProperty.addListener(tChangeListener);
         pbCoreElement.validProperty.addListener(tChangeListenerV);
-        valueMissingIcon.setVisible(showErrors
-                && (pbCoreElement.isFatalError() || !pbCoreElement.isValid() || !pbCoreElement.isValidAttributes())
-                && pbCoreElement.getElementType() != PBCoreElementType.ROOT_ELEMENT);
+        valueMissingIcon
+                .setVisible(showErrors
+                        && (pbCoreElement.isFatalError() || !pbCoreElement.isValid()
+                                || !pbCoreElement.isValidAttributes())
+                        && pbCoreElement.getElementType() != PBCoreElementType.ROOT_ELEMENT);
         updateIconColor(pbCoreElement);
         titleLabel.setText(pbCoreElement.getScreenName());
 
@@ -79,34 +95,41 @@ public class DocumentElementItemController {
     }
 
     public void updateIndex(int i) {
+
         this.index = i;
     }
 
     private void updateIconColor(PBCoreElement pbCoreElement) {
-        valueMissingIcon.getStyleClass().remove("panicIcon");
-        valueMissingIcon.getStyleClass().remove("warningIcon");
+
+        valueMissingIcon.getStyleClass().remove(PANIC_ICON);
+        valueMissingIcon.getStyleClass().remove(WARNING_ICON);
         if (pbCoreElement.isFatalError()) {
-            valueMissingIcon.getStyleClass().add("panicIcon");
+            valueMissingIcon.getStyleClass().add(PANIC_ICON);
             valueMissingIcon.setIconCode(MaterialDesign.MDI_ALERT_CIRCLE);
-        } else {
-            valueMissingIcon.getStyleClass().add("warningIcon");
+        }
+        else {
+            valueMissingIcon.getStyleClass().add(WARNING_ICON);
             valueMissingIcon.setIconCode(MaterialDesign.MDI_ALERT);
         }
     }
 
     public Button getRemoveButton() {
+
         return removeButton;
     }
 
     public Label getTitleLabel() {
+
         return titleLabel;
     }
 
     public Button getAddButton() {
+
         return addButton;
     }
 
     public Button getCopyButton() {
+
         return copyButton;
     }
 

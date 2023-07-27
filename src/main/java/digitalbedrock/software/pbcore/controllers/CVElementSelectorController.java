@@ -1,19 +1,21 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.MainApp;
-import digitalbedrock.software.pbcore.core.models.NewDocumentType;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementType;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreStructure;
-import digitalbedrock.software.pbcore.listeners.ElementSelectionListener;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import digitalbedrock.software.pbcore.MainApp;
+import digitalbedrock.software.pbcore.core.models.NewDocumentType;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElementType;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreStructure;
+import digitalbedrock.software.pbcore.listeners.ElementSelectionListener;
+import digitalbedrock.software.pbcore.utils.I18nKey;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
 
 public class CVElementSelectorController extends AbsController {
 
@@ -35,7 +37,6 @@ public class CVElementSelectorController extends AbsController {
     @FXML
     private TreeView<PBCoreElement> treeElements;
 
-
     @FXML
     private ToggleGroup typeRadio;
     @FXML
@@ -45,6 +46,7 @@ public class CVElementSelectorController extends AbsController {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         treeElements.setShowRoot(false);
         treeElements.setCellFactory(lv -> new PBCoreTreeCell());
         ChangeListener<TreeItem<PBCoreElement>> listener = (observable, oldValue, newValue) -> {
@@ -53,18 +55,25 @@ public class CVElementSelectorController extends AbsController {
             }
             PBCoreElement value = newValue.getValue();
             lblDescription.setText(value.getDescription());
-            lblOptional.setText(value.isRequired() ? "required" : "optional");
-            String repeatable = value.isRepeatable() ? ", repeatable" : "";
-            String choice = value.isChoice() ? ", choice" : "";
+            lblOptional
+                    .setText(value.isRequired() ? LanguageManager.INSTANCE.getString(I18nKey.REQUIRED)
+                            : LanguageManager.INSTANCE.getString(I18nKey.OPTIONAL));
+            String repeatable = value.isRepeatable() ? LanguageManager.INSTANCE.getString(I18nKey.REPEATABLE) : "";
+            String choice = value.isChoice() ? LanguageManager.INSTANCE.getString(I18nKey.CHOICE) : "";
             lblRepeatable.setText(repeatable + choice);
-            lblElementAlreadyAdded.setText("Element already present in the controlled vocabularies list");
+            lblElementAlreadyAdded.setText(LanguageManager.INSTANCE.getString(I18nKey.ELEMENT_ALREADY_IN_USE));
             lblElementAlreadyAdded.setVisible(false);
             btnAdd.setDisable(false);
-            if (MainApp.getInstance().getRegistry().getControlledVocabularies().containsKey(newValue.getValue().getName())) {
+            if (MainApp
+                    .getInstance()
+                    .getRegistry()
+                    .getControlledVocabularies()
+                    .containsKey(newValue.getValue().getName())) {
                 btnAdd.setDisable(true);
                 lblElementAlreadyAdded.setVisible(true);
-            }else if(value.isHasChildElements()){
-                lblElementAlreadyAdded.setText("This element is a parent element therefore it can't have any value associated to him");
+            }
+            else if (value.isHasChildElements()) {
+                lblElementAlreadyAdded.setText(LanguageManager.INSTANCE.getString(I18nKey.ELEMENT_IS_A_PARENT_ELEMENT));
                 btnAdd.setDisable(true);
                 lblElementAlreadyAdded.setVisible(true);
             }
@@ -78,7 +87,8 @@ public class CVElementSelectorController extends AbsController {
         typeRadio.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
             if (typeRadio.getSelectedToggle().equals(rbDescription)) {
                 loadElements(NewDocumentType.DESCRIPTION_DOCUMENT);
-            } else if (typeRadio.getSelectedToggle().equals(rbInstantiation)) {
+            }
+            else if (typeRadio.getSelectedToggle().equals(rbInstantiation)) {
                 loadElements(NewDocumentType.INSTANTIATION_DOCUMENT);
             }
         });
@@ -86,23 +96,31 @@ public class CVElementSelectorController extends AbsController {
     }
 
     public void setElementSelectionListener(ElementSelectionListener elementSelectionListener) {
+
         btnCancel.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             elementSelectionListener.onElementSelected(null, 0, null, false);
         });
         btnAdd.addEventFilter(MouseEvent.MOUSE_PRESSED, event -> {
             TreeItem<PBCoreElement> selectedItem = treeElements.getSelectionModel().getSelectedItem();
-            MainApp.getInstance().getRegistry().createNewVocabulariesAggregator(selectedItem.getValue().getName(), false);
+            MainApp
+                    .getInstance()
+                    .getRegistry()
+                    .createNewVocabulariesAggregator(selectedItem.getValue().getName(), false);
             elementSelectionListener.onElementSelected(null, 0, null, false);
         });
     }
 
     private TreeItem<PBCoreElement> getTreeItem(PBCoreElement rootElement) {
+
         TreeItem<PBCoreElement> pbCoreElementTreeItem = new TreeItem<>(rootElement);
-        rootElement.getOrderedSubElements().forEach((coreElement) -> pbCoreElementTreeItem.getChildren().add(getTreeItem(coreElement)));
+        rootElement
+                .getOrderedSubElements()
+                .forEach((coreElement) -> pbCoreElementTreeItem.getChildren().add(getTreeItem(coreElement)));
         return pbCoreElementTreeItem;
     }
 
     public void loadElements(NewDocumentType newDocumentType) {
+
         PBCoreElement copy = PBCoreStructure.getInstance().getRootElement(newDocumentType).copy();
         if (copy.getElementType() == PBCoreElementType.ROOT_ELEMENT) {
             copy.getSubElements().forEach(PBCoreElement::unmarkAsRootElement);
@@ -113,19 +131,21 @@ public class CVElementSelectorController extends AbsController {
 
     @Override
     public MenuBar createMenu() {
+
         return null;
     }
-
 
     private class PBCoreTreeCell extends TreeCell<PBCoreElement> {
 
         @Override
         protected void updateItem(PBCoreElement item, boolean empty) {
+
             super.updateItem(item, empty);
             if (!empty) {
                 setText(item.getScreenName());
                 setTooltip(new Tooltip(item.getTooltip()));
-            } else {
+            }
+            else {
                 setText(null);
                 setTooltip(null);
             }

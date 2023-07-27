@@ -1,18 +1,18 @@
 package digitalbedrock.software.pbcore.core.models.document;
 
-import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.*;
+
 /**
- * Definition: The pbcoreDescriptionDocumentType schema type allows its use as a
- * single asset or repeated use in the pbcoreCollection. r
+ * Definition: The pbcoreDescriptionDocumentType schema type allows its use as a single asset or repeated use in the
+ * pbcoreCollection. r
  * <p>
  * Java class for pbcoreDescriptionDocumentType complex type.
  *
  * <p>
- * The following schema fragment specifies the expected content contained within
- * this class.
+ * The following schema fragment specifies the expected content contained within this class.
  *
  * <pre>
  * &lt;complexType name="pbcoreDescriptionDocumentType">
@@ -112,29 +112,11 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "pbcoreDescriptionDocumentType", namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", propOrder = {
-    "pbcoreAssetType",
-    "pbcoreAssetDate",
-    "pbcoreIdentifier",
-    "pbcoreTitle",
-    "pbcoreSubject",
-    "pbcoreDescription",
-    "pbcoreGenre",
-    "pbcoreRelation",
-    "pbcoreCoverage",
-    "pbcoreAudienceLevel",
-    "pbcoreAudienceRating",
-    "pbcoreCreator",
-    "pbcoreContributor",
-    "pbcorePublisher",
-    "pbcoreRightsSummary",
-    "pbcoreInstantiation",
-    "pbcoreAnnotation",
-    "pbcorePart",
-    "pbcoreExtension"
-})
-@XmlSeeAlso({
-    PbcorePartType.class
-})
+        "pbcoreAssetType", "pbcoreAssetDate", "pbcoreIdentifier", "pbcoreTitle", "pbcoreSubject", "pbcoreDescription",
+        "pbcoreGenre", "pbcoreRelation", "pbcoreCoverage", "pbcoreAudienceLevel", "pbcoreAudienceRating",
+        "pbcoreCreator", "pbcoreContributor", "pbcorePublisher", "pbcoreRightsSummary", "pbcoreInstantiation",
+        "pbcoreAnnotation", "pbcorePart", "pbcoreExtension" })
+@XmlSeeAlso({ PbcorePartType.class })
 public class PbcoreDescriptionDocumentType {
 
     @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html")
@@ -188,25 +170,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreAssetType property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreAssetType property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreAssetType property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreAssetType().onAdd(newItem);
+     * getPbcoreAssetType().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link SourceVersionStringType }
+     * Objects of the following type(s) are allowed in the list {@link SourceVersionStringType }
      *
      *
      */
     public List<SourceVersionStringType> getPbcoreAssetType() {
+
         if (pbcoreAssetType == null) {
             pbcoreAssetType = new ArrayList<>();
         }
@@ -217,25 +199,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreAssetDate property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreAssetDate property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreAssetDate property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreAssetDate().onAdd(newItem);
+     * getPbcoreAssetDate().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link DateStringType }
+     * Objects of the following type(s) are allowed in the list {@link DateStringType }
      *
      *
      */
     public List<DateStringType> getPbcoreAssetDate() {
+
         if (pbcoreAssetDate == null) {
             pbcoreAssetDate = new ArrayList<>();
         }
@@ -246,25 +228,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreIdentifier property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreIdentifier property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreIdentifier property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreIdentifier().onAdd(newItem);
+     * getPbcoreIdentifier().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link RequiredSourceVersionStringType }
+     * Objects of the following type(s) are allowed in the list {@link RequiredSourceVersionStringType }
      *
      *
      */
     public List<RequiredSourceVersionStringType> getPbcoreIdentifier() {
+
         if (pbcoreIdentifier == null) {
             pbcoreIdentifier = new ArrayList<>();
         }
@@ -275,25 +257,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreTitle property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreTitle property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreTitle property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreTitle().onAdd(newItem);
+     * getPbcoreTitle().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link TitleStringType }
+     * Objects of the following type(s) are allowed in the list {@link TitleStringType }
      *
      *
      */
     public List<TitleStringType> getPbcoreTitle() {
+
         if (pbcoreTitle == null) {
             pbcoreTitle = new ArrayList<>();
         }
@@ -304,25 +286,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreSubject property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreSubject property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreSubject property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreSubject().onAdd(newItem);
+     * getPbcoreSubject().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link SubjectStringType }
+     * Objects of the following type(s) are allowed in the list {@link SubjectStringType }
      *
      *
      */
     public List<SubjectStringType> getPbcoreSubject() {
+
         if (pbcoreSubject == null) {
             pbcoreSubject = new ArrayList<>();
         }
@@ -333,25 +315,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreDescription property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreDescription property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreDescription property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreDescription().onAdd(newItem);
+     * getPbcoreDescription().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link DescriptionStringType }
+     * Objects of the following type(s) are allowed in the list {@link DescriptionStringType }
      *
      *
      */
     public List<DescriptionStringType> getPbcoreDescription() {
+
         if (pbcoreDescription == null) {
             pbcoreDescription = new ArrayList<>();
         }
@@ -362,25 +344,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreGenre property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreGenre property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreGenre property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreGenre().onAdd(newItem);
+     * getPbcoreGenre().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link SourceVersionStartEndStringType }
+     * Objects of the following type(s) are allowed in the list {@link SourceVersionStartEndStringType }
      *
      *
      */
     public List<SourceVersionStartEndStringType> getPbcoreGenre() {
+
         if (pbcoreGenre == null) {
             pbcoreGenre = new ArrayList<>();
         }
@@ -391,25 +373,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreRelation property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreRelation property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreRelation property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreRelation().onAdd(newItem);
+     * getPbcoreRelation().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PbcoreDescriptionDocumentType.PbcoreRelation }
+     * Objects of the following type(s) are allowed in the list {@link PbcoreDescriptionDocumentType.PbcoreRelation }
      *
      *
      */
     public List<PbcoreDescriptionDocumentType.PbcoreRelation> getPbcoreRelation() {
+
         if (pbcoreRelation == null) {
             pbcoreRelation = new ArrayList<>();
         }
@@ -420,25 +402,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreCoverage property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreCoverage property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreCoverage property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreCoverage().onAdd(newItem);
+     * getPbcoreCoverage().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PbcoreDescriptionDocumentType.PbcoreCoverage }
+     * Objects of the following type(s) are allowed in the list {@link PbcoreDescriptionDocumentType.PbcoreCoverage }
      *
      *
      */
     public List<PbcoreDescriptionDocumentType.PbcoreCoverage> getPbcoreCoverage() {
+
         if (pbcoreCoverage == null) {
             pbcoreCoverage = new ArrayList<>();
         }
@@ -449,25 +431,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreAudienceLevel property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreAudienceLevel property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreAudienceLevel property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreAudienceLevel().onAdd(newItem);
+     * getPbcoreAudienceLevel().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link SourceVersionStringType }
+     * Objects of the following type(s) are allowed in the list {@link SourceVersionStringType }
      *
      *
      */
     public List<SourceVersionStringType> getPbcoreAudienceLevel() {
+
         if (pbcoreAudienceLevel == null) {
             pbcoreAudienceLevel = new ArrayList<>();
         }
@@ -478,25 +460,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreAudienceRating property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreAudienceRating property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreAudienceRating property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreAudienceRating().onAdd(newItem);
+     * getPbcoreAudienceRating().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link SourceVersionStringType }
+     * Objects of the following type(s) are allowed in the list {@link SourceVersionStringType }
      *
      *
      */
     public List<SourceVersionStringType> getPbcoreAudienceRating() {
+
         if (pbcoreAudienceRating == null) {
             pbcoreAudienceRating = new ArrayList<>();
         }
@@ -507,25 +489,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreCreator property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreCreator property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreCreator property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreCreator().onAdd(newItem);
+     * getPbcoreCreator().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PbcoreDescriptionDocumentType.PbcoreCreator }
+     * Objects of the following type(s) are allowed in the list {@link PbcoreDescriptionDocumentType.PbcoreCreator }
      *
      *
      */
     public List<PbcoreDescriptionDocumentType.PbcoreCreator> getPbcoreCreator() {
+
         if (pbcoreCreator == null) {
             pbcoreCreator = new ArrayList<>();
         }
@@ -536,25 +518,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreContributor property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreContributor property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreContributor property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreContributor().onAdd(newItem);
+     * getPbcoreContributor().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PbcoreDescriptionDocumentType.PbcoreContributor }
+     * Objects of the following type(s) are allowed in the list {@link PbcoreDescriptionDocumentType.PbcoreContributor }
      *
      *
      */
     public List<PbcoreDescriptionDocumentType.PbcoreContributor> getPbcoreContributor() {
+
         if (pbcoreContributor == null) {
             pbcoreContributor = new ArrayList<>();
         }
@@ -565,25 +547,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcorePublisher property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcorePublisher property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcorePublisher property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcorePublisher().onAdd(newItem);
+     * getPbcorePublisher().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PbcoreDescriptionDocumentType.PbcorePublisher }
+     * Objects of the following type(s) are allowed in the list {@link PbcoreDescriptionDocumentType.PbcorePublisher }
      *
      *
      */
     public List<PbcoreDescriptionDocumentType.PbcorePublisher> getPbcorePublisher() {
+
         if (pbcorePublisher == null) {
             pbcorePublisher = new ArrayList<>();
         }
@@ -594,25 +576,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreRightsSummary property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreRightsSummary property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreRightsSummary property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreRightsSummary().onAdd(newItem);
+     * getPbcoreRightsSummary().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link RightsSummaryType }
+     * Objects of the following type(s) are allowed in the list {@link RightsSummaryType }
      *
      *
      */
     public List<RightsSummaryType> getPbcoreRightsSummary() {
+
         if (pbcoreRightsSummary == null) {
             pbcoreRightsSummary = new ArrayList<>();
         }
@@ -623,25 +605,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreInstantiation property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreInstantiation property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreInstantiation property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreInstantiation().onAdd(newItem);
+     * getPbcoreInstantiation().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link InstantiationType }
+     * Objects of the following type(s) are allowed in the list {@link InstantiationType }
      *
      *
      */
     public List<InstantiationType> getPbcoreInstantiation() {
+
         if (pbcoreInstantiation == null) {
             pbcoreInstantiation = new ArrayList<>();
         }
@@ -652,25 +634,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreAnnotation property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreAnnotation property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreAnnotation property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreAnnotation().onAdd(newItem);
+     * getPbcoreAnnotation().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link AnnotationStringType }
+     * Objects of the following type(s) are allowed in the list {@link AnnotationStringType }
      *
      *
      */
     public List<AnnotationStringType> getPbcoreAnnotation() {
+
         if (pbcoreAnnotation == null) {
             pbcoreAnnotation = new ArrayList<>();
         }
@@ -681,25 +663,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcorePart property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcorePart property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcorePart property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcorePart().onAdd(newItem);
+     * getPbcorePart().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link PbcorePartType }
+     * Objects of the following type(s) are allowed in the list {@link PbcorePartType }
      *
      *
      */
     public List<PbcorePartType> getPbcorePart() {
+
         if (pbcorePart == null) {
             pbcorePart = new ArrayList<>();
         }
@@ -710,25 +692,25 @@ public class PbcoreDescriptionDocumentType {
      * Gets the value of the pbcoreExtension property.
      *
      * <p>
-     * This accessor method returns a reference to the live list, not a
-     * snapshot. Therefore any modification you make to the returned list will
-     * be present inside the JAXB object. This is why there is not a
-     * <CODE>set</CODE> method for the pbcoreExtension property.
+     * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to
+     * the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for
+     * the pbcoreExtension property.
      *
      * <p>
      * For example, to onAdd a new item, do as follows:
+     * 
      * <pre>
-     *    getPbcoreExtension().onAdd(newItem);
+     * getPbcoreExtension().onAdd(newItem);
      * </pre>
      *
      *
      * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link ExtensionType }
+     * Objects of the following type(s) are allowed in the list {@link ExtensionType }
      *
      *
      */
     public List<ExtensionType> getPbcoreExtension() {
+
         if (pbcoreExtension == null) {
             pbcoreExtension = new ArrayList<>();
         }
@@ -742,16 +724,19 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     public String getSource() {
+
         return source;
     }
 
     /**
      * Sets the value of the source property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setSource(String value) {
+
         this.source = value;
     }
 
@@ -762,16 +747,19 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     public String getRef() {
+
         return ref;
     }
 
     /**
      * Sets the value of the ref property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setRef(String value) {
+
         this.ref = value;
     }
 
@@ -782,16 +770,19 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     public String getVersion() {
+
         return version;
     }
 
     /**
      * Sets the value of the version property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setVersion(String value) {
+
         this.version = value;
     }
 
@@ -802,16 +793,19 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     public String getAnnotation() {
+
         return annotation;
     }
 
     /**
      * Sets the value of the annotation property.
      *
-     * @param value allowed object is {@link String }
+     * @param value
+     *            allowed object is {@link String }
      *
      */
     public void setAnnotation(String value) {
+
         this.annotation = value;
     }
 
@@ -820,8 +814,7 @@ public class PbcoreDescriptionDocumentType {
      * Java class for anonymous complex type.
      *
      * <p>
-     * The following schema fragment specifies the expected content contained
-     * within this class.
+     * The following schema fragment specifies the expected content contained within this class.
      *
      * <pre>
      * &lt;complexType>
@@ -839,10 +832,7 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "contributor",
-        "contributorRole"
-    })
+    @XmlType(name = "", propOrder = { "contributor", "contributorRole" })
     public static class PbcoreContributor {
 
         @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -857,16 +847,19 @@ public class PbcoreDescriptionDocumentType {
          *
          */
         public AffiliatedStringType getContributor() {
+
             return contributor;
         }
 
         /**
          * Sets the value of the contributor property.
          *
-         * @param value allowed object is {@link AffiliatedStringType }
+         * @param value
+         *            allowed object is {@link AffiliatedStringType }
          *
          */
         public void setContributor(AffiliatedStringType value) {
+
             this.contributor = value;
         }
 
@@ -874,25 +867,25 @@ public class PbcoreDescriptionDocumentType {
          * Gets the value of the contributorRole property.
          *
          * <p>
-         * This accessor method returns a reference to the live list, not a
-         * snapshot. Therefore any modification you make to the returned list
-         * will be present inside the JAXB object. This is why there is not a
-         * <CODE>set</CODE> method for the contributorRole property.
+         * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
+         * make to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE>
+         * method for the contributorRole property.
          *
          * <p>
          * For example, to onAdd a new item, do as follows:
+         * 
          * <pre>
-         *    getContributorRole().onAdd(newItem);
+         * getContributorRole().onAdd(newItem);
          * </pre>
          *
          *
          * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link ContributorStringType }
+         * Objects of the following type(s) are allowed in the list {@link ContributorStringType }
          *
          *
          */
         public List<ContributorStringType> getContributorRole() {
+
             if (contributorRole == null) {
                 contributorRole = new ArrayList<>();
             }
@@ -906,8 +899,7 @@ public class PbcoreDescriptionDocumentType {
      * Java class for anonymous complex type.
      *
      * <p>
-     * The following schema fragment specifies the expected content contained
-     * within this class.
+     * The following schema fragment specifies the expected content contained within this class.
      *
      * <pre>
      * &lt;complexType>
@@ -932,10 +924,7 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "coverage",
-        "coverageType"
-    })
+    @XmlType(name = "", propOrder = { "coverage", "coverageType" })
     public static class PbcoreCoverage {
 
         @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -950,17 +939,19 @@ public class PbcoreDescriptionDocumentType {
          *
          */
         public SourceVersionStartEndStringType getCoverage() {
+
             return coverage;
         }
 
         /**
          * Sets the value of the coverage property.
          *
-         * @param value allowed object is
-         *     {@link SourceVersionStartEndStringType }
+         * @param value
+         *            allowed object is {@link SourceVersionStartEndStringType }
          *
          */
         public void setCoverage(SourceVersionStartEndStringType value) {
+
             this.coverage = value;
         }
 
@@ -971,16 +962,19 @@ public class PbcoreDescriptionDocumentType {
          *
          */
         public String getCoverageType() {
+
             return coverageType;
         }
 
         /**
          * Sets the value of the coverageType property.
          *
-         * @param value allowed object is {@link String }
+         * @param value
+         *            allowed object is {@link String }
          *
          */
         public void setCoverageType(String value) {
+
             this.coverageType = value;
         }
 
@@ -991,8 +985,7 @@ public class PbcoreDescriptionDocumentType {
      * Java class for anonymous complex type.
      *
      * <p>
-     * The following schema fragment specifies the expected content contained
-     * within this class.
+     * The following schema fragment specifies the expected content contained within this class.
      *
      * <pre>
      * &lt;complexType>
@@ -1010,10 +1003,7 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "creator",
-        "creatorRole"
-    })
+    @XmlType(name = "", propOrder = { "creator", "creatorRole" })
     public static class PbcoreCreator {
 
         @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -1028,16 +1018,19 @@ public class PbcoreDescriptionDocumentType {
          *
          */
         public AffiliatedStringType getCreator() {
+
             return creator;
         }
 
         /**
          * Sets the value of the creator property.
          *
-         * @param value allowed object is {@link AffiliatedStringType }
+         * @param value
+         *            allowed object is {@link AffiliatedStringType }
          *
          */
         public void setCreator(AffiliatedStringType value) {
+
             this.creator = value;
         }
 
@@ -1045,25 +1038,25 @@ public class PbcoreDescriptionDocumentType {
          * Gets the value of the creatorRole property.
          *
          * <p>
-         * This accessor method returns a reference to the live list, not a
-         * snapshot. Therefore any modification you make to the returned list
-         * will be present inside the JAXB object. This is why there is not a
-         * <CODE>set</CODE> method for the creatorRole property.
+         * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
+         * make to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE>
+         * method for the creatorRole property.
          *
          * <p>
          * For example, to onAdd a new item, do as follows:
+         * 
          * <pre>
-         *    getCreatorRole().onAdd(newItem);
+         * getCreatorRole().onAdd(newItem);
          * </pre>
          *
          *
          * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link SourceVersionStringType }
+         * Objects of the following type(s) are allowed in the list {@link SourceVersionStringType }
          *
          *
          */
         public List<SourceVersionStringType> getCreatorRole() {
+
             if (creatorRole == null) {
                 creatorRole = new ArrayList<>();
             }
@@ -1077,8 +1070,7 @@ public class PbcoreDescriptionDocumentType {
      * Java class for anonymous complex type.
      *
      * <p>
-     * The following schema fragment specifies the expected content contained
-     * within this class.
+     * The following schema fragment specifies the expected content contained within this class.
      *
      * <pre>
      * &lt;complexType>
@@ -1096,10 +1088,7 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "publisher",
-        "publisherRole"
-    })
+    @XmlType(name = "", propOrder = { "publisher", "publisherRole" })
     public static class PbcorePublisher {
 
         @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -1114,16 +1103,19 @@ public class PbcoreDescriptionDocumentType {
          *
          */
         public AffiliatedStringType getPublisher() {
+
             return publisher;
         }
 
         /**
          * Sets the value of the publisher property.
          *
-         * @param value allowed object is {@link AffiliatedStringType }
+         * @param value
+         *            allowed object is {@link AffiliatedStringType }
          *
          */
         public void setPublisher(AffiliatedStringType value) {
+
             this.publisher = value;
         }
 
@@ -1131,25 +1123,25 @@ public class PbcoreDescriptionDocumentType {
          * Gets the value of the publisherRole property.
          *
          * <p>
-         * This accessor method returns a reference to the live list, not a
-         * snapshot. Therefore any modification you make to the returned list
-         * will be present inside the JAXB object. This is why there is not a
-         * <CODE>set</CODE> method for the publisherRole property.
+         * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you
+         * make to the returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE>
+         * method for the publisherRole property.
          *
          * <p>
          * For example, to onAdd a new item, do as follows:
+         * 
          * <pre>
-         *    getPublisherRole().onAdd(newItem);
+         * getPublisherRole().onAdd(newItem);
          * </pre>
          *
          *
          * <p>
-         * Objects of the following type(s) are allowed in the list
-         * {@link SourceVersionStringType }
+         * Objects of the following type(s) are allowed in the list {@link SourceVersionStringType }
          *
          *
          */
         public List<SourceVersionStringType> getPublisherRole() {
+
             if (publisherRole == null) {
                 publisherRole = new ArrayList<>();
             }
@@ -1163,8 +1155,7 @@ public class PbcoreDescriptionDocumentType {
      * Java class for anonymous complex type.
      *
      * <p>
-     * The following schema fragment specifies the expected content contained
-     * within this class.
+     * The following schema fragment specifies the expected content contained within this class.
      *
      * <pre>
      * &lt;complexType>
@@ -1182,10 +1173,7 @@ public class PbcoreDescriptionDocumentType {
      *
      */
     @XmlAccessorType(XmlAccessType.FIELD)
-    @XmlType(name = "", propOrder = {
-        "pbcoreRelationType",
-        "pbcoreRelationIdentifier"
-    })
+    @XmlType(name = "", propOrder = { "pbcoreRelationType", "pbcoreRelationIdentifier" })
     public static class PbcoreRelation {
 
         @XmlElement(namespace = "http://www.pbcore.org/PBCore/PBCoreNamespace.html", required = true)
@@ -1200,16 +1188,19 @@ public class PbcoreDescriptionDocumentType {
          *
          */
         public SourceVersionStringType getPbcoreRelationType() {
+
             return pbcoreRelationType;
         }
 
         /**
          * Sets the value of the pbcoreRelationType property.
          *
-         * @param value allowed object is {@link SourceVersionStringType }
+         * @param value
+         *            allowed object is {@link SourceVersionStringType }
          *
          */
         public void setPbcoreRelationType(SourceVersionStringType value) {
+
             this.pbcoreRelationType = value;
         }
 
@@ -1220,16 +1211,19 @@ public class PbcoreDescriptionDocumentType {
          *
          */
         public SourceVersionStringType getPbcoreRelationIdentifier() {
+
             return pbcoreRelationIdentifier;
         }
 
         /**
          * Sets the value of the pbcoreRelationIdentifier property.
          *
-         * @param value allowed object is {@link SourceVersionStringType }
+         * @param value
+         *            allowed object is {@link SourceVersionStringType }
          *
          */
         public void setPbcoreRelationIdentifier(SourceVersionStringType value) {
+
             this.pbcoreRelationIdentifier = value;
         }
 

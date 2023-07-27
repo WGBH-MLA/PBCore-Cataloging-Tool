@@ -1,9 +1,21 @@
 package digitalbedrock.software.pbcore.utils;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.bind.JAXBException;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import digitalbedrock.software.pbcore.MainApp;
 import digitalbedrock.software.pbcore.core.Settings;
 import digitalbedrock.software.pbcore.core.models.CV;
@@ -16,18 +28,9 @@ import digitalbedrock.software.pbcore.lucene.LuceneEngineSearchFilter;
 import digitalbedrock.software.pbcore.parsers.CSVAttributeMapper;
 import digitalbedrock.software.pbcore.parsers.CSVElementMapper;
 
-import javax.xml.bind.JAXBException;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class Registry implements Observer {
 
+    public static final Logger LOGGER = Logger.getLogger(Registry.class.getName());
     private final boolean isMac;
     private final boolean isWindows;
 
@@ -42,19 +45,28 @@ public class Registry implements Observer {
     private final List<SavedSearchedUpdated> savedSearchesUpdated = new ArrayList<>();
 
     public Registry() {
+
         isMac = System.getProperty("os.name").toLowerCase().contains("mac");
         isWindows = System.getProperty("os.name").toLowerCase().contains("win");
         controlledVocabularies = new TreeMap<>(loadControlledVocabularies());
         verifyAndRetrieveAceEditorHtmlResourceFile();
+        loadSavedSettings();
+        reloadElementsAndAttributes();
+    }
+
+    private void reloadElementsAndAttributes() {
+
         loadPBCoreElements();
         loadBatchEditPBCoreElement();
     }
 
     public String defaultDirectory() {
+
         String file;
         if (isWindows) {
             file = System.getenv("APPDATA") + "/PBCore";
-        } else {
+        }
+        else {
             file = System.getProperty("user.home") + "/.pbcore";
         }
         File f = new File(file);
@@ -65,52 +77,61 @@ public class Registry implements Observer {
     }
 
     public static String verifyAndRetrieveAceEditorHtmlResourceFile() {
+
         File file = new File(System.getProperty("java.io.tmpdir") + ACE_EDITOR_FOLDER + ACE_EDITOR_HTML_FILE);
         if (!file.exists()) {
-            InputStream aceEditorTxt = Thread.currentThread().getContextClassLoader().getResourceAsStream("aceeditor.txt");
+            InputStream aceEditorTxt = Registry.class.getResourceAsStream("/aceeditor.txt");
             BufferedReader br = new BufferedReader(new InputStreamReader(aceEditorTxt, StandardCharsets.UTF_8));
             String line;
             try {
                 while ((line = br.readLine()) != null) {
-                    InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(line);
+                    InputStream resourceAsStream = Registry.class.getResourceAsStream(line);
                     File fileToSave = new File(System.getProperty("java.io.tmpdir") + line);
                     org.apache.commons.io.FileUtils.copyInputStreamToFile(resourceAsStream, fileToSave);
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.SEVERE, "could not copy ace editor into temp dir", e);
             }
         }
         return file.getAbsolutePath();
     }
 
     private Map<String, CV> loadControlledVocabularies() {
+
         String file = defaultDirectory() + File.separator + "cvs" + File.separator + "cvs.json";
         File f = new File(file);
         if (!f.exists()) {
             try {
                 new File(defaultDirectory() + File.separator + "cvs").mkdir();
                 Files.copy(Thread.currentThread().getContextClassLoader().getResourceAsStream("cvs.json"), f.toPath());
-            } catch (IOException ex) {
-                Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(f, new TypeReference<HashMap<String, CV>>() {
             });
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         try {
-            return mapper.readValue(Thread.currentThread().getContextClassLoader().getResource("cvs.json"), new TypeReference<HashMap<String, CV>>() {
-            });
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+            return mapper
+                    .readValue(Thread.currentThread().getContextClassLoader().getResource("cvs.json"),
+                               new TypeReference<HashMap<String, CV>>() {
+                               });
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
             return new HashMap<>();
         }
     }
 
     public CVTerm saveVocabulary(String cvId, String term, String source, String version, String ref) {
+
         try {
             CVTerm cvTerm = new CVTerm(term, source, version, ref);
             CV cv = controlledVocabularies.get(cvId);
@@ -125,18 +146,21 @@ public class Registry implements Observer {
                         }
                     }
                 }
-            } else {
+            }
+            else {
                 cv.getTerms().add(cvTerm);
             }
             saveVocabulariesFile();
             return cvTerm;
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
     public void updateVocabulary(String cvId, CVTerm selectedCVTerm) {
+
         CV cv = controlledVocabularies.get(cvId);
         if (cv == null) {
             String[] split = cvId.split(" - ");
@@ -150,18 +174,21 @@ public class Registry implements Observer {
                     }
                 }
             }
-        } else {
+        }
+        else {
             int i = cv.getTerms().indexOf(selectedCVTerm);
             cv.getTerms().set(i, selectedCVTerm);
         }
         try {
             saveVocabulariesFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     public void deleteVocabulary(String cvId, CVTerm selectedCVTerm) {
+
         if (!selectedCVTerm.isCustom()) {
             return;
         }
@@ -177,23 +204,27 @@ public class Registry implements Observer {
                     }
                 }
             }
-        } else {
+        }
+        else {
             cv.getTerms().remove(selectedCVTerm);
         }
         try {
             saveVocabulariesFile();
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     private void saveVocabulariesFile() throws IOException {
+
         String file = defaultDirectory() + File.separator + "cvs" + File.separator + "cvs.json";
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(new File(file), controlledVocabularies);
     }
 
     private void loadPBCoreElements() {
+
         Map<String, String> pages = getCurrentWorkPages();
         List<Map.Entry<String, String>> pagesToRemove = new ArrayList<>();
         pages.entrySet().forEach((entry) -> {
@@ -201,15 +232,18 @@ public class Registry implements Observer {
                 File file = new File(defaultDirectory() + File.separator + entry.getKey());
                 if (!file.exists()) {
                     pagesToRemove.add(entry);
-                } else {
+                }
+                else {
                     try {
                         pbCoreElements.put(entry.getKey(), PBCoreStructure.getInstance().parseFile(file, this));
-                    } catch (NullPointerException e) {
-                        Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, e.getMessage());
+                    }
+                    catch (NullPointerException e) {
+                        LOGGER.log(Level.SEVERE, null, e.getMessage());
                     }
                 }
-            } catch (IllegalAccessException | JAXBException ex) {
-                Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (IllegalAccessException | JAXBException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         });
         pagesToRemove.forEach((entry) -> pages.remove(entry.getKey()));
@@ -217,21 +251,25 @@ public class Registry implements Observer {
     }
 
     private void loadBatchEditPBCoreElement() {
+
         try {
             File file = new File(defaultDirectory() + File.separator + "batch-edit");
             if (file.exists()) {
                 batchEditPBCoreElement = PBCoreStructure.getInstance().parseFile(file, this);
             }
-        } catch (IllegalAccessException | JAXBException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IllegalAccessException | JAXBException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     public PBCoreElement getBatchEditPBCoreElement() {
+
         return batchEditPBCoreElement;
     }
 
     public void removePBCoreElement(String token) {
+
         Map<String, String> pages = getCurrentWorkPages();
         Map<String, String> pagesFilenames = getCurrentWorkPagesFilenames();
         pages.remove(token);
@@ -245,6 +283,7 @@ public class Registry implements Observer {
     }
 
     public void savePBCoreElement(String token, String currentId, File f, PBCoreElement pbCoreElement) {
+
         Map<String, String> pages = getCurrentWorkPages();
         Map<String, String> pagesFilenames = getCurrentWorkPagesFilenames();
         pages.put(token, f != null ? f.getName() : currentId);
@@ -255,16 +294,19 @@ public class Registry implements Observer {
             saveCurrentWorkPages(pages);
             saveCurrentWorkPagesFilenames(pagesFilenames);
             pbCoreElements.put(token, pbCoreElement);
-        } catch (IOException | ParserConfigurationException | TransformerException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException | ParserConfigurationException | TransformerException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     public Map<String, PBCoreElement> getPbCoreElements() {
+
         return pbCoreElements;
     }
 
-    public void loadSavedSettings() {
+    private void loadSavedSettings() {
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         String file = defaultDirectory() + File.separator + "settings.json";
@@ -273,48 +315,59 @@ public class Registry implements Observer {
             try {
                 settings = mapper.readValue(file1, new TypeReference<Settings>() {
                 });
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.WARNING, "error loading saved settings", e);
                 settings = new Settings();
             }
-        } else {
+        }
+        else {
             settings = new Settings();
         }
         settings.addObserver(this);
+
+        LanguageManager.INSTANCE.updateLanguage(settings.getLanguage());
     }
 
     private void saveSettings() {
+
         try {
             String file = defaultDirectory() + File.separator + "settings.json";
             ObjectMapper mapper = new ObjectMapper();
             mapper.registerModule(new JavaTimeModule());
             mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
             mapper.writeValue(new File(file), settings);
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     public boolean isMac() {
+
         return isMac;
     }
 
     public Settings getSettings() {
+
         return settings;
     }
 
     @Override
     public void update(Observable o, Object arg) {
+
         if (arg instanceof Settings) {
             saveSettings();
         }
     }
 
     public Map<String, CV> getControlledVocabularies() {
+
         return controlledVocabularies;
     }
 
     public List<List<LuceneEngineSearchFilter>> getSavedSearches() {
+
         ObjectMapper mapper = new ObjectMapper();
         String file = defaultDirectory() + File.separator + "saved-searches.json";
         File file1 = new File(file);
@@ -322,14 +375,16 @@ public class Registry implements Observer {
             try {
                 return mapper.readValue(file1, new TypeReference<List<List<LuceneEngineSearchFilter>>>() {
                 });
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.WARNING, "error getting saved searches", e);
             }
         }
         return new ArrayList<>();
     }
 
     public Map<String, String> getCurrentWorkPages() {
+
         ObjectMapper mapper = new ObjectMapper();
         String file = defaultDirectory() + File.separator + "work-pages-names.json";
         File file1 = new File(file);
@@ -337,14 +392,16 @@ public class Registry implements Observer {
             try {
                 return mapper.readValue(file1, new TypeReference<Map<String, String>>() {
                 });
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.WARNING, "error getting current wrk pages", e);
             }
         }
         return new HashMap<>();
     }
 
     public Map<String, String> getCurrentWorkPagesFilenames() {
+
         ObjectMapper mapper = new ObjectMapper();
         String file = defaultDirectory() + File.separator + "work-pages-filenames.json";
         File file1 = new File(file);
@@ -352,49 +409,64 @@ public class Registry implements Observer {
             try {
                 return mapper.readValue(file1, new TypeReference<Map<String, String>>() {
                 });
-            } catch (IOException e) {
-                e.printStackTrace();
+            }
+            catch (IOException e) {
+                LOGGER.log(Level.WARNING, "error getting current work pages filenames", e);
             }
         }
         return new HashMap<>();
     }
 
     private void saveSavedSearches(List<List<LuceneEngineSearchFilter>> savedSearches) {
+
         try {
             String file = defaultDirectory() + File.separator + "saved-searches.json";
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File(file), savedSearches);
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     private void saveCurrentWorkPages(Map<String, String> pages) {
+
         try {
             String file = defaultDirectory() + File.separator + "work-pages-names.json";
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File(file), pages);
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     private void saveCurrentWorkPagesFilenames(Map<String, String> pages) {
+
         try {
             String file = defaultDirectory() + File.separator + "work-pages-filenames.json";
             ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(new File(file), pages);
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
     }
 
     public void addRecentSearch(List<LuceneEngineSearchFilter> savedSearch) {
+
         List<List<LuceneEngineSearchFilter>> savedSearches1 = getSavedSearches();
         if (savedSearches1.size() == 10) {
             savedSearches1.remove(savedSearches1.size() - 1);
         }
-        if (savedSearches1.stream().filter(filters -> filters.stream().filter(luceneEngineSearchFilter -> Objects.equals(luceneEngineSearchFilter.getTerm(), savedSearch.get(0).getTerm())).count() > 0).count() == 0) {
+        if (savedSearches1
+                .stream()
+                .filter(filters -> filters
+                        .stream()
+                        .filter(luceneEngineSearchFilter -> Objects
+                                .equals(luceneEngineSearchFilter.getTerm(), savedSearch.get(0).getTerm()))
+                        .count() > 0)
+                .count() == 0) {
             savedSearches1.add(0, savedSearch);
             saveSavedSearches(savedSearches1);
             notifySavedSearches();
@@ -402,69 +474,84 @@ public class Registry implements Observer {
     }
 
     private void notifySavedSearches() {
+
         savedSearchesUpdated.forEach(SavedSearchedUpdated::onSavedSearchesUpdated);
     }
 
     public void addSavedSearchesListener(SavedSearchedUpdated observer) {
+
         if (!savedSearchesUpdated.contains(observer)) {
             savedSearchesUpdated.add(observer);
         }
     }
 
     public void removeSavedSearchesListener(SavedSearchedUpdated observer) {
+
         savedSearchesUpdated.remove(observer);
     }
 
     public void clearBatchEditPBCoreElement() {
+
         batchEditPBCoreElement = null;
         saveBatchEditPBCoreElement();
     }
 
     public void saveBatchEditPBCoreElement(PBCoreElement pbCoreElement) {
+
         this.batchEditPBCoreElement = pbCoreElement;
         saveBatchEditPBCoreElement();
     }
 
     private void saveBatchEditPBCoreElement() {
+
         File file = new File(defaultDirectory() + File.separator + "batch-edit");
         if (batchEditPBCoreElement == null) {
             file.delete();
-        } else {
+        }
+        else {
             try {
                 PBCoreStructure.getInstance().saveFile(batchEditPBCoreElement, file);
-            } catch (ParserConfigurationException | TransformerException | IOException e) {
-                e.printStackTrace();
+            }
+            catch (ParserConfigurationException | TransformerException | IOException e) {
+                LOGGER.log(Level.WARNING, "error saving batch edit PBCore element", e);
             }
         }
     }
 
     public void createNewVocabulariesAggregator(String name, boolean attribute) {
+
         CV cv = new CV();
         cv.setCustom(true);
         cv.setAttribute(attribute);
         getControlledVocabularies().put(name, cv);
         try {
             saveVocabulariesFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e) {
+            LOGGER.log(Level.WARNING, "error creating new vocabularies aggregator", e);
         }
     }
 
     public void removeCV(String selectedCV) {
+
         getControlledVocabularies().remove(selectedCV);
         try {
             saveVocabulariesFile();
-        } catch (IOException e) {
-            e.printStackTrace();
+        }
+        catch (IOException e) {
+            LOGGER.log(Level.WARNING, "error removing controlled vocabulary", e);
         }
     }
 
     public Map<String, CV> importControlledVocabularies(File file) throws IOException {
+
         ObjectMapper mapper = new ObjectMapper();
         HashMap<String, CV> importedVocabularies = mapper.readValue(file, new TypeReference<HashMap<String, CV>>() {
         });
-        HashMap<String, CV> defaultVocabularies = mapper.readValue(Thread.currentThread().getContextClassLoader().getResource("cvs.json"), new TypeReference<HashMap<String, CV>>() {
-        });
+        HashMap<String, CV> defaultVocabularies = mapper
+                .readValue(Thread.currentThread().getContextClassLoader().getResource("cvs.json"),
+                           new TypeReference<HashMap<String, CV>>() {
+                           });
         if (importedVocabularies == null) {
             return new HashMap<>();
         }
@@ -472,7 +559,8 @@ public class Registry implements Observer {
             if (defaultVocabularies.containsKey(stringCVEntry.getKey())) {
                 CV cv = defaultVocabularies.get(stringCVEntry.getKey());
                 cv.update(stringCVEntry.getValue());
-            } else {
+            }
+            else {
                 CV value = stringCVEntry.getValue();
                 value.setCustom(true);
                 value.setHasSubs(false);
@@ -488,39 +576,49 @@ public class Registry implements Observer {
     }
 
     public void exportControlledVocabularies(File file) throws IOException {
+
         ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(file, controlledVocabularies);
     }
 
     public void markFirstTimeInstructionsShown() {
+
         getSettings().markFirstTimeInstructionsShown();
         saveSettings();
     }
 
     public List<CSVElementMapper> loadMappers() {
+
         List<CSVElementMapper> mappers = new ArrayList<>();
         String file = defaultDirectory() + File.separator + "mappers" + File.separator + "mappers.json";
         File f = new File(file);
         if (!f.exists()) {
             try {
                 new File(defaultDirectory() + File.separator + "mappers").mkdir();
-                Files.copy(Thread.currentThread().getContextClassLoader().getResourceAsStream("mappers.json"), f.toPath());
-            } catch (IOException ex) {
-                Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+                Files
+                        .copy(Thread.currentThread().getContextClassLoader().getResourceAsStream("mappers.json"),
+                              f.toPath());
+            }
+            catch (IOException ex) {
+                LOGGER.log(Level.SEVERE, null, ex);
             }
         }
         ObjectMapper mapper = new ObjectMapper();
         try {
             mappers = mapper.readValue(f, new TypeReference<List<CSVElementMapper>>() {
             });
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         try {
-            mappers = mapper.readValue(Thread.currentThread().getContextClassLoader().getResource("mappers.json"), new TypeReference<List<CSVElementMapper>>() {
-            });
-        } catch (IOException ex) {
-            Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
+            mappers = mapper
+                    .readValue(Thread.currentThread().getContextClassLoader().getResource("mappers.json"),
+                               new TypeReference<List<CSVElementMapper>>() {
+                               });
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.SEVERE, null, ex);
         }
         for (CSVElementMapper csvElementMapper : mappers) {
             for (CSVAttributeMapper csvAttributeMapper : csvElementMapper.getAttributes()) {
@@ -528,5 +626,13 @@ public class Registry implements Observer {
             }
         }
         return mappers;
+    }
+
+    public void updateLanguage(Language language) {
+
+        settings.setLanguage(language);
+        saveSettings();
+
+        reloadElementsAndAttributes();
     }
 }

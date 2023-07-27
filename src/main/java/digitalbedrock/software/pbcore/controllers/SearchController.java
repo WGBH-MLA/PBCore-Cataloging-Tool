@@ -1,15 +1,12 @@
 package digitalbedrock.software.pbcore.controllers;
 
-import digitalbedrock.software.pbcore.MainApp;
-import digitalbedrock.software.pbcore.components.SearchFilterListCell;
-import digitalbedrock.software.pbcore.components.editor.IPBCorePreviewItemListCell;
-import digitalbedrock.software.pbcore.core.models.entity.*;
-import digitalbedrock.software.pbcore.listeners.SearchFilterElementsSelectionListener;
-import digitalbedrock.software.pbcore.lucene.HitDocument;
-import digitalbedrock.software.pbcore.lucene.LuceneEngine;
-import digitalbedrock.software.pbcore.lucene.LuceneEngineSearchFilter;
-import digitalbedrock.software.pbcore.parsers.CSVPBCoreParser;
-import digitalbedrock.software.pbcore.utils.PBCoreUtils;
+import static digitalbedrock.software.pbcore.listeners.MenuListener.MenuOption;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -19,10 +16,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -30,15 +23,19 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.util.*;
-import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import digitalbedrock.software.pbcore.MainApp;
+import digitalbedrock.software.pbcore.components.SearchFilterListCell;
+import digitalbedrock.software.pbcore.components.editor.IPBCorePreviewItemListCell;
+import digitalbedrock.software.pbcore.core.models.entity.*;
+import digitalbedrock.software.pbcore.listeners.SearchFilterElementsSelectionListener;
+import digitalbedrock.software.pbcore.lucene.HitDocument;
+import digitalbedrock.software.pbcore.lucene.LuceneEngine;
+import digitalbedrock.software.pbcore.lucene.LuceneEngineSearchFilter;
+import digitalbedrock.software.pbcore.parsers.CSVPBCoreParser;
+import digitalbedrock.software.pbcore.utils.I18nKey;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
+import digitalbedrock.software.pbcore.utils.PBCoreUtils;
+import digitalbedrock.software.pbcore.utils.Utility;
 
 public class SearchController extends AbsController {
 
@@ -88,42 +85,53 @@ public class SearchController extends AbsController {
     private LuceneEngineSearchFilter mainFilter;
 
     public SearchController() {
+
         mainFilter = new LuceneEngineSearchFilter();
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        lvSearchOptions.setCellFactory(param -> new SearchFilterListCell(new SearchFilterItemController.FilterInteractionListener() {
-            @Override
-            public void onRemove(int index, LuceneEngineSearchFilter searchFilter) {
-                lvSearchOptions.getItems().remove(searchFilter);
-            }
+
+        lvSearchOptions
+                .setCellFactory(param -> new SearchFilterListCell(
+                        new SearchFilterItemController.FilterInteractionListener() {
+
+                            @Override
+                            public void onRemove(int index, LuceneEngineSearchFilter searchFilter) {
+
+                                lvSearchOptions.getItems().remove(searchFilter);
+                            }
+
+                            @Override
+                            public void onSelectElements(int index, LuceneEngineSearchFilter searchFilter) {
+
+                                menuListener
+                                        .menuOptionSelected(MenuOption.SELECT_SEARCH_FILTER_ELEMENTS, index,
+                                                            searchFilter,
+                                                            (SearchFilterElementsSelectionListener) (index1,
+                                                                                                     luceneEngineSearchFilter) -> lvSearchOptions
+                                                                                                             .refresh());
+                            }
+                        }));
+        listViewHits.setCellFactory((ListView<HitDocument> param) -> new ListCell<HitDocument>() {
 
             @Override
-            public void onSelectElements(int index, LuceneEngineSearchFilter searchFilter) {
-                menuOptionSelected(MenuOption.SELECT_SEARCH_FILTER_ELEMENTS, index, searchFilter, new SearchFilterElementsSelectionListener() {
-                    @Override
-                    public void onFiltersDefined(int index, LuceneEngineSearchFilter luceneEngineSearchFilter) {
-                        Logger.getLogger(getClass().getName()).log(Level.INFO, null, "other filter");
-                        lvSearchOptions.refresh();
-                    }
-                });
-            }
-        }));
-        listViewHits.setCellFactory((ListView<HitDocument> param) -> new ListCell<HitDocument>() {
-            @Override
             protected void updateItem(HitDocument item, boolean empty) {
+
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
-                } else {
+                }
+                else {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/search_result_item.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/search_result_item.fxml"),
+                                LanguageManager.INSTANCE.getBundle());
                         Node graphic = loader.load();
                         SearchResultItemController controller = loader.getController();
                         controller.bind(item);
                         setGraphic(graphic);
-                    } catch (IOException exc) {
+                    }
+                    catch (IOException exc) {
                         throw new RuntimeException(exc);
                     }
                 }
@@ -137,10 +145,13 @@ public class SearchController extends AbsController {
                 stackPaneInstatiationPreview.setVisible(false);
                 buttonCloseInstatiationPreview.setVisible(false);
                 previewItemsSubTitle.setVisible(false);
-                lblNoFileSelected.setText(c.getList() == null || c.getList().isEmpty() ? "No File Selected" : "Multiple Files selected");
+                lblNoFileSelected
+                        .setText(c.getList() == null || c.getList().isEmpty() ? "No File Selected"
+                                : "Multiple Files selected");
                 btnShowInExplorer.setDisable(c.getList() == null || c.getList().isEmpty());
                 btnOpen.setDisable(c.getList() == null || c.getList().isEmpty());
-            } else {
+            }
+            else {
                 btnOpen.setDisable(false);
                 btnShowInExplorer.setDisable(false);
                 HitDocument newValue = c.getList().get(0);
@@ -154,7 +165,8 @@ public class SearchController extends AbsController {
                 AtomicInteger index = new AtomicInteger(0);
                 if (newValue.getPbCoreElement().getName().equalsIgnoreCase("pbcoreInstantiationDocument")) {
                     getInstantiationFlatTree(index, flatList, newValue.getPbCoreElement());
-                } else {
+                }
+                else {
                     getFlatTree(index, flatList, newValue.getPbCoreElement());
                 }
                 treeViewPreview.setItems(FXCollections.observableArrayList(flatList));
@@ -201,7 +213,10 @@ public class SearchController extends AbsController {
     }
 
     private void getFlatTree(AtomicInteger index, List<IPBCore> listToAdd, PBCoreElement rootElement) {
-        List<String> names = Arrays.asList("pbcoreDescriptionDocument", "pbcoreInstantiationDocument", "pbcoreTitle", "pbcoreAssetDate", "pbcoreDescription");
+
+        List<String> names = Arrays
+                .asList("pbcoreDescriptionDocument", "pbcoreInstantiationDocument", "pbcoreTitle", "pbcoreAssetDate",
+                        "pbcoreDescription");
         int idx = index.get() + 1;
         if (rootElement == null) {
             return;
@@ -217,9 +232,11 @@ public class SearchController extends AbsController {
         orderedSubElements.sort((o1, o2) -> {
             if (Objects.equals(o1.getName(), "pbcoreTitle") && !Objects.equals(o2.getName(), "pbcoreTitle")) {
                 return -1;
-            } else if (!Objects.equals(o1.getName(), "pbcoreTitle") && Objects.equals(o2.getName(), "pbcoreTitle")) {
+            }
+            else if (!Objects.equals(o1.getName(), "pbcoreTitle") && Objects.equals(o2.getName(), "pbcoreTitle")) {
                 return 1;
-            } else if (Objects.equals(o1.getName(), "pbcoreTitle") && Objects.equals(o2.getName(), "pbcoreTitle")) {
+            }
+            else if (Objects.equals(o1.getName(), "pbcoreTitle") && Objects.equals(o2.getName(), "pbcoreTitle")) {
                 int o1Index = getAttrIndex(o1);
                 int o2Index = getAttrIndex(o2);
                 int compare = Integer.compare(o2Index, o1Index);
@@ -229,31 +246,55 @@ public class SearchController extends AbsController {
             }
             if (Objects.equals(o1.getName(), "pbcoreAssetDate") && !Objects.equals(o2.getName(), "pbcoreAssetDate")) {
                 return -1;
-            } else if (!Objects.equals(o1.getName(), "pbcoreAssetDate") && Objects.equals(o2.getName(), "pbcoreAssetDate")) {
+            }
+            else if (!Objects.equals(o1.getName(), "pbcoreAssetDate")
+                    && Objects.equals(o2.getName(), "pbcoreAssetDate")) {
                 return 1;
             }
-            if (Objects.equals(o1.getName(), "pbcoreDescription") && !Objects.equals(o2.getName(), "pbcoreDescription")) {
+            if (Objects.equals(o1.getName(), "pbcoreDescription")
+                    && !Objects.equals(o2.getName(), "pbcoreDescription")) {
                 return -1;
-            } else if (!Objects.equals(o1.getName(), "pbcoreDescription") && Objects.equals(o2.getName(), "pbcoreDescription")) {
+            }
+            else if (!Objects.equals(o1.getName(), "pbcoreDescription")
+                    && Objects.equals(o2.getName(), "pbcoreDescription")) {
                 return 1;
             }
             return 0;
         });
-        orderedSubElements.stream().filter(pbCoreElement -> names.contains(pbCoreElement.getName())).forEach(coreElement -> getFlatTree(new AtomicInteger(idx), listToAdd, coreElement));
+        orderedSubElements
+                .stream()
+                .filter(pbCoreElement -> names.contains(pbCoreElement.getName()))
+                .forEach(coreElement -> getFlatTree(new AtomicInteger(idx), listToAdd, coreElement));
 
         verifyAndAddDummyRecord(listToAdd, rootElement, idx);
     }
 
     private int getAttrIndex(PBCoreElement pbCoreElement) {
-        PBCoreAttribute pbCoreAttribute1 = pbCoreElement.getAttributes().stream().filter(pbCoreAttribute -> pbCoreAttribute.getName().equalsIgnoreCase("titleType")).findFirst().orElse(null);
+
+        PBCoreAttribute pbCoreAttribute1 = pbCoreElement
+                .getAttributes()
+                .stream()
+                .filter(pbCoreAttribute -> pbCoreAttribute.getName().equalsIgnoreCase("titleType"))
+                .findFirst()
+                .orElse(null);
         if (pbCoreAttribute1 != null && pbCoreAttribute1.getValue().equalsIgnoreCase("series")) {
             return 4;
         }
-        pbCoreAttribute1 = pbCoreElement.getAttributes().stream().filter(pbCoreAttribute -> pbCoreAttribute.getName().equalsIgnoreCase("titleType")).findFirst().orElse(null);
+        pbCoreAttribute1 = pbCoreElement
+                .getAttributes()
+                .stream()
+                .filter(pbCoreAttribute -> pbCoreAttribute.getName().equalsIgnoreCase("titleType"))
+                .findFirst()
+                .orElse(null);
         if (pbCoreAttribute1 != null && pbCoreAttribute1.getValue().equalsIgnoreCase("episode")) {
             return 3;
         }
-        pbCoreAttribute1 = pbCoreElement.getAttributes().stream().filter(pbCoreAttribute -> pbCoreAttribute.getName().equalsIgnoreCase("titleType")).findFirst().orElse(null);
+        pbCoreAttribute1 = pbCoreElement
+                .getAttributes()
+                .stream()
+                .filter(pbCoreAttribute -> pbCoreAttribute.getName().equalsIgnoreCase("titleType"))
+                .findFirst()
+                .orElse(null);
         if (pbCoreAttribute1 != null && pbCoreAttribute1.getValue().equalsIgnoreCase("program")) {
             return 2;
         }
@@ -261,7 +302,12 @@ public class SearchController extends AbsController {
     }
 
     private void verifyAndAddDummyRecord(List<IPBCore> listToAdd, PBCoreElement rootElement, int idx) {
-        if (rootElement.getName().equals("pbcoreDescriptionDocument") && rootElement.getSubElements().stream().filter(pbCoreElement -> pbCoreElement.getName().equals("pbcoreInstantiation")).count() > 0) {
+
+        if (rootElement.getName().equals("pbcoreDescriptionDocument") && rootElement
+                .getSubElements()
+                .stream()
+                .filter(pbCoreElement -> pbCoreElement.getName().equals("pbcoreInstantiation"))
+                .count() > 0) {
             PBCoreDummyItemsElement pbCoreDummyItemsElement = new PBCoreDummyItemsElement();
             pbCoreDummyItemsElement.setIndex(idx + 1);
             listToAdd.add(pbCoreDummyItemsElement);
@@ -270,6 +316,7 @@ public class SearchController extends AbsController {
     }
 
     private void getInstantiationFlatTree(AtomicInteger index, List<IPBCore> listToAdd, PBCoreElement rootElement) {
+
         int idx = index.get() + 1;
         if (rootElement == null) {
             return;
@@ -281,13 +328,17 @@ public class SearchController extends AbsController {
             listToAdd.addAll(rootElement.getAttributes());
         }
         index.incrementAndGet();
-        rootElement.getOrderedSubElements().forEach(coreElement -> getInstantiationFlatTree(new AtomicInteger(idx), listToAdd, coreElement));
+        rootElement
+                .getOrderedSubElements()
+                .forEach(coreElement -> getInstantiationFlatTree(new AtomicInteger(idx), listToAdd, coreElement));
 
         verifyAndAddDummyRecord(listToAdd, rootElement, idx);
     }
 
     private void getInstantiationItems(List<IPBCore> listToAdd, int idx, PBCoreElement rootElement) {
-        rootElement.getOrderedSubElements()
+
+        rootElement
+                .getOrderedSubElements()
                 .stream()
                 .filter(pbCoreElement -> pbCoreElement.getName().equals("pbcoreInstantiation"))
                 .forEach(pb -> {
@@ -298,22 +349,31 @@ public class SearchController extends AbsController {
     }
 
     private void reloadElementsCount() {
-        lblElementsCount.setText(mainFilter.isAllElements() ? "All" : (mainFilter.getElementsCount() + ""));
-        lblAttributesCount.setText(mainFilter.isAllElements() ? "All" : (mainFilter.getAttributesCount() + ""));
+
+        LanguageManager languageManager = LanguageManager.INSTANCE;
+        lblElementsCount
+                .setText(mainFilter.isAllElements() ? languageManager.getString(I18nKey.ALL)
+                        : (String.valueOf(mainFilter.getElementsCount())));
+        lblAttributesCount
+                .setText(mainFilter.isAllElements() ? languageManager.getString(I18nKey.ALL)
+                        : (String.valueOf(mainFilter.getAttributesCount())));
     }
 
     @Override
     public MenuBar createMenu() {
+
         return new MenuBar();
     }
 
     @FXML
     public void addCondition(ActionEvent event) {
+
         lvSearchOptions.getItems().add(new LuceneEngineSearchFilter());
     }
 
     @FXML
     public void resetSearch(ActionEvent event) {
+
         btnOpen.setDisable(true);
         btnShowInExplorer.setDisable(true);
         textFieldTerm.setText(null);
@@ -325,22 +385,25 @@ public class SearchController extends AbsController {
     @SuppressWarnings("WeakerAccess")
     @FXML
     public void search(@SuppressWarnings("SameParameterValue") ActionEvent event) {
+
         if (event != null) {
             pagination.setPageCount(1);
             pagination.setCurrentPageIndex(0);
         }
-        lblTotalResults.setText("(" + 0 + " files)");
+        lblTotalResults.setText(String.format("0 %s)", LanguageManager.INSTANCE.getString(I18nKey.FILES)));
         LuceneEngine luceneEngine = new LuceneEngine();
         List<LuceneEngineSearchFilter> andOperators = new ArrayList<>();
         andOperators.add(mainFilter);
         andOperators.addAll(lvSearchOptions.getItems());
         new Thread(new Task<Object>() {
+
             @Override
             protected Object call() throws Exception {
 
                 spinnerLayer.setVisible(true);
                 btnSearch.setDisable(true);
-                Map.Entry<Long, List<HitDocument>> search = luceneEngine.search(andOperators, pagination.getCurrentPageIndex(), MAX_RESULTS);
+                Map.Entry<Long, List<HitDocument>> search = luceneEngine
+                        .search(andOperators, pagination.getCurrentPageIndex(), MAX_RESULTS);
                 Platform.runLater(() -> {
                     int i = (int) roundUp(search.getKey().intValue(), MAX_RESULTS);
                     pagination.setPageCount(i == 0 ? 1 : i);
@@ -348,7 +411,10 @@ public class SearchController extends AbsController {
                     btnSearch.setDisable(false);
                     spinnerLayer.setVisible(false);
                     MainApp.getInstance().getRegistry().addRecentSearch(andOperators);
-                    lblTotalResults.setText("(" + search.getKey() + " files)");
+                    lblTotalResults
+                            .setText(String
+                                    .format("(%s %s)", search.getKey(),
+                                            LanguageManager.INSTANCE.getString(I18nKey.FILES)));
                     btnExportSearchToCsv.setDisable(search.getKey() < 1);
                 });
                 return null;
@@ -357,27 +423,34 @@ public class SearchController extends AbsController {
     }
 
     private static long roundUp(long num, @SuppressWarnings("SameParameterValue") long divisor) {
+
         return (num + divisor - 1) / divisor;
     }
 
     @FXML
     public void selectMainFilterElements(ActionEvent actionEvent) {
-        menuOptionSelected(MenuOption.SELECT_SEARCH_FILTER_ELEMENTS, 0, mainFilter, (SearchFilterElementsSelectionListener) (index, searchFilter) -> {
-            reloadElementsCount();
-        });
+
+        menuListener
+                .menuOptionSelected(MenuOption.SELECT_SEARCH_FILTER_ELEMENTS, 0, mainFilter,
+                                    (SearchFilterElementsSelectionListener) (index, searchFilter) -> {
+                                        reloadElementsCount();
+                                    });
     }
 
     @FXML
     public void onCancel(ActionEvent actionEvent) {
+
         Stage stage = (Stage) textFieldTerm.getScene().getWindow();
         stage.fireEvent(new WindowEvent(stage, WindowEvent.WINDOW_CLOSE_REQUEST));
     }
 
     @FXML
     public void onExportSearchToCsv(ActionEvent actionEvent) {
+
         spinnerLayer.setVisible(true);
         FileChooser fileChooser = new FileChooser();
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("CSV files (*.csv)", "*.csv");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES), "*.csv");
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(listViewHits.getScene().getWindow());
         if (file == null) {
@@ -388,24 +461,28 @@ public class SearchController extends AbsController {
     }
 
     private void exportFullSearch(File file) {
+
         LuceneEngine luceneEngine = new LuceneEngine();
         List<LuceneEngineSearchFilter> andOperators = new ArrayList<>();
         andOperators.add(mainFilter);
         andOperators.addAll(lvSearchOptions.getItems());
         new Thread(new Task<Object>() {
+
             @Override
             protected Object call() throws Exception {
+
                 spinnerLayer.setVisible(true);
                 btnSearch.setDisable(true);
                 Map.Entry<Long, List<HitDocument>> search = luceneEngine.search(andOperators, 0, -1);
-                Map<String, PBCoreElement> mapPBCoreElements = PBCoreUtils.convertToDescriptionDocsMap(search.getValue());
+                Map<String, PBCoreElement> mapPBCoreElements = PBCoreUtils
+                        .convertToDescriptionDocsMap(search.getValue());
                 CSVPBCoreParser.writeFile(mapPBCoreElements, file.getAbsolutePath());
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                    alert.setTitle("Documents exported");
-                    alert.setContentText("Documents exported to csv successfully");
+                    alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.DOCUMENT_EXPORTED));
+                    alert.setContentText(LanguageManager.INSTANCE.getString(I18nKey.DOCUMENT_EXPORTED_DESCRIPTION_CSV));
                     alert.setHeaderText(null);
-                    alert.getButtonTypes().setAll(new ButtonType("Ok"));
+                    alert.getButtonTypes().setAll(new ButtonType(LanguageManager.INSTANCE.getString(I18nKey.OK)));
                     alert.showAndWait();
                     spinnerLayer.setVisible(false);
                 });
@@ -416,26 +493,34 @@ public class SearchController extends AbsController {
 
     @FXML
     public void onFileSelected(ActionEvent actionEvent) {
+
         spinnerLayer.setVisible(true);
         List<HitDocument> selectedItems = listViewHits.getSelectionModel().getSelectedItems();
         if (selectedItems != null) {
             if (selectedItems.size() >= 10) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Open files");
-                alert.setContentText("You have selected " + selectedItems.size() + " files to open and it can take a while to open this many files, do you want to proceed?");
+                alert.setTitle(LanguageManager.INSTANCE.getString(I18nKey.OPEN_FILES));
+                alert
+                        .setContentText(String
+                                .format("%s %d %s",
+                                        LanguageManager.INSTANCE.getString(I18nKey.OPEN_FILES_DESCRIPTION_1),
+                                        selectedItems.size(),
+                                        LanguageManager.INSTANCE.getString(I18nKey.OPEN_FILES_DESCRIPTION_2)));
                 alert.setHeaderText(null);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.isPresent() && result.get() == ButtonType.OK) {
-                    menuOptionSelected(MenuOption.SEARCH_RESULT_SELECTED, selectedItems);
+                    menuListener.menuOptionSelected(MenuOption.SEARCH_RESULT_SELECTED, selectedItems);
                 }
-            } else {
-                menuOptionSelected(MenuOption.SEARCH_RESULT_SELECTED, selectedItems);
+            }
+            else {
+                menuListener.menuOptionSelected(MenuOption.SEARCH_RESULT_SELECTED, selectedItems);
             }
         }
         spinnerLayer.setVisible(false);
     }
 
     public void setFilters(List<LuceneEngineSearchFilter> filters) {
+
         mainFilter = filters.remove(0);
         textFieldTerm.textProperty().addListener((observable, oldValue, newValue) -> mainFilter.setTerm(newValue));
         textFieldTerm.setText(mainFilter.getTerm());
@@ -445,32 +530,11 @@ public class SearchController extends AbsController {
 
     @FXML
     public void showInExplorer(ActionEvent actionEvent) {
+
         List<HitDocument> selectedItems = listViewHits.getSelectionModel().getSelectedItems();
         if (selectedItems != null) {
             for (HitDocument selectedItem : selectedItems) {
-                if (PBCoreUtils.isWindows()) {
-                    try {
-                        Runtime.getRuntime().exec("explorer.exe /select," + selectedItem.getFilepath());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else if (PBCoreUtils.isMac()) {
-                    try {
-                        Runtime.getRuntime().exec("open --reveal " + selectedItem.getFilepath());
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    final Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
-                    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
-                        try {
-                            File file = new File(selectedItem.getFilepath());
-                            desktop.open(file.getParentFile());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
+                Utility.showInExplorer(selectedItem.getFilepath());
             }
         }
     }

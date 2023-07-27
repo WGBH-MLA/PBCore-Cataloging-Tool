@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane id="SettingsGeneralUI"
+	maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
+	prefHeight="500.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0"
+	AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+	AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/19"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="digitalbedrock.software.pbcore.controllers.SettingsGeneralController">
+	<padding>
+		<Insets top="20.0" />
+	</padding>
+	<stylesheets>
+		<URL value="@../styles/style.css" />
+	</stylesheets>
+	<VBox layoutX="450.0" layoutY="99.0" prefHeight="200.0"
+		prefWidth="534.0" AnchorPane.bottomAnchor="0.0"
+		AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+		AnchorPane.topAnchor="0.0">
+		<children>
+			<Label fx:id="languageLabel" text="%language">
+				<VBox.margin>
+					<Insets left="10.0" />
+				</VBox.margin>
+			</Label>
+			<HBox>
+				<children>
+					<ComboBox fx:id="languagesCombobox" prefWidth="150.0"
+						styleClass="elementValueCombo" />
+					<Button fx:id="changeLanguageButton" disable="true"
+						mnemonicParsing="false" onAction="#changeLanguage"
+						styleClass="primaryButton" text="%apply">
+						<HBox.margin>
+							<Insets left="10.0" />
+						</HBox.margin>
+					</Button>
+				</children>
+				<VBox.margin>
+					<Insets left="10.0" top="4.0" />
+				</VBox.margin>
+			</HBox>
+			<Label styleClass="warningText"
+				fx:id="changeLanguageInfoMessageLabel"
+				text="%changeLanguageInfoMessage">
+				<VBox.margin>
+					<Insets left="10.0" top="5.0" />
+				</VBox.margin>
+			</Label>
+		</children>
+	</VBox>
+</AnchorPane>

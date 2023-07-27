@@ -6,11 +6,8 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes({
-    @JsonSubTypes.Type(value = PBCoreElement.class, name = "PBCoreElement")
-    ,
-        @JsonSubTypes.Type(value = PBCoreAttribute.class, name = "PBCoreAttribute")
-})
+@JsonSubTypes({ @JsonSubTypes.Type(value = PBCoreElement.class, name = "PBCoreElement"),
+        @JsonSubTypes.Type(value = PBCoreAttribute.class, name = "PBCoreAttribute") })
 public abstract class IPBCore {
 
     private IPBCoreLayoutType typeForLayout = IPBCoreLayoutType.NORMAL;
@@ -24,6 +21,7 @@ public abstract class IPBCore {
     public abstract boolean isRequired();
 
     public boolean isRepeatable() {
+
         return false;
     }
 
@@ -32,14 +30,17 @@ public abstract class IPBCore {
     public abstract String getScreenName();
 
     public boolean isHasChildElements() {
+
         return false;
     }
 
     public IPBCoreLayoutType getTypeForLayout() {
+
         return typeForLayout;
     }
 
     public void setTypeForLayout(IPBCoreLayoutType typeForLayout) {
+
         this.typeForLayout = typeForLayout;
     }
 
@@ -52,6 +53,7 @@ public abstract class IPBCore {
     public abstract int getIndex();
 
     public boolean isAnyElement() {
+
         return false;
     }
 }

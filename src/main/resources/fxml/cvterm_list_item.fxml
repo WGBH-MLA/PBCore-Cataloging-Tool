@@ -7,24 +7,28 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="CVTermListItemUI" maxHeight="25.0" minHeight="25.0" prefHeight="25.0"
-            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="digitalbedrock.software.pbcore.controllers.CVTermItemController">
-    <stylesheets>
-        <URL value="@../styles/style.css"/>
-    </stylesheets>
-    <GridPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-              AnchorPane.topAnchor="0.0">
-        <columnConstraints>
-            <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" minWidth="10.0"/>
-            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0"/>
-        </columnConstraints>
-        <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES"/>
-        </rowConstraints>
-        <Label fx:id="termLabel" text="Label" styleClass="termLabel"/>
-        <Label fx:id="sourceLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" text="Label"
-               styleClass="sourceLabel"
-               textAlignment="RIGHT" GridPane.columnIndex="1"/>
-    </GridPane>
+<AnchorPane id="CVTermListItemUI" maxHeight="25.0"
+	minHeight="25.0" prefHeight="25.0" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="digitalbedrock.software.pbcore.controllers.CVTermItemController">
+	<stylesheets>
+		<URL value="@../styles/style.css" />
+	</stylesheets>
+	<GridPane AnchorPane.bottomAnchor="0.0"
+		AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+		AnchorPane.topAnchor="0.0">
+		<columnConstraints>
+			<ColumnConstraints halignment="LEFT" hgrow="ALWAYS"
+				minWidth="10.0" />
+			<ColumnConstraints halignment="RIGHT"
+				hgrow="SOMETIMES" minWidth="10.0" />
+		</columnConstraints>
+		<rowConstraints>
+			<RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+		</rowConstraints>
+		<Label fx:id="termLabel" styleClass="termLabel" />
+		<Label fx:id="sourceLabel" alignment="CENTER_RIGHT"
+			contentDisplay="RIGHT" styleClass="sourceLabel" textAlignment="RIGHT"
+			GridPane.columnIndex="1" />
+	</GridPane>
 </AnchorPane>

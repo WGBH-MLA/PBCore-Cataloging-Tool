@@ -1,8 +1,8 @@
 package digitalbedrock.software.pbcore.core.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.HashMap;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CV extends CVBase {
@@ -14,42 +14,52 @@ public class CV extends CVBase {
     private HashMap<String, CVBase> subs = new HashMap<>();
 
     public boolean isAttribute() {
+
         return isAttribute;
     }
 
     public void setAttribute(boolean isAttribute) {
+
         this.isAttribute = isAttribute;
     }
 
     public boolean isHasSubs() {
+
         return hasSubs;
     }
 
     public void setHasSubs(boolean hasSubs) {
+
         this.hasSubs = hasSubs;
     }
 
     public String getBestPractice() {
+
         return bestPractice;
     }
 
     public void setBestPractice(String bestPractice) {
+
         this.bestPractice = bestPractice;
     }
 
     public HashMap<String, CVBase> getSubs() {
+
         return subs;
     }
 
     public void setSubs(HashMap<String, CVBase> subs) {
+
         this.subs = subs;
     }
 
     public CV() {
+
         super();
     }
 
     public void update(CV value) {
+
         for (CVTerm cvTerm : value.getTerms()) {
             if (cvTerm.isCustom() && !getTerms().contains(cvTerm)) {
                 getTerms().add(cvTerm);

@@ -1,9 +1,16 @@
 package digitalbedrock.software.pbcore.lucene;
 
-import digitalbedrock.software.pbcore.MainApp;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
-import digitalbedrock.software.pbcore.core.models.entity.PBCoreStructure;
-import org.apache.lucene.analysis.core.KeywordAnalyzer;
+import java.io.File;
+import java.io.IOException;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.xml.bind.JAXBException;
+
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.StringField;
@@ -11,16 +18,13 @@ import org.apache.lucene.index.*;
 import org.apache.lucene.search.*;
 import org.apache.lucene.store.FSDirectory;
 
-import javax.xml.bind.JAXBException;
-import java.io.File;
-import java.io.IOException;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import digitalbedrock.software.pbcore.MainApp;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreElement;
+import digitalbedrock.software.pbcore.core.models.entity.PBCoreStructure;
 
 public class LuceneEngine {
 
+    public static final Logger LOGGER = Logger.getLogger(LuceneEngine.class.getName());
     private static final String SCREEN_NAME = "screenname";
     private static final String VALUE = "value";
     private static final String COMPOSED_VALUE = "composed_value";
@@ -29,74 +33,89 @@ public class LuceneEngine {
     private static final String BASE_DIR_PATH = "base_dir_path";
 
     public LuceneEngine() {
+
         BooleanQuery.setMaxClauseCount(10000);
     }
 
     public static void createOrUpdateIndexesForFile(IndexWriter writer, File file1, String folder) {
+
         try {
             PBCoreElement pbCoreElement = PBCoreStructure.getInstance().parseFile(file1);
             saveDocumentForElement(writer, file1, pbCoreElement, folder);
-        } catch (IOException | JAXBException | IllegalAccessException ex) {
-            ex.printStackTrace();
+        }
+        catch (IOException | JAXBException | IllegalAccessException ex) {
+            LOGGER.log(Level.WARNING, "could create or update indexes for file", ex);
         }
     }
 
     public static void deleteIndexesForFolder(IndexWriter writer, String folderPath) {
+
         try {
             writer.deleteDocuments(new TermQuery(new Term(BASE_DIR_PATH, folderPath.toLowerCase())));
             writer.commit();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "could delete indexes for folder", ex);
         }
     }
 
     public static void deleteIndexesForFile(IndexWriter writer, String filePath) {
+
         try {
             writer.deleteDocuments(new TermQuery(new Term(FILEPATH, filePath.toLowerCase())));
             writer.commit();
-        } catch (IOException ex) {
+        }
+        catch (IOException ex) {
+            LOGGER.log(Level.WARNING, "could delete indexes for file", ex);
         }
     }
 
-    public static void clearIndexes() {
-        try {
-            String folder = MainApp.getInstance().getRegistry().defaultDirectory() + File.separator + "index";
-            try (IndexWriter writer = new IndexWriter(FSDirectory.open(new File(folder).toPath()), new IndexWriterConfig(new KeywordAnalyzer()))) {
-                writer.deleteAll();
-                writer.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private static void saveDocumentForElement(IndexWriter writer, File file, PBCoreElement pbCoreElement,
+                                               String folder)
+            throws IOException {
 
-    private static void saveDocumentForElement(IndexWriter writer, File file, PBCoreElement pbCoreElement, String folder) throws IOException {
         List<LuceneEngineIndexerHelper> indexerHelpers = new ArrayList<>();
         fillDocuments(indexerHelpers, pbCoreElement, file);
         Document doc = new Document();
         boolean first = true;
         for (LuceneEngineIndexerHelper indexerHelper : indexerHelpers) {
             if (first) {
-                doc.add(new StringField(FILENAME.toLowerCase(), indexerHelper.getFilename().toLowerCase(), Field.Store.YES));
+                doc
+                        .add(new StringField(FILENAME.toLowerCase(), indexerHelper.getFilename().toLowerCase(),
+                                Field.Store.YES));
                 doc.add(new StringField(FILEPATH, indexerHelper.getFilepath().toLowerCase(), Field.Store.YES));
                 doc.add(new StringField(BASE_DIR_PATH, folder.toLowerCase(), Field.Store.YES));
                 first = false;
             }
             doc.add(new StringField(SCREEN_NAME.toLowerCase(), indexerHelper.getName().toLowerCase(), Field.Store.YES));
             doc.add(new StringField(VALUE.toLowerCase(), indexerHelper.getValue(), Field.Store.YES));
-            doc.add(new StringField(COMPOSED_VALUE, indexerHelper.getFullPath().toLowerCase() + "|" + indexerHelper.getValue().toLowerCase(), Field.Store.YES));
+            doc
+                    .add(new StringField(COMPOSED_VALUE,
+                            indexerHelper.getFullPath().toLowerCase() + "|" + indexerHelper.getValue().toLowerCase(),
+                            Field.Store.YES));
         }
         writer.addDocument(doc);
     }
 
-    private static void fillDocuments(List<LuceneEngineIndexerHelper> indexerHelpers, PBCoreElement pbCoreElement, File file) {
-        indexerHelpers.add(new LuceneEngineIndexerHelper(pbCoreElement.getName(), pbCoreElement.getValue(), file.getName(), file.getAbsolutePath(), pbCoreElement.getPathRepresentation(), pbCoreElement.getFullPath()));
+    private static void fillDocuments(List<LuceneEngineIndexerHelper> indexerHelpers, PBCoreElement pbCoreElement,
+                                      File file) {
+
+        indexerHelpers
+                .add(new LuceneEngineIndexerHelper(pbCoreElement.getName(), pbCoreElement.getValue(), file.getName(),
+                        file.getAbsolutePath(), pbCoreElement.getPathRepresentation(), pbCoreElement.getFullPath()));
         pbCoreElement.getSubElements().forEach((coreElement) -> {
             fillDocuments(indexerHelpers, coreElement, file);
         });
-        pbCoreElement.getAttributes().forEach((coreAttribute) -> indexerHelpers.add(new LuceneEngineIndexerHelper(coreAttribute.getName(), coreAttribute.getValue(), file.getName(), file.getAbsolutePath(), pbCoreElement.getPathRepresentation(), pbCoreElement.getFullPath())));
+        pbCoreElement
+                .getAttributes()
+                .forEach((coreAttribute) -> indexerHelpers
+                        .add(new LuceneEngineIndexerHelper(coreAttribute.getName(), coreAttribute.getValue(),
+                                file.getName(), file.getAbsolutePath(), pbCoreElement.getPathRepresentation(),
+                                pbCoreElement.getFullPath())));
     }
 
-    public Map.Entry<Long, List<HitDocument>> search(List<LuceneEngineSearchFilter> andOperators, int offset, @SuppressWarnings("SameParameterValue") int maxResults) {
+    public Map.Entry<Long, List<HitDocument>> search(List<LuceneEngineSearchFilter> andOperators, int offset,
+                                                     @SuppressWarnings("SameParameterValue") int maxResults) {
 
         long totalResults = 0;
         List<HitDocument> documents = new ArrayList<>();
@@ -112,20 +131,31 @@ public class LuceneEngine {
                 TopDocs topDocs;
                 if (maxResults > 0) {
                     topDocs = collector.topDocs(offset, maxResults);
-                } else {
+                }
+                else {
                     topDocs = collector.topDocs();
                 }
                 hits = topDocs.scoreDocs;
                 totalResults = topDocs.totalHits;
-            } else {
+            }
+            else {
                 BooleanQuery.Builder builder = new BooleanQuery.Builder();
                 andOperators.forEach(luceneEngineSearchFilter -> {
                     if (luceneEngineSearchFilter.isAllElements()) {
-                        builder.add(new WildcardQuery(new Term(COMPOSED_VALUE, ("*" + luceneEngineSearchFilter.getTerm() + "*").toLowerCase())), BooleanClause.Occur.MUST);
-                    } else {
+                        builder
+                                .add(new WildcardQuery(new Term(COMPOSED_VALUE,
+                                        ("*" + luceneEngineSearchFilter.getTerm() + "*").toLowerCase())),
+                                     BooleanClause.Occur.MUST);
+                    }
+                    else {
                         BooleanQuery.Builder insideQuery = new BooleanQuery.Builder();
-                        luceneEngineSearchFilter.getFieldsToSearch().forEach(ipbCore
-                                -> insideQuery.add(new WildcardQuery(new Term(COMPOSED_VALUE, ("*" + ipbCore.getFullPath().replace("/", "\\/") + "|" + luceneEngineSearchFilter.getTerm() + "*").toLowerCase())), BooleanClause.Occur.SHOULD));
+                        luceneEngineSearchFilter
+                                .getFieldsToSearch()
+                                .forEach(ipbCore -> insideQuery
+                                        .add(new WildcardQuery(new Term(COMPOSED_VALUE,
+                                                ("*" + ipbCore.getFullPath().replace("/", "\\/") + "|"
+                                                        + luceneEngineSearchFilter.getTerm() + "*").toLowerCase())),
+                                             BooleanClause.Occur.SHOULD));
                         builder.add(insideQuery.build(), BooleanClause.Occur.MUST);
                     }
                 });
@@ -134,7 +164,8 @@ public class LuceneEngine {
                 TopDocs topDocs;
                 if (maxResults > 0) {
                     topDocs = collector.topDocs(offset * maxResults, maxResults);
-                } else {
+                }
+                else {
                     topDocs = collector.topDocs();
                 }
                 hits = topDocs.scoreDocs;
@@ -146,17 +177,15 @@ public class LuceneEngine {
                 String filepath = doc.get(FILEPATH);
                 File file = new File(filepath);
                 if (file.exists()) {
-                    HitDocument hitDoc = new HitDocument(
-                            filename,
-                            filepath,
-                            PBCoreStructure.getInstance().parseFile(file)
-                    );
+                    HitDocument hitDoc = new HitDocument(filename, filepath,
+                            PBCoreStructure.getInstance().parseFile(file));
                     documents.add(hitDoc);
                 }
             }
 
-        } catch (IOException | IllegalAccessException | JAXBException e) {
-            e.printStackTrace();
+        }
+        catch (IOException | IllegalAccessException | JAXBException e) {
+            LOGGER.log(Level.WARNING, "error while searching", e);
         }
         return new AbstractMap.SimpleEntry<>(totalResults, documents);
     }
