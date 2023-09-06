@@ -1,5 +1,7 @@
 package digitalbedrock.software.pbcore.controllers;
 
+import static digitalbedrock.software.pbcore.utils.I18nKey.*;
+
 import java.io.File;
 import java.net.URL;
 import java.time.format.DateTimeFormatter;
@@ -24,10 +26,6 @@ import digitalbedrock.software.pbcore.utils.I18nKey;
 import digitalbedrock.software.pbcore.utils.LanguageManager;
 
 public class SettingsCrawlingController extends AbsController {
-
-    public static final String PROCESSING = "PROCESSING";
-    public static final String SCHEDULED = "SCHEDULED";
-    public static final String FINISHED = "-";
 
     @FXML
     private TableView<FolderModel> foldersTableView;
@@ -115,13 +113,13 @@ public class SettingsCrawlingController extends AbsController {
         pathColumn.setCellValueFactory(celldata -> new SimpleStringProperty(celldata.getValue().getFolderPath()));
         stateColumn.setCellValueFactory(celldata -> {
             if (celldata.getValue().isIndexing()) {
-                return new SimpleStringProperty(PROCESSING);
+                return new SimpleStringProperty(LanguageManager.INSTANCE.getString(PROCESSING));
             }
             else if (celldata.getValue().isScheduled()) {
-                return new SimpleStringProperty(SCHEDULED);
+                return new SimpleStringProperty(LanguageManager.INSTANCE.getString(SCHEDULED));
             }
             else {
-                return new SimpleStringProperty(FINISHED);
+                return new SimpleStringProperty(LanguageManager.INSTANCE.getString(FINISHED));
             }
         });
         lastIndexedColumn

@@ -1,6 +1,7 @@
 package digitalbedrock.software.pbcore.controllers.settings;
 
 import static digitalbedrock.software.pbcore.controllers.SettingsCrawlingController.*;
+import static digitalbedrock.software.pbcore.utils.I18nKey.*;
 
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -11,6 +12,7 @@ import javafx.util.Callback;
 import digitalbedrock.software.pbcore.MainApp;
 import digitalbedrock.software.pbcore.core.models.FolderModel;
 import digitalbedrock.software.pbcore.lucene.LuceneIndexer;
+import digitalbedrock.software.pbcore.utils.LanguageManager;
 
 public class FolderStateCellFactory
         implements Callback<TableColumn<FolderModel, String>, TableCell<FolderModel, String>> {
@@ -30,15 +32,32 @@ public class FolderStateCellFactory
                 }
                 else {
                     FolderModel model = MainApp.getInstance().getRegistry().getSettings().getFolders().get(getIndex());
+                    LanguageManager languageManager = LanguageManager.INSTANCE;
                     model.scheduledProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(() -> {
                         boolean processingFolder = LuceneIndexer
                                 .getInstance()
                                 .isProcessingFolder(model.getFolderPath());
-                        setText(newValue ? SCHEDULED : processingFolder ? PROCESSING : FINISHED);
+                        if (Boolean.TRUE.equals(newValue)) {
+                            setText(languageManager.getString(SCHEDULED));
+                            return;
+                        }
+                        if (processingFolder) {
+                            setText(languageManager.getString(PROCESSING));
+                            return;
+                        }
+                        setText(languageManager.getString(FINISHED));
                     }));
                     model.indexingProperty().addListener((observable, oldValue, newValue) -> Platform.runLater(() -> {
                         boolean scheduledFolder = LuceneIndexer.getInstance().isScheduledFolder(model.getFolderPath());
-                        setText(newValue ? PROCESSING : scheduledFolder ? SCHEDULED : FINISHED);
+                        if (Boolean.TRUE.equals(newValue)) {
+                            setText(languageManager.getString(PROCESSING));
+                            return;
+                        }
+                        if (scheduledFolder) {
+                            setText(languageManager.getString(SCHEDULED));
+                            return;
+                        }
+                        setText(languageManager.getString(FINISHED));
                     }));
                     LuceneIndexer
                             .getInstance()
@@ -46,17 +65,17 @@ public class FolderStateCellFactory
                             .addListener((ListChangeListener<String>) c -> Platform
                                     .runLater(() -> Platform.runLater(() -> {
                                         if (c.getList().contains(model.getFolderPath())) {
-                                            setText(SCHEDULED);
+                                            setText(languageManager.getString(SCHEDULED));
                                         }
                                     })));
                     if (model.isIndexing()) {
-                        setText(PROCESSING);
+                        setText(languageManager.getString(PROCESSING));
                     }
                     else if (model.isScheduled()) {
-                        setText(SCHEDULED);
+                        setText(languageManager.getString(SCHEDULED));
                     }
                     else {
-                        setText(FINISHED);
+                        setText(languageManager.getString(FINISHED));
                     }
                 }
             }

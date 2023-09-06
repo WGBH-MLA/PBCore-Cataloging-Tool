@@ -1,5 +1,6 @@
 package digitalbedrock.software.pbcore.controllers;
 
+import static digitalbedrock.software.pbcore.controllers.DocumentController.CSV_EXTENSION;
 import static digitalbedrock.software.pbcore.listeners.MenuListener.MenuOption.EXPORT_OPEN_FILES_TO_CSV;
 
 import java.io.File;
@@ -186,7 +187,8 @@ public class MainController extends AbsController
             extFilter = new FileChooser.ExtensionFilter(LanguageManager.INSTANCE.getString(I18nKey.ZIP_FILES), "*.zip");
         }
         else {
-            extFilter = new FileChooser.ExtensionFilter(LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES), "*.csv");
+            extFilter = new FileChooser.ExtensionFilter(LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES),
+                    CSV_EXTENSION);
         }
         fileChooser.getExtensionFilters().add(extFilter);
 
@@ -550,11 +552,7 @@ public class MainController extends AbsController
                 LanguageManager.INSTANCE.getString(I18nKey.CONVERT_CSV_FILE_TO_XML));
         importFromCsv.setAccelerator(new KeyCodeCombination(KeyCode.R, KeyCombination.CONTROL_DOWN));
         importFromCsv.setOnAction(e -> {
-            FileChooser fileChooser = new FileChooser();
-            fileChooser.setTitle(LanguageManager.INSTANCE.getString(I18nKey.OPEN_DOCUMENT_TO_IMPORT));
-            FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                    LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES));
-            fileChooser.getExtensionFilters().add(extFilter);
+            FileChooser fileChooser = getFileChooser();
             File selectedFile = fileChooser.showOpenDialog(tabPane.getScene().getWindow());
             if (selectedFile == null) {
                 return;
@@ -631,6 +629,16 @@ public class MainController extends AbsController
             menuBar.setUseSystemMenuBar(true);
         }
         return menuBar;
+    }
+
+    FileChooser getFileChooser() {
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(LanguageManager.INSTANCE.getString(I18nKey.OPEN_DOCUMENT_TO_IMPORT));
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
+                LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES), CSV_EXTENSION);
+        fileChooser.getExtensionFilters().add(extFilter);
+        return fileChooser;
     }
 
     @Override

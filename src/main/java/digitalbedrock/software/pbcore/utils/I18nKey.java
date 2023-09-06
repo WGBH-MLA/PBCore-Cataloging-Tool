@@ -110,7 +110,10 @@ public enum I18nKey {
     ENGLISH("english"),
     SPANISH("spanish"),
     CHANGE_LANGUAGE_INFO_MESSAGE("changeLanguageInfoMessage"),
-    ALL("all");
+    ALL("all"),
+    PROCESSING("PROCESSING"),
+    SCHEDULED("SCHEDULED"),
+    FINISHED("FINISHED");
 
     private final String key;
 

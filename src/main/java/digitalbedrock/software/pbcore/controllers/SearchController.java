@@ -1,5 +1,6 @@
 package digitalbedrock.software.pbcore.controllers;
 
+import static digitalbedrock.software.pbcore.controllers.DocumentController.CSV_EXTENSION;
 import static digitalbedrock.software.pbcore.listeners.MenuListener.MenuOption;
 
 import java.io.File;
@@ -450,7 +451,7 @@ public class SearchController extends AbsController {
         spinnerLayer.setVisible(true);
         FileChooser fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(
-                LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES), "*.csv");
+                LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES), CSV_EXTENSION);
         fileChooser.getExtensionFilters().add(extFilter);
         File file = fileChooser.showSaveDialog(listViewHits.getScene().getWindow());
         if (file == null) {

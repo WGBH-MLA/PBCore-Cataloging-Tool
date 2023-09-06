@@ -47,6 +47,7 @@ public class DocumentController extends AbsController implements ElementSelectio
 
     public static final Logger LOGGER = Logger.getLogger(DocumentController.class.getName());
     public static final String XML_EXTENSION = "*.xml";
+    public static final String CSV_EXTENSION = "*.csv";
     public static final String PANIC_ICON = "panicIcon";
     public static final String WARNING_ICON = "warningIcon";
 

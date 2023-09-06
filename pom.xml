@@ -249,9 +249,31 @@
                                     </artifact>
                                     <moduleInfoSource>
                                         module lucene.core {
-                                            exports org.apache.lucene.index;
+                                            exports org.apache.lucene.analysis;
                                             exports org.apache.lucene.analysis.standard;
+                                            exports org.apache.lucene.analysis.tokenattributes;
+                                            exports org.apache.lucene.codecs;
+                                            exports org.apache.lucene.codecs.blocktree;
+                                            exports org.apache.lucene.codecs.compressing;
+                                            exports org.apache.lucene.codecs.lucene50;
+                                            exports org.apache.lucene.codecs.lucene60;
+                                            exports org.apache.lucene.codecs.lucene62;
+                                            exports org.apache.lucene.codecs.lucene70;
+                                            exports org.apache.lucene.codecs.perfield;
+                                            exports org.apache.lucene.document;
+                                            exports org.apache.lucene.geo;
+                                            exports org.apache.lucene.index;
+                                            exports org.apache.lucene.search;
+                                            exports org.apache.lucene.search.similarities;
+                                            exports org.apache.lucene.search.spans;
                                             exports org.apache.lucene.store;
+                                            exports org.apache.lucene.util;
+                                            exports org.apache.lucene.util.automaton;
+                                            exports org.apache.lucene.util.bkd;
+                                            exports org.apache.lucene.util.fst;
+                                            exports org.apache.lucene.util.graph;
+                                            exports org.apache.lucene.util.mutable;
+                                            exports org.apache.lucene.util.packed;
                                         }
                                     </moduleInfoSource>
                                 </module>

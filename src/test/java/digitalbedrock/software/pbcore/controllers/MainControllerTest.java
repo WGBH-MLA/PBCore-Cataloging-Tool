@@ -1,5 +1,6 @@
 package digitalbedrock.software.pbcore.controllers;
 
+import static digitalbedrock.software.pbcore.controllers.DocumentController.CSV_EXTENSION;
 import static digitalbedrock.software.pbcore.controllers.SettingsGeneralControllerTest.CHANGE_LANGUAGE_BUTTON_ID;
 import static digitalbedrock.software.pbcore.controllers.SettingsGeneralControllerTest.LANGUAGES_COMBOBOX_ID;
 import static digitalbedrock.software.pbcore.utils.RegistryTest.PB_CORE_FOLDER;
@@ -12,10 +13,12 @@ import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -24,6 +27,7 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import org.junit.jupiter.api.AfterAll;
@@ -129,6 +133,20 @@ class MainControllerTest {
         robot.release(KeyCode.SHIFT, KeyCode.CONTROL, KeyCode.G);
 
         assertTrue(robot.lookup(LanguageManager.INSTANCE.getString(I18nKey.GENERAL)).tryQuery().isPresent());
+    }
+
+    @Test
+    void mainControllerLoaded_getFileChooser_fileChooserContainsExpectedExtension(FxRobot robot)
+            throws TimeoutException {
+
+        var fileChooser = controller.getFileChooser();
+
+        ObservableList<FileChooser.ExtensionFilter> extensionFilters = fileChooser.getExtensionFilters();
+        assertEquals(1, extensionFilters.size());
+        var filter = extensionFilters.get(0);
+        assertEquals(LanguageManager.INSTANCE.getString(I18nKey.CSV_FILES), filter.getDescription());
+        assertEquals(Collections.singletonList(CSV_EXTENSION), filter.getExtensions());
+
     }
 
     @Test
